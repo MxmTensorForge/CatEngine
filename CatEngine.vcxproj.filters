@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{f80d5b76-735b-4e26-9338-03cd96773135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core">
+      <UniqueIdentifier>{e2472c4c-47a7-40a8-a060-acc0326d09c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics">
+      <UniqueIdentifier>{9227df8e-e234-409e-8b27-c147cc5ff6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ComponentSystem">
+      <UniqueIdentifier>{664734c8-4a45-4275-9652-4cd3bf0a5cb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ComponentSystem\Components">
+      <UniqueIdentifier>{b4deaebb-95d4-4530-99e4-a4edad20aaf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Geometry">
+      <UniqueIdentifier>{606b35ef-dd1a-4a54-8002-d375779baf97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Animation">
+      <UniqueIdentifier>{06b1a586-48ec-414b-b6f6-f5c2e891c3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Animation\Animations">
+      <UniqueIdentifier>{7ad6c88b-8294-4394-afdf-e7bccfcc7afa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Mxm">
+      <UniqueIdentifier>{f5b64869-dd20-412a-b68b-12f99372ac24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Mxm\src">
+      <UniqueIdentifier>{db1d20b0-76c2-48a6-8270-5c87fed8b650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\ComponentSystem\Object">
+      <UniqueIdentifier>{15e59082-20ff-48e3-9226-83dc98d9d208}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Engine\Core\Application.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Screen.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\FrameBuffer.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Render.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Engine\Core\Logger.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentSystem\Scene.cpp">
+      <Filter>Engine\ComponentSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentSystem\Components\Camera.cpp">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Geometry\Triangle.cpp">
+      <Filter>Engine\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentSystem\Components\MeshComponent.cpp">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Time.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\Input.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Geometry\Plane.cpp">
+      <Filter>Engine\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Animation\Animator.cpp">
+      <Filter>Engine\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Animation\Interpolation.cpp">
+      <Filter>Engine\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Animation\Animations\Animation.cpp">
+      <Filter>Engine\Animation\Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentSystem\SceneManager.cpp">
+      <Filter>Engine\ComponentSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentSystem\Components\RigidBody.cpp">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\ResourceManager.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentSystem\Object\Transform.cpp">
+      <Filter>Engine\ComponentSystem\Object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\Core\Application.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Screen.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\FrameBuffer.h">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\EngineConsts.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Logger.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Component.h">
+      <Filter>Engine\ComponentSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Scene.h">
+      <Filter>Engine\ComponentSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Components\Camera.h">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Geometry\Triangle.h">
+      <Filter>Engine\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Components\MeshComponent.h">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Time.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Input.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Color.h">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Render.h">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Geometry\Plane.h">
+      <Filter>Engine\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Animation\Animator.h">
+      <Filter>Engine\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Animation\Animations\Animation.h">
+      <Filter>Engine\Animation\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Animation\Interpolation.h">
+      <Filter>Engine\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Animation\Animations\TransformAnim.h">
+      <Filter>Engine\Animation\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\SceneManager.h">
+      <Filter>Engine\ComponentSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Components\RigidBody.h">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Animation\Animations\SetColorAnim.h">
+      <Filter>Engine\Animation\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Animation\Animations\FloatAnim.h">
+      <Filter>Engine\Animation\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Consts.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Easing.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Mat2.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Mat3.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Mat4.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Vec2.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Vec3.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Vec4.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\ResourceManager.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Geometry\MeshData.h">
+      <Filter>Engine\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Object\GameObject.h">
+      <Filter>Engine\ComponentSystem\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Object\Transform.h">
+      <Filter>Engine\ComponentSystem\Object</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Engine\Mxm\src\Easing.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+    <None Include="Engine\Mxm\src\Mat2.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+    <None Include="Engine\Mxm\src\Mat3.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+    <None Include="Engine\Mxm\src\Mat4.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+    <None Include="Engine\Mxm\src\Vec2.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+    <None Include="Engine\Mxm\src\Vec3.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+    <None Include="Engine\Mxm\src\Vec4.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+  </ItemGroup>
+</Project>
