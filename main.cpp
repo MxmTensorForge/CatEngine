@@ -187,7 +187,7 @@ private:
 		}
 		else {
 			if (!is_gun_animating) {
-				Animator::add<TranslateToPointAnim>("gun_back_anim", &_gun->transform(), _gunOffset, 0.1f, Animation::InterpolationType::COS, [this]() { is_gun_animating = false; });
+				Animator::add<TranslateToAnim>("gun_back_anim", _gun->transform(), _gunOffset, 0.1f, Animation::InterpolationType::COS, [this]() { is_gun_animating = false; });
 				is_gun_animating = true;
 			}
 		}
@@ -216,7 +216,7 @@ private:
 				createFireTrace(bulletStartPos, bulletEndPos, 100.0f);
 			}
 
-			Animator::add<RotateByAnim>("gun_rotate", &gun_transform, Mxm::Vec3(-Mxm::Consts::PI * 2.0f, 0.0f, 0.0f),
+			Animator::add<RotateByAnim>("gun_rotate", gun_transform, Mxm::Vec3(-Mxm::Consts::PI * 2.0f, 0.0f, 0.0f),
 				_gunShootSpeed, Animation::InterpolationType::EASY_OUT);
 
 			_gunTimer = 0.0f;
