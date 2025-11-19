@@ -34,6 +34,9 @@
     <Filter Include="Engine\ComponentSystem\Object">
       <UniqueIdentifier>{15e59082-20ff-48e3-9226-83dc98d9d208}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Physics">
+      <UniqueIdentifier>{dc2290d5-bc44-4d0e-aa5f-1e37b2ff3b60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Application.cpp">
@@ -93,6 +96,12 @@
     </ClCompile>
     <ClCompile Include="Engine\ComponentSystem\Object\Transform.cpp">
       <Filter>Engine\ComponentSystem\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Physics\PhysicsSystem.cpp">
+      <Filter>Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ComponentSystem\Components\Collider.cpp">
+      <Filter>Engine\ComponentSystem\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +209,15 @@
     </ClInclude>
     <ClInclude Include="Engine\ComponentSystem\Object\Transform.h">
       <Filter>Engine\ComponentSystem\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Physics\PhysicsSystem.h">
+      <Filter>Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Components\Collider.h">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Physics\CollisionResult.h">
+      <Filter>Engine\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

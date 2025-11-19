@@ -12,11 +12,11 @@ namespace Mxm
         float _m[4][4];
     public:
         Mat4() noexcept;
-        Mat4(float a00, float a01, float a02, float a03,
+        explicit Mat4(float a00, float a01, float a02, float a03,
              float a10, float a11, float a12, float a13,
              float a20, float a21, float a22, float a23,
              float a30, float a31, float a32, float a33) noexcept;
-        Mat4(const Vec4& vec1, const Vec4& vec2, const Vec4& vec3, const Vec4& vec4) noexcept;
+        explicit Mat4(const Vec4& vec1, const Vec4& vec2, const Vec4& vec3, const Vec4& vec4) noexcept;
 
         Vec4 operator[](size_t index) const noexcept;
         Vec4 col(size_t index) const noexcept;

@@ -12,8 +12,8 @@ namespace Mxm
 		float _m[2][2];
 	public:
 		Mat2() noexcept;
-		Mat2(float a00, float a01, float a10, float a11) noexcept;
-		Mat2(const Vec2& vec1, const Vec2& vec2) noexcept;
+		explicit Mat2(float a00, float a01, float a10, float a11) noexcept;
+		explicit Mat2(const Vec2& vec1, const Vec2& vec2) noexcept;
 
 		Vec2 operator[](size_t index) const noexcept;
 		Vec2 col(size_t index) const noexcept;

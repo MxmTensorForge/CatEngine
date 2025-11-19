@@ -12,10 +12,10 @@ namespace Mxm
 		float x, y, z, w;
 
 		Vec4() noexcept;
-		Vec4(float s) noexcept;
-		Vec4(float vx, float vy, float vz, float vw) noexcept;
-		Vec4(const Vec2& vec, float vz, float vw) noexcept;
-		Vec4(const Vec3& vec, float vw) noexcept;
+		explicit Vec4(float s) noexcept;
+		explicit Vec4(float vx, float vy, float vz, float vw) noexcept;
+		explicit Vec4(const Vec2& vec, float vz, float vw) noexcept;
+		explicit Vec4(const Vec3& vec, float vw) noexcept;
 
 		float& operator[](size_t index) noexcept;
 		const float& operator[](size_t index) const noexcept;

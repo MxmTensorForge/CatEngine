@@ -8,6 +8,9 @@
 class Time final
 {
 public:
+	Time() = delete;
+	~Time() = delete;
+
 	static float time() noexcept;
 	static float deltaTime() noexcept;
 

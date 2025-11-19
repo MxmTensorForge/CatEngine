@@ -3,6 +3,7 @@
 #include "Engine/ComponentSystem/Components/Camera.h"
 #include "Engine/ComponentSystem/Components/MeshComponent.h"
 #include "Engine/ComponentSystem/Components/RigidBody.h"
+#include "Engine/ComponentSystem/Components/Collider.h"
 #include "Engine/Mxm/Vec3.h"
 
 #include "Engine/Core/Input.h"
@@ -41,7 +42,7 @@ private:
 		obj1->transform().setScaling(Mxm::Vec3(1.0f, 1.5f, 2.0f));
 		obj1->transform().translate(Mxm::Vec3(1.0f, 1.5f, 3.0f));
 
-		obj1->addComponent<RigidBody>()->setDynamic(false);
+		obj1->addComponent<Collider>()->generateSimpleFromMesh();
 
 		auto obj2 = _activeScene->createObject("cube");
 		obj2->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(70, 255, 70, 255));
@@ -49,14 +50,14 @@ private:
 		obj2->transform().setRotation(Mxm::Vec3(Mxm::Consts::DEG2RAD * 30.0f, Mxm::Consts::DEG2RAD * 45.0f, 0.0f));
 		obj2->transform().translate(Mxm::Vec3(15.0f, 3.3f, 5.0f));
 
-		obj2->addComponent<RigidBody>()->setDynamic(false);
+		obj2->addComponent<Collider>()->generateSimpleFromMesh();
 
 		auto obj3 = _activeScene->createObject("rama");
 		obj3->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("frustum"), Color(100, 90, 180, 255));
 		obj3->transform().setScaling(Mxm::Vec3(4.0f, 2.0f, 2.0f));
 		obj3->transform().translate(Mxm::Vec3(-6.0f, 2.0f, -6.0f));
 
-		obj3->addComponent<RigidBody>()->setDynamic(false);
+		obj3->addComponent<Collider>()->generateSimpleFromMesh();
 
 
 		auto plane = _activeScene->createObject("plane");
@@ -64,19 +65,13 @@ private:
 		plane->transform().translate(Mxm::Vec3(0.0f, 0.0f, 0.0f));
 		plane->transform().setScaling(Mxm::Vec3(25.0f, 25.0f, 25.0f));
 
-		plane->addComponent<RigidBody>()->setDynamic(false);
-	}
-
-	void onPlayerCollision(std::shared_ptr<RigidBody> object, const CollisionResult& result) {
-		if (object->getObject()->getTag() == "rama") {
-			_object->getComponent<RigidBody>()->addForce(Mxm::Vec3(0.0f, 10.0f, 0.0f));
-		}
+		plane->addComponent<Collider>()->generateSimpleFromMesh();
 	}
 
 	void start() override {
 		ResourceManager::getInstance().loadModelFromFile("cube", "models/cube.obj");
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
-		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
+		ResourceManager::getInstance().loadModelFromFile("frustum", "models/sphere.obj");
 		ResourceManager::getInstance().loadModelFromFile("gun1", "models/gun1.obj");
 
 		Input::setMouseLockState(true);
@@ -102,10 +97,7 @@ private:
 		_object->getComponent<RigidBody>()->setFriction(7.0f);
 		_object->getComponent<RigidBody>()->setAirFriction(0.5f);
 
-		_object->getComponent<RigidBody>()->setCollisionCallback(
-			[this](std::shared_ptr<RigidBody> obj, const CollisionResult& res) {
-				this->onPlayerCollision(obj, res);
-			});
+		_object->addComponent<Collider>()->generateSimpleFromMesh();
 
 		_gun = _activeScene->createObject("gun1");
 		_gun->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("gun1"));

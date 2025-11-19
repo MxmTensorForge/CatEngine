@@ -1,24 +1,36 @@
 #include "Scene.h"
+
 #include "Components/Camera.h"
-#include "Components/RigidBody.h"
+#include "Components/Collider.h"
 #include "Components/MeshComponent.h"
+
+#include "../Physics/PhysicsSystem.h"
 
 void Scene::updateCollisions() {
     for (size_t i = 0; i < _gameObjects.size(); ++i) {
-        auto rigidBody1 = _gameObjects[i]->getComponent<RigidBody>();
-        if (!rigidBody1) continue;
+        auto collider1 = _gameObjects[i]->getComponent<Collider>();
+        if (!collider1) continue;
 
         for (size_t j = i + 1; j < _gameObjects.size(); ++j) {
-            auto rigidBody2 = _gameObjects[j]->getComponent<RigidBody>();
-            if (!rigidBody2) continue;
+            auto collider2 = _gameObjects[j]->getComponent<Collider>();
+            if (!collider2) continue;
 
-            if (!rigidBody1->getDynamicState() && !rigidBody2->getDynamicState()) continue;
-
-            auto collision = rigidBody1->gjkCollision(rigidBody2);
+            auto collision = PhysicsSystem::gjkCollision(collider1, collider2);
             if (!collision.first) continue;
 
-            CollisionResult result = rigidBody1->simplifiedEPA(rigidBody2, collision.second);
-            RigidBody::resolveCollision(result, rigidBody1, rigidBody2);
+            CollisionResult result = PhysicsSystem::epaAlgorithm(collider1, collider2, collision.second);
+
+            auto rigidBody1 = _gameObjects[i]->getComponent<RigidBody>();
+            auto rigidBody2 = _gameObjects[j]->getComponent<RigidBody>();
+
+            if (rigidBody1) {
+                RigidBody::resolveCollision(rigidBody1, _gameObjects[j], result);
+            }
+            if (rigidBody2) {
+                CollisionResult invertedResult = result;
+                invertedResult.normal = -result.normal;
+                RigidBody::resolveCollision(rigidBody2, _gameObjects[i], invertedResult);
+            }
         }
     }
 }

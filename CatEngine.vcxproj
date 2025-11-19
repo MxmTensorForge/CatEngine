@@ -135,6 +135,7 @@
     <ClCompile Include="Engine\Animation\Animator.cpp" />
     <ClCompile Include="Engine\Animation\Interpolation.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\Camera.cpp" />
+    <ClCompile Include="Engine\ComponentSystem\Components\Collider.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\MeshComponent.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\RigidBody.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Object\Transform.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Engine\Geometry\Triangle.cpp" />
     <ClCompile Include="Engine\Graphics\FrameBuffer.cpp" />
     <ClCompile Include="Engine\Graphics\Render.cpp" />
+    <ClCompile Include="Engine\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="main.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
@@ -164,6 +166,7 @@
     <ClInclude Include="Engine\Animation\Interpolation.h" />
     <ClInclude Include="Engine\ComponentSystem\Component.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\Camera.h" />
+    <ClInclude Include="Engine\ComponentSystem\Components\Collider.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\MeshComponent.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\RigidBody.h" />
     <ClInclude Include="Engine\ComponentSystem\Object\GameObject.h" />
@@ -191,6 +194,8 @@
     <ClInclude Include="Engine\Mxm\Vec2.h" />
     <ClInclude Include="Engine\Mxm\Vec3.h" />
     <ClInclude Include="Engine\Mxm\Vec4.h" />
+    <ClInclude Include="Engine\Physics\CollisionResult.h" />
+    <ClInclude Include="Engine\Physics\PhysicsSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Mxm\src\Easing.inl" />

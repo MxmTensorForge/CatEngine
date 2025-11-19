@@ -12,10 +12,10 @@ namespace Mxm
         float _m[3][3];
     public:
         Mat3() noexcept;
-        Mat3(float a00, float a01, float a02,
+        explicit Mat3(float a00, float a01, float a02,
             float a10, float a11, float a12,
             float a20, float a21, float a22) noexcept;
-        Mat3(const Vec3& vec1, const Vec3& vec2, const Vec3& vec3) noexcept;
+        explicit Mat3(const Vec3& vec1, const Vec3& vec2, const Vec3& vec3) noexcept;
 
         Vec3 operator[](size_t index) const noexcept;
         Vec3 col(size_t index) const noexcept;

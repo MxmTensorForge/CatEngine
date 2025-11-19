@@ -11,8 +11,8 @@ namespace Mxm
 		float x, y;
 
 		Vec2() noexcept;
-		Vec2(float s) noexcept;
-		Vec2(float vx, float vy) noexcept;
+		explicit Vec2(float s) noexcept;
+		explicit Vec2(float vx, float vy) noexcept;
 
 		float& operator[](size_t index) noexcept;
 		const float& operator[](size_t index) const noexcept;
