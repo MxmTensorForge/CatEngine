@@ -63,8 +63,7 @@ This project is available for educational and personal use. Please contact
 the author for commercial licensing inquiries.
 
 Contact:
-For questions or contributions, please contact Egor Kuzmin.
+For questions or contributions, please contact rapapagg123@gmail.com
 
 Version: 0.1.8 Alpha
-Last Updated: 16.11.2025
 Build System: Visual Studio Solution (no CMake)
