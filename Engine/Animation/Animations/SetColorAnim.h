@@ -35,7 +35,7 @@ private:
 	}
 public:
 	template <typename... Args>
-	SetColorAnim(std::shared_ptr<MeshComponent> mesh, Color value, Args&&... args)
+	SetColorAnim(const std::shared_ptr<MeshComponent>& mesh, Color value, Args&&... args)
 		: Animation(std::forward<Args>(args)...), _object(mesh), _end(value) {
 	}
 };

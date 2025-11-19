@@ -18,7 +18,10 @@ private:
     std::string _tag;
     bool _isActive = true;
 public:
-    GameObject(const std::string& tag) : _tag(tag) { _transform.setOwner(this); }
+    explicit GameObject(const std::string& tag) : _tag(tag) { _transform.setOwner(this); }
+
+    GameObject(const GameObject&) = delete;
+    GameObject& operator=(const GameObject&) = delete;
     
     const std::string& getTag() const noexcept { return _tag; }
 
@@ -29,7 +32,7 @@ public:
     std::shared_ptr<T> getComponent() {
         static_assert(std::is_base_of<Component, T>::value, "T is not component");
 
-        for (auto& c : _components) {
+        for (const auto& c : _components) {
             if (auto casted = std::dynamic_pointer_cast<T>(c)) {
                 return casted;
             }
@@ -41,7 +44,7 @@ public:
     std::shared_ptr<const T> getComponent() const {
         static_assert(std::is_base_of<Component, T>::value, "T is not component");
 
-        for (auto& c : _components) {
+        for (const auto& c : _components) {
             if (auto casted = std::dynamic_pointer_cast<const T>(c)) {
                 return casted;
             }

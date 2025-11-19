@@ -20,7 +20,7 @@ private:
 
 public:
     template <typename... Args>
-    FloatAnim(float startValue, float endValue, std::function<void(float)> setter, Args&&... args)
+    FloatAnim(float startValue, float endValue, const std::function<void(float)>& setter, Args&&... args)
         : Animation(std::forward<Args>(args)...), _start(startValue), _end(endValue), _setter(setter) {
     }
 };

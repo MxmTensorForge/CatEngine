@@ -51,7 +51,7 @@ private:
 
 		obj2->addComponent<RigidBody>()->setDynamic(false);
 
-		auto obj3 = _activeScene->createObject("cube");
+		auto obj3 = _activeScene->createObject("rama");
 		obj3->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("frustum"), Color(100, 90, 180, 255));
 		obj3->transform().setScaling(Mxm::Vec3(4.0f, 2.0f, 2.0f));
 		obj3->transform().translate(Mxm::Vec3(-6.0f, 2.0f, -6.0f));
@@ -69,7 +69,7 @@ private:
 
 	void onPlayerCollision(std::shared_ptr<RigidBody> object, const CollisionResult& result) {
 		if (object->getObject()->getTag() == "rama") {
-			_object->getComponent<RigidBody>()->addForce(Mxm::Vec3(0.0f, 3.0f, 0.0f));
+			_object->getComponent<RigidBody>()->addForce(Mxm::Vec3(0.0f, 10.0f, 0.0f));
 		}
 	}
 
@@ -187,7 +187,7 @@ private:
 		}
 		else {
 			if (!is_gun_animating) {
-				Animator::add<TranslateToAnim>("gun_back_anim", _gun->transform(), _gunOffset, 0.1f, Animation::InterpolationType::COS, [this]() { is_gun_animating = false; });
+				Animator::add<TranslateToAnim>("gun_back_anim", _gun, _gunOffset, 0.1f, Animation::InterpolationType::COS, [this]() { is_gun_animating = false; });
 				is_gun_animating = true;
 			}
 		}
@@ -216,7 +216,7 @@ private:
 				createFireTrace(bulletStartPos, bulletEndPos, 100.0f);
 			}
 
-			Animator::add<RotateByAnim>("gun_rotate", gun_transform, Mxm::Vec3(-Mxm::Consts::PI * 2.0f, 0.0f, 0.0f),
+			Animator::add<RotateByAnim>("gun_rotate", _gun, Mxm::Vec3(-Mxm::Consts::PI * 2.0f, 0.0f, 0.0f),
 				_gunShootSpeed, Animation::InterpolationType::EASY_OUT);
 
 			_gunTimer = 0.0f;

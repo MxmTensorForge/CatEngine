@@ -53,9 +53,10 @@ void Application::run() {
 		for (const auto& obj : _sceneManager.getActiveScene()->getGameObjects()) {
 			if (!obj->getActive()) continue;
 
-			auto transform = obj->transform();
 			auto mesh_ptr = obj->getComponent<MeshComponent>();
 			if (!mesh_ptr) continue;
+
+			auto& transform = obj->transform();
 
 			auto& tris = _sceneManager.getActiveScene()->getMainCamera()->getComponent<Camera>()->project(mesh_ptr, transform);
 			_projectedTriangles.insert(_projectedTriangles.end(), tris.begin(), tris.end());

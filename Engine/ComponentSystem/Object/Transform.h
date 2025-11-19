@@ -25,6 +25,12 @@ private:
 
 	GameObject* _owner = nullptr;
 public:
+	Transform(const Transform&) = delete;
+	Transform& operator=(const Transform&) = delete;
+
+	Transform() = default;
+	~Transform() = default;
+
 	void setOwner(GameObject* obj) noexcept { if (!_owner && obj) _owner = obj; }
 	GameObject* getOwner() const noexcept { return _owner; }
 

@@ -17,7 +17,7 @@ Mxm::Vec3 RigidBody::furthestPoint(const Mxm::Vec3& dir) {
 		Logger::getInstance().log(LogType::Fatal, "Object in support hasn't mesh component!");
 	}
 
-	auto transform = getObject()->transform();
+	auto& transform = getObject()->transform();
 	Mxm::Vec3 localDir = (transform.getWorldMatrix().transposed() * Mxm::Vec4(dir, 1.0f)).toVec3(); //UPD: нам нужно игнорировать смещение, оставлять масштаб и инвертировать поворот
 
 	float greatestDot = -std::numeric_limits<float>::max();

@@ -31,7 +31,7 @@ void Camera::start() {
 	_clippingPlanes.emplace_back(Plane(Mxm::Vec3(0.0f, cosf(theta), sinf(theta)), Mxm::Vec3(0.0f, 0.0f, 0.0f))); // bottom
 }
 void Camera::update() {
-	auto camera_transform = getObject()->transform();
+	auto& camera_transform = getObject()->transform();
 	_viewMatrix = Mxm::Mat4::view(camera_transform.getRight(), camera_transform.getUp(), camera_transform.getForward(), camera_transform.getPosition());
 }
 
@@ -41,7 +41,7 @@ const std::vector<Triangle>& Camera::project(const std::shared_ptr<MeshComponent
 
 	if (vertices.empty() || indices.empty()) return {};
 
-	auto camera_transform = getObject()->transform();
+	auto& camera_transform = getObject()->transform();
 
 	_projectedTris.reserve(indices.size() / 3);
 	_projectedTris.clear();
