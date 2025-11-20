@@ -234,6 +234,13 @@ namespace Mxm
             cofactor03 * invDet, cofactor13 * invDet, cofactor23 * invDet, cofactor33 * invDet
         );
     }
+    inline Mat4 Mat4::abs() const noexcept {
+        Mat4 result;
+        for (size_t i = 0; i < 4; i++)
+            for (size_t j = 0; j < 4; j++)
+                result._m[i][j] = fabsf(_m[i][j]);
+        return result;
+    }
 
     inline Mat4 Mat4::identity() noexcept {
         return Mat4(

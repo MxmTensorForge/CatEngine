@@ -45,6 +45,7 @@ namespace Mxm
 		float length() const noexcept;
 		Vec2 normalized() const noexcept;
 		Vec2 perp() const noexcept;
+		Vec2 abs() const noexcept;
 
 		Vec2 reflect(const Vec2& normal) const noexcept;
 		float angleBetween(const Vec2& vec) const noexcept;

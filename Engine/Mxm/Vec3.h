@@ -47,6 +47,7 @@ namespace Mxm
 		Vec3 cross(const Vec3& vec) const noexcept;
 		float length() const noexcept;
 		Vec3 normalized() const noexcept;
+		Vec3 abs() const noexcept;
 
 		Vec3 reflect(const Vec3& normal) const noexcept;
 		float angleBetween(const Vec3& vec) const noexcept;

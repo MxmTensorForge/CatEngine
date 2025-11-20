@@ -15,13 +15,16 @@ void Scene::updateCollisions() {
             auto collider2 = _gameObjects[j]->getComponent<Collider>();
             if (!collider2) continue;
 
+            auto rigidBody1 = _gameObjects[i]->getComponent<RigidBody>();
+            auto rigidBody2 = _gameObjects[j]->getComponent<RigidBody>();
+            if (!rigidBody1 && !rigidBody2) continue;
+
+            if (!Collider::checkAABB(*collider1, *collider2)) continue;
+
             auto collision = PhysicsSystem::gjkCollision(collider1, collider2);
             if (!collision.first) continue;
 
             CollisionResult result = PhysicsSystem::epaAlgorithm(collider1, collider2, collision.second);
-
-            auto rigidBody1 = _gameObjects[i]->getComponent<RigidBody>();
-            auto rigidBody2 = _gameObjects[j]->getComponent<RigidBody>();
 
             if (rigidBody1 && rigidBody1->getPushable()) {
                 RigidBody::resolveCollision(rigidBody1, _gameObjects[j], result);
@@ -35,11 +38,28 @@ void Scene::updateCollisions() {
     }
 }
 
-std::shared_ptr<GameObject> Scene::createObject(const std::string& tag) {
-	auto obj = std::make_shared<GameObject>(tag);
+std::shared_ptr<GameObject> Scene::createObject(const std::string& name, const std::string& tag) {
+	auto obj = std::make_shared<GameObject>(name, tag);
 	_gameObjects.push_back(obj);
 	return obj;
 }
+
+std::set<std::shared_ptr<GameObject>> Scene::getObjectsWithName(const std::string& name) const {
+    std::set<std::shared_ptr<GameObject>> result;
+
+    for (const auto& obj : _gameObjects) {
+        if (obj->getName() == name) {
+            result.insert(obj);
+        }
+    }
+
+    return result;
+}
+std::shared_ptr<GameObject> Scene::getFirstObjectWithName(const std::string& name) const {
+    auto objects = getObjectsWithName(name);
+    return objects.empty() ? nullptr : *objects.begin();
+}
+
 std::set<std::shared_ptr<GameObject>> Scene::getObjectsWithTag(const std::string& tag) const {
     std::set<std::shared_ptr<GameObject>> result;
 
@@ -57,11 +77,22 @@ std::shared_ptr<GameObject> Scene::getFirstObjectWithTag(const std::string& tag)
 }
 
 void Scene::removeObject(const std::shared_ptr<GameObject>& obj) {
-	_gameObjects.erase(std::remove(_gameObjects.begin(), _gameObjects.end(), obj), _gameObjects.end());
+    _gameObjects.erase(
+        std::remove_if(_gameObjects.begin(), _gameObjects.end(),
+            [&obj](const std::shared_ptr<GameObject>& item) {
+                return item == obj;
+            }),
+        _gameObjects.end()
+    );
 }
-void Scene::removeObject(const std::string& tag) {
+void Scene::removeObjectsWithTag(const std::string& tag) {
     _gameObjects.erase(std::remove_if(_gameObjects.begin(), _gameObjects.end(), [&tag](const std::shared_ptr<GameObject>& obj) {
         return obj->getTag() == tag;
+        }), _gameObjects.end());
+}
+void Scene::removeObjectsWithName(const std::string& name) {
+    _gameObjects.erase(std::remove_if(_gameObjects.begin(), _gameObjects.end(), [&name](const std::shared_ptr<GameObject>& obj) {
+        return obj->getName() == name;
         }), _gameObjects.end());
 }
 

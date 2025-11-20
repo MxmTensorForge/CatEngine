@@ -155,6 +155,13 @@ namespace Mxm
             (_m[0][0] * _m[1][1] - _m[0][1] * _m[1][0]) * invDeterminant
         );
     }
+    inline Mat3 Mat3::abs() const noexcept {
+        Mat3 result;
+        for (size_t i = 0; i < 3; i++)
+            for (size_t j = 0; j < 3; j++)
+                result._m[i][j] = fabsf(_m[i][j]);
+        return result;
+    }
 
     inline Mat3 Mat3::identity() noexcept {
         return Mat3(

@@ -107,6 +107,9 @@ namespace Mxm {
 	inline Vec2 Vec2::perp() const noexcept {
 		return Vec2(-y, x);
 	}
+	inline Vec2 Vec2::abs() const noexcept {
+		return Vec2(fabsf(x), fabsf(y));
+	}
 
 	inline Vec2 Vec2::reflect(const Vec2& normal) const noexcept {
 		return *this - normal * (2.0f * this->dot(normal));

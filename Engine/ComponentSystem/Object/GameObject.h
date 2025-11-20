@@ -15,15 +15,20 @@ private:
 	std::vector<std::shared_ptr<Component>> _components;
     Transform _transform{};
 
+    std::string _name;
     std::string _tag;
     bool _isActive = true;
 public:
-    explicit GameObject(const std::string& tag) : _tag(tag) { _transform.setOwner(this); }
+    explicit GameObject(const std::string& name, const std::string& tag = "default") : _name(name), _tag(tag) { _transform.setOwner(this); }
 
     GameObject(const GameObject&) = delete;
     GameObject& operator=(const GameObject&) = delete;
+
+    const std::string& getName() const noexcept { return _name; }
+    void setName(const std::string& name) noexcept { _name = name; }
     
     const std::string& getTag() const noexcept { return _tag; }
+    void setTag(const std::string& tag) noexcept { _tag = tag; }
 
     inline Transform& transform() noexcept { return _transform; }
     inline const Transform& transform() const noexcept { return _transform; }

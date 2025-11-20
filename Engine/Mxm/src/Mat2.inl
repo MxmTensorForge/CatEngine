@@ -117,6 +117,13 @@ namespace Mxm
 			-_m[1][0] * invDeterminant, _m[0][0] * invDeterminant
 		);
 	}
+	inline Mat2 Mat2::abs() const noexcept {
+		Mat2 result;
+		for (size_t i = 0; i < 2; i++)
+			for (size_t j = 0; j < 2; j++)
+				result._m[i][j] = fabsf(_m[i][j]);
+		return result;
+	}
 
 	inline Mat2 Mat2::identiry() noexcept {
 		return Mat2(

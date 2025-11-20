@@ -121,6 +121,9 @@ namespace Mxm {
 			x * vec.y - y * vec.x
 		);
 	}
+	inline Vec3 Vec3::abs() const noexcept {
+		return Vec3(fabsf(x), fabsf(y), fabsf(z));
+	}
 
 	inline Vec3 Vec3::reflect(const Vec3& normal) const noexcept {
 		return *this - normal * (2.0f * this->dot(normal));

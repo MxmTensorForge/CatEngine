@@ -29,16 +29,16 @@ private:
 
 	Mxm::Vec3 _cameraOffset = Mxm::Vec3(0.0f, 1.4f, 0.0f);
 	Mxm::Vec3 _gunOffset = Mxm::Vec3(0.55f, -0.35f, 1.0f);
-	Mxm::Vec3 _gunBulletOffset = Mxm::Vec3(0.0f, 0.0f, 1.5f);
+	Mxm::Vec3 _gunBulletOffset = Mxm::Vec3(0.0f, 0.0f, 1.0f);
 
-	float _gunShootSpeed = 0.8f;
+	float _gunShootSpeed = 0.9f;
 	float _gunTimer = _gunShootSpeed;
 
 	float _groundSpeed = 1.1f;
 	float _airSpeed = 0.1f;
 
 	void createObject(const std::string& name, const std::string& modelName, const Mxm::Vec3& pos, const Mxm::Vec3& scale, const Mxm::Vec3& rotation, Color color) {
-		auto obj = _activeScene->createObject(name);
+		auto obj = _activeScene->createObject(name, "map");
 		obj->addComponent<MeshComponent>(ResourceManager::getInstance().getModel(modelName), color);
 		obj->transform().setPosition(pos);
 		obj->transform().setScale(scale);
@@ -48,7 +48,29 @@ private:
 	}
 
 	void createMap() {
-		createObject("floor", "plane", Mxm::Vec3(0.0f, 0.0f, 0.0f), Mxm::Vec3(20.0f, 1.0f, 20.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(20, 255, 10));
+		createObject("ground", "plane", Mxm::Vec3(0.0f, 0.0f, 0.0f), Mxm::Vec3(30.0f, 1.0f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(30, 180, 30));
+
+		createObject("path", "cube", Mxm::Vec3(0.0f, 0.1f, 0.0f), Mxm::Vec3(5.0f, 0.1f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(150, 150, 150));
+
+		createObject("main_building", "cube", Mxm::Vec3(0.0f, 3.0f, 8.0f), Mxm::Vec3(6.0f, 3.0f, 4.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 80, 60));
+		createObject("roof", "frustum", Mxm::Vec3(0.0f, 9.0f, 8.0f), Mxm::Vec3(6.5f, 3.0f, 4.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(110, 50, 50));
+
+		createObject("tree1_trunk", "cube", Mxm::Vec3(-8.0f, 1.5f, 5.0f), Mxm::Vec3(0.5f, 2.0f, 0.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(120, 80, 40));
+		createObject("tree1_top", "frustum", Mxm::Vec3(-8.0f, 3.5f, 5.0f), Mxm::Vec3(2.0f, 1.5f, 2.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(40, 150, 40));
+
+		createObject("tree2_trunk", "cube", Mxm::Vec3(10.0f, 1.5f, -3.0f), Mxm::Vec3(0.5f, 2.0f, 0.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(120, 80, 40));
+		createObject("tree2_top", "frustum", Mxm::Vec3(10.0f, 3.5f, -3.0f), Mxm::Vec3(2.0f, 1.5f, 2.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(40, 150, 40));
+
+		for (int i = -4; i <= 4; i++) {
+			createObject("fence_left_" + std::to_string(i), "cube", Mxm::Vec3(-12.0f, 0.8f, i * 3.0f), Mxm::Vec3(0.2f, 1.0f, 0.2f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 200, 200));
+			createObject("fence_right_" + std::to_string(i), "cube", Mxm::Vec3(12.0f, 0.8f, i * 3.0f), Mxm::Vec3(0.2f, 1.0f, 0.2f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 200, 200));
+		}
+
+		createObject("rock1", "cube", Mxm::Vec3(-12.0f, 0.3f, -20.0f), Mxm::Vec3(1.5f, 1.5f, 1.5f), Mxm::Vec3(45.0f, 45.0f, 0.0f), Color(150, 150, 160));
+		createObject("rock2", "cube", Mxm::Vec3(-14.5f, 1.0f, -17.0f), Mxm::Vec3(3.0f, 3.0f, 3.0f), Mxm::Vec3(20.0f, 20.0f, 0.0f), Color(140, 140, 150));
+
+		createObject("small_house", "cube", Mxm::Vec3(7.0f, 2.0f, -9.5f), Mxm::Vec3(2.0f, 2.0f, 2.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(80, 120, 200));
+		createObject("small_roof", "frustum", Mxm::Vec3(7.0f, 5.5f, -9.5f), Mxm::Vec3(2.5f, 1.5f, 3.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 60, 50));
 	}
 
 	void start() override {
@@ -171,7 +193,7 @@ private:
 
 		_gunTimer += Time::deltaTime();
 		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed) {
-			obj_rigid->addForce(-transform.getForward() * 3.0f);
+			obj_rigid->addForce(-transform.getForward() * 0.0f);
 
 			Mxm::Vec3 gunWorldPos = gun_transform.getWorldPosition();
 			Mxm::Vec3 gunForward = gun_transform.getForward();
@@ -181,7 +203,7 @@ private:
 				+ gun_transform.getRight() * _gunBulletOffset.x;
 
 			IntersectionInfo info;
-			if (getSceneManager().getActiveScene()->rayCast(transform.getPosition(), transform.getForward(), info, {"cube", "rama", "plane"})) {
+			if (getSceneManager().getActiveScene()->rayCast(transform.getPosition(), transform.getForward(), info, {"map"})) {
 				createFireTrace(bulletStartPos, info.point, (info.point - bulletStartPos).length());
 
 				std::shared_ptr<GameObject> bulletDot = _activeScene->createObject("bullet_dot");

@@ -11,7 +11,6 @@ Animation::Animation(float duration, InterpolationType type, const CompleteCallb
 
 bool Animation::updateState() noexcept {
 	if (_isFinished || _duration < Mxm::Consts::EPS) {
-		_isFinished = true;
 		return false;
 	}
 

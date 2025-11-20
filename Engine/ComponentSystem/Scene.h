@@ -17,12 +17,17 @@ public:
 	Scene() = default;
 	~Scene() = default;
 
-	std::shared_ptr<GameObject> createObject(const std::string& tag);
+	std::shared_ptr<GameObject> createObject(const std::string& name, const std::string& tag = "default");
+
+	std::set<std::shared_ptr<GameObject>> getObjectsWithName(const std::string& tag) const;
+	std::shared_ptr<GameObject> getFirstObjectWithName(const std::string& tag) const;
+
 	std::set<std::shared_ptr<GameObject>> getObjectsWithTag(const std::string& tag) const;
 	std::shared_ptr<GameObject> getFirstObjectWithTag(const std::string& tag) const;
 
 	void removeObject(const std::shared_ptr<GameObject>& obj);
-	void removeObject(const std::string& tag);
+	void removeObjectsWithTag(const std::string& tag);
+	void removeObjectsWithName(const std::string& name);
 
 	void start();
 	void update();

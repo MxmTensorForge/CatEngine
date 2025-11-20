@@ -44,6 +44,7 @@ namespace Mxm
         float det() const noexcept;
         Mat3 transposed() const noexcept;
         Mat3 inversed() const noexcept;
+        Mat3 abs() const noexcept;
 
         static Mat3 identity() noexcept;
         static Mat3 scaling(float sx, float sy, float sz) noexcept;

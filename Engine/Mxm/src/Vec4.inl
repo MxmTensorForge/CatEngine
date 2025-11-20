@@ -128,6 +128,9 @@ namespace Mxm {
 		if (len < Mxm::Consts::EPS) return Vec4();
 		return *this / len;
 	}
+	inline Vec4 Vec4::abs() const noexcept {
+		return Vec4(fabsf(x), fabsf(y), fabsf(z), fabsf(w));
+	}
 
 	inline Vec4 Vec4::lerp(const Vec4& vec, float t) const noexcept {
 		return *this + (vec - *this) * t;

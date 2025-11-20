@@ -49,6 +49,7 @@ namespace Mxm
 		float dot(const Vec4& vec) const noexcept;
 		float length() const noexcept;
 		Vec4 normalized() const noexcept;
+		Vec4 abs() const noexcept;
 
 		Vec4 lerp(const Vec4& vec, float t) const noexcept;
 	};
