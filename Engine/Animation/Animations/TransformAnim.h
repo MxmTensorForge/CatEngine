@@ -111,11 +111,11 @@ private:
 		if (!obj) { stop(); return; }
 
 		if (!_initialized) {
-			_start = obj->transform().getScaling();
+			_start = obj->transform().getScale();
 			_initialized = true;
 		}
 
-		obj->transform().setScaling(_start + (_end - _start) * progress());
+		obj->transform().setScale(_start + (_end - _start) * progress());
 	}
 public:
 	template <typename... Args>

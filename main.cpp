@@ -37,38 +37,18 @@ private:
 	float _groundSpeed = 1.1f;
 	float _airSpeed = 0.1f;
 
+	void createObject(const std::string& name, const std::string& modelName, const Mxm::Vec3& pos, const Mxm::Vec3& scale, const Mxm::Vec3& rotation, Color color) {
+		auto obj = _activeScene->createObject(name);
+		obj->addComponent<MeshComponent>(ResourceManager::getInstance().getModel(modelName), color);
+		obj->transform().setPosition(pos);
+		obj->transform().setScale(scale);
+		obj->transform().setRotation(rotation * Mxm::Consts::DEG2RAD);
+
+		obj->addComponent<Collider>()->generateFromMesh();
+	}
+
 	void createMap() {
-		auto obj1 = _activeScene->createObject("cube");
-		obj1->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 0, 70, 255));
-		obj1->transform().setScaling(Mxm::Vec3(1.0f, 1.5f, 2.0f));
-		obj1->transform().translate(Mxm::Vec3(1.0f, 1.5f, 3.0f));
-
-		obj1->addComponent<Collider>()->generateSimpleFromMesh();
-
-
-		auto obj2 = _activeScene->createObject("cube");
-		obj2->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(70, 255, 70, 255));
-		obj2->transform().setScaling(Mxm::Vec3(1.0f, 0.2f, 7.0f));
-		obj2->transform().setRotation(Mxm::Vec3(Mxm::Consts::DEG2RAD * 30.0f, Mxm::Consts::DEG2RAD * 45.0f, 0.0f));
-		obj2->transform().translate(Mxm::Vec3(15.0f, 3.3f, 5.0f));
-
-		obj2->addComponent<Collider>()->generateSimpleFromMesh();
-
-
-		auto obj3 = _activeScene->createObject("rama");
-		obj3->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("frustum"), Color(100, 90, 180, 255));
-		obj3->transform().setScaling(Mxm::Vec3(4.0f, 2.0f, 2.0f));
-		obj3->transform().translate(Mxm::Vec3(-6.0f, 2.0f, -6.0f));
-
-		obj3->addComponent<Collider>()->generateFromMesh();
-
-
-		auto plane = _activeScene->createObject("plane");
-		plane->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("plane"));
-		plane->transform().translate(Mxm::Vec3(0.0f, 0.0f, 0.0f));
-		plane->transform().setScaling(Mxm::Vec3(25.0f, 25.0f, 25.0f));
-
-		plane->addComponent<Collider>()->generateSimpleFromMesh();
+		createObject("floor", "plane", Mxm::Vec3(0.0f, 0.0f, 0.0f), Mxm::Vec3(20.0f, 1.0f, 20.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(20, 255, 10));
 	}
 
 	void start() override {
@@ -92,7 +72,7 @@ private:
 		//player body
 		_object = _activeScene->createObject("body");
 		_object->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 200, 70, 255));
-		_object->transform().setScaling(Mxm::Vec3(0.7f, 2.0f, 0.7f));
+		_object->transform().setScale(Mxm::Vec3(0.7f, 2.0f, 0.7f));
 		_object->transform().translate(Mxm::Vec3(0.0f, 8.0f, 0.0f));
 
 		_object->addComponent<RigidBody>();
@@ -104,7 +84,7 @@ private:
 
 		_gun = _activeScene->createObject("gun1");
 		_gun->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("gun1"));
-		_gun->transform().setScaling(Mxm::Vec3(0.5f, 0.5f, 0.5f));
+		_gun->transform().setScale(Mxm::Vec3(0.5f, 0.5f, 0.5f));
 		_gun->transform().translate(_gunOffset);
 
 		_gun->transform().setParent(&_mainCamera->transform());
@@ -118,7 +98,7 @@ private:
 		trace->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 255, 255, 255));
 
 		trace->transform().setPosition(middle);
-		trace->transform().setScaling(Mxm::Vec3(0.03f, 0.03f, length * 0.5f));
+		trace->transform().setScale(Mxm::Vec3(0.03f, 0.03f, length * 0.5f));
 		trace->transform().setLookRotation(direction);
 
 		static int traceCounter = 0;
@@ -146,8 +126,8 @@ private:
 
 		transform.rotate(Mxm::Vec3(mouseDelta.y, 0.0f, 0.0f));
 		_object->transform().rotate(Mxm::Vec3(0.0f, mouseDelta.x, 0.0f));
-		transform.setRotation(Mxm::Vec3(transform.getRotation().x, obj_transform.getRotation().y, 0.0f));
 
+		transform.setRotation(Mxm::Vec3(transform.getRotation().x, obj_transform.getRotation().y, 0.0f));
 		transform.setPosition(obj_transform.getPosition() + _cameraOffset);
 
 		in_move = false;
@@ -206,7 +186,7 @@ private:
 
 				std::shared_ptr<GameObject> bulletDot = _activeScene->createObject("bullet_dot");
 				bulletDot->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(0, 0, 0));
-				bulletDot->transform().setScaling(Mxm::Vec3(0.08f));
+				bulletDot->transform().setScale(Mxm::Vec3(0.08f));
 				bulletDot->transform().setPosition(info.point);
 
 				static int anim_id = 0;

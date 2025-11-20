@@ -14,7 +14,7 @@ class Transform final
 private:
 	Mxm::Vec3 _position{};
 	Mxm::Vec3 _rotation{};
-	Mxm::Vec3 _scaling = Mxm::Vec3(1.0f,1.0f,1.0f);
+	Mxm::Vec3 _scale = Mxm::Vec3(1.0f,1.0f,1.0f);
 
 	mutable bool _isDirty = true;
 	mutable Mxm::Mat4 _model;
@@ -40,15 +40,15 @@ public:
 
 	void setPosition(const Mxm::Vec3& vec) noexcept;
 	void setRotation(const Mxm::Vec3& vec) noexcept;
-	void setScaling(const Mxm::Vec3& vec) noexcept;
+	void setScale(const Mxm::Vec3& vec) noexcept;
 
 	const Mxm::Vec3& getPosition() const noexcept { return _position; }
 	const Mxm::Vec3& getRotation() const noexcept { return _rotation; }
-	const Mxm::Vec3& getScaling() const noexcept { return _scaling; }
+	const Mxm::Vec3& getScale() const noexcept { return _scale; }
 
 	Mxm::Vec3 getWorldPosition() const noexcept;
 	Mxm::Vec3 getWorldRotation() const noexcept;
-	Mxm::Vec3 getWorldScaling() const noexcept;
+	Mxm::Vec3 getWorldScale() const noexcept;
 
 	bool isChildOf(Transform* potentialParent) const noexcept;
 
