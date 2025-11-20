@@ -68,6 +68,19 @@ Key Input::scancodeToKey(SDL_Scancode scancode) noexcept
 	case SDL_SCANCODE_LEFT: key = Key::Left; break;
 	case SDL_SCANCODE_RETURN: key = Key::Enter; break;
 
+	case SDL_SCANCODE_F1: key = Key::F1; break;
+	case SDL_SCANCODE_F2: key = Key::F2; break;
+	case SDL_SCANCODE_F3: key = Key::F3; break;
+	case SDL_SCANCODE_F4: key = Key::F4; break;
+	case SDL_SCANCODE_F5: key = Key::F5; break;
+	case SDL_SCANCODE_F6: key = Key::F6; break;
+	case SDL_SCANCODE_F7: key = Key::F7; break;
+	case SDL_SCANCODE_F8: key = Key::F8; break;
+	case SDL_SCANCODE_F9: key = Key::F9; break;
+	case SDL_SCANCODE_F10: key = Key::F10; break;
+	case SDL_SCANCODE_F11: key = Key::F11; break;
+	case SDL_SCANCODE_F12: key = Key::F12; break;
+
 	default: return Key::None;
 	}
 	return key;

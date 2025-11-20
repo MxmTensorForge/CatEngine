@@ -21,6 +21,8 @@ private:
 	float _friction{};
 	float _airFriction{};
 
+	bool _pushable = true;
+
 	bool _isCollision{};
 	Callback _collisionCallback;
 public:
@@ -38,6 +40,9 @@ public:
 	float getAirFriction() const noexcept { return _airFriction; }
 
 	bool isCollision() const noexcept { return _isCollision; }
+
+	void setPushable(bool state) noexcept { _pushable = state; }
+	bool getPushable() const noexcept { return _pushable; }
 
 	void setCollisionCallback(const Callback& func);
 

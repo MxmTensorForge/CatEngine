@@ -13,6 +13,7 @@ enum class Key
 	Escape, Space, Left_Shift, Right_Shift, TAB,
 	NUM_0, NUM_1, NUM_2, NUM_3, NUM_4, NUM_5, NUM_6, NUM_7, NUM_8, NUM_9,
 	Up, Down, Right, Left, Enter,
+	F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
 	Max
 };
 constexpr size_t KEY_COUNT = static_cast<size_t>(Key::Max);

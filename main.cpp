@@ -12,6 +12,7 @@
 #include "Engine/Animation/Animator.h"
 #include "Engine/Animation/Animations/TransformAnim.h"
 #include "Engine/Animation/Animations/SetColorAnim.h"
+#include "Engine/Animation/Animations/WaitAnim.h"
 
 #include "Engine/Animation/Interpolation.h"
 
@@ -30,8 +31,8 @@ private:
 	Mxm::Vec3 _gunOffset = Mxm::Vec3(0.55f, -0.35f, 1.0f);
 	Mxm::Vec3 _gunBulletOffset = Mxm::Vec3(0.0f, 0.0f, 1.5f);
 
-	float _gunTimer = 1.5f;
-	float _gunShootSpeed = 0.9f;
+	float _gunShootSpeed = 0.8f;
+	float _gunTimer = _gunShootSpeed;
 
 	float _groundSpeed = 1.1f;
 	float _airSpeed = 0.1f;
@@ -44,6 +45,7 @@ private:
 
 		obj1->addComponent<Collider>()->generateSimpleFromMesh();
 
+
 		auto obj2 = _activeScene->createObject("cube");
 		obj2->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(70, 255, 70, 255));
 		obj2->transform().setScaling(Mxm::Vec3(1.0f, 0.2f, 7.0f));
@@ -52,12 +54,13 @@ private:
 
 		obj2->addComponent<Collider>()->generateSimpleFromMesh();
 
+
 		auto obj3 = _activeScene->createObject("rama");
 		obj3->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("frustum"), Color(100, 90, 180, 255));
 		obj3->transform().setScaling(Mxm::Vec3(4.0f, 2.0f, 2.0f));
 		obj3->transform().translate(Mxm::Vec3(-6.0f, 2.0f, -6.0f));
 
-		obj3->addComponent<Collider>()->generateSimpleFromMesh();
+		obj3->addComponent<Collider>()->generateFromMesh();
 
 
 		auto plane = _activeScene->createObject("plane");
@@ -71,7 +74,7 @@ private:
 	void start() override {
 		ResourceManager::getInstance().loadModelFromFile("cube", "models/cube.obj");
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
-		ResourceManager::getInstance().loadModelFromFile("frustum", "models/sphere.obj");
+		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
 		ResourceManager::getInstance().loadModelFromFile("gun1", "models/gun1.obj");
 
 		Input::setMouseLockState(true);
@@ -118,10 +121,8 @@ private:
 		trace->transform().setScaling(Mxm::Vec3(0.03f, 0.03f, length * 0.5f));
 		trace->transform().setLookRotation(direction);
 
-		static size_t traceCounter = 0;
-		std::string traceName = "trace_" + traceCounter++;
-
-		Animator::add<SetColorAnim>(traceName, trace->getComponent<MeshComponent>(), Color(100, 100, 100),
+		static int traceCounter = 0;
+		Animator::add<SetColorAnim>("trace_" + std::to_string(traceCounter++), trace->getComponent<MeshComponent>(), Color(100, 100, 100),
 			0.5f, Animation::InterpolationType::LINEAR, [trace, this]() {
 				_activeScene->removeObject(trace);
 			});
@@ -132,6 +133,9 @@ private:
 	bool is_gun_animating = false;
 
 	void update() override {
+		if (Input::isKeyPressed(Key::F1)) setDrawFrame(false);
+		if (Input::isKeyPressed(Key::F2)) setDrawFrame(true);
+
 		Mxm::Vec2 mouseDelta = Input::getMouseDelta() * 0.003f;
 
 		auto& transform = _mainCamera->transform();
@@ -148,9 +152,6 @@ private:
 
 		in_move = false;
 		float speed = obj_rigid->isCollision() ? _groundSpeed : _airSpeed;
-
-		if (Input::isKeyPressed(Key::G)) setDrawFrame(true);
-		if (Input::isKeyPressed(Key::H)) setDrawFrame(false);
 
 		if (Input::isKeyDown(Key::W)) {
 			obj_rigid->addForce(obj_transform.getForward() * speed);
@@ -189,8 +190,8 @@ private:
 		}
 
 		_gunTimer += Time::deltaTime();
-		if (Input::isMouseButtonPressed(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed) {
-			obj_rigid->addForce(-transform.getForward() * 10.0f);
+		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed) {
+			obj_rigid->addForce(-transform.getForward() * 3.0f);
 
 			Mxm::Vec3 gunWorldPos = gun_transform.getWorldPosition();
 			Mxm::Vec3 gunForward = gun_transform.getForward();
@@ -202,6 +203,15 @@ private:
 			IntersectionInfo info;
 			if (getSceneManager().getActiveScene()->rayCast(transform.getPosition(), transform.getForward(), info, {"cube", "rama", "plane"})) {
 				createFireTrace(bulletStartPos, info.point, (info.point - bulletStartPos).length());
+
+				std::shared_ptr<GameObject> bulletDot = _activeScene->createObject("bullet_dot");
+				bulletDot->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(0, 0, 0));
+				bulletDot->transform().setScaling(Mxm::Vec3(0.08f));
+				bulletDot->transform().setPosition(info.point);
+
+				static int anim_id = 0;
+				Animator::add<WaitAnim>("wait_to_delete" + std::to_string(anim_id++), 3.0f, Animation::InterpolationType::EASY_OUT,
+					[bulletDot, this]() { _activeScene->removeObject(bulletDot); });
 			}
 			else {
 				Mxm::Vec3 bulletEndPos = bulletStartPos + gunForward * 100.0f;

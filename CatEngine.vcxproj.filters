@@ -219,6 +219,9 @@
     <ClInclude Include="Engine\Physics\CollisionResult.h">
       <Filter>Engine\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Animation\Animations\WaitAnim.h">
+      <Filter>Engine\Animation\Animations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Mxm\src\Easing.inl">

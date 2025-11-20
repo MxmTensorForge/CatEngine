@@ -162,6 +162,7 @@
     <ClInclude Include="Engine\Animation\Animations\SetColorAnim.h" />
     <ClInclude Include="Engine\Animation\Animations\TransformAnim.h" />
     <ClInclude Include="Engine\Animation\Animations\FloatAnim.h" />
+    <ClInclude Include="Engine\Animation\Animations\WaitAnim.h" />
     <ClInclude Include="Engine\Animation\Animator.h" />
     <ClInclude Include="Engine\Animation\Interpolation.h" />
     <ClInclude Include="Engine\ComponentSystem\Component.h" />

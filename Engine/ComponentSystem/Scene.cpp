@@ -23,10 +23,10 @@ void Scene::updateCollisions() {
             auto rigidBody1 = _gameObjects[i]->getComponent<RigidBody>();
             auto rigidBody2 = _gameObjects[j]->getComponent<RigidBody>();
 
-            if (rigidBody1) {
+            if (rigidBody1 && rigidBody1->getPushable()) {
                 RigidBody::resolveCollision(rigidBody1, _gameObjects[j], result);
             }
-            if (rigidBody2) {
+            if (rigidBody2 && rigidBody2->getPushable()) {
                 CollisionResult invertedResult = result;
                 invertedResult.normal = -result.normal;
                 RigidBody::resolveCollision(rigidBody2, _gameObjects[i], invertedResult);

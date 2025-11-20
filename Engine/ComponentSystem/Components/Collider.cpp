@@ -5,6 +5,7 @@
 void Collider::generateFromMesh() {
 	//TODO: a real implementation of dividing a concave figure into several convex ones
 	auto mesh = getObject()->getComponent<MeshComponent>();
+	if (!mesh) return;
 
 	for (const auto& v : mesh->getVertices()) {
 		_vertices.push_back(v);
@@ -12,6 +13,7 @@ void Collider::generateFromMesh() {
 }
 void Collider::generateSimpleFromMesh() {
 	auto mesh = getObject()->getComponent<MeshComponent>();
+	if (!mesh) return;
 
 	float minX{}, minY{}, minZ{};
 	float maxX{}, maxY{}, maxZ{};
