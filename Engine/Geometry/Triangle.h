@@ -20,6 +20,7 @@ public:
 	Triangle(const Mxm::Vec4& vert0, const Mxm::Vec4& vert1, const Mxm::Vec4& vert2);
 	Triangle(const Mxm::Vec3& vert0, const Mxm::Vec3& vert1, const Mxm::Vec3& vert2);
 	Triangle(const Mxm::Vec4& vert0, const Mxm::Vec4& vert1, const Mxm::Vec4& vert2, Color col);
+	Triangle(const Mxm::Vec3& vert0, const Mxm::Vec3& vert1, const Mxm::Vec3& vert2, Color col);
 
 	const Mxm::Vec4& operator[](size_t i) const noexcept;
 

@@ -32,7 +32,7 @@ private:
 	float _gunShootSpeed = 0.9f;
 	float _gunTimer = _gunShootSpeed;
 
-	float _gunRecoil = 5.0f;
+	float _gunRecoil = 15.0f;
 
 	float _groundSpeed = 1.1f;
 	float _airSpeed = 0.1f;
@@ -100,9 +100,9 @@ private:
 		_object->transform().translate(Mxm::Vec3(0.0f, 8.0f, 0.0f));
 
 		_object->addComponent<RigidBody>();
-		_object->getComponent<RigidBody>()->setAcceleration(Mxm::Vec3(0.0f, -13.0f, 0.0f));
+		_object->getComponent<RigidBody>()->setAcceleration(Mxm::Vec3(0.0f, -15.0f, 0.0f));
 		_object->getComponent<RigidBody>()->setFriction(7.0f);
-		_object->getComponent<RigidBody>()->setAirFriction(0.5f);
+		_object->getComponent<RigidBody>()->setAirFriction(0.7f);
 
 		_object->addComponent<Collider>()->generateSimpleFromMesh();
 
@@ -126,7 +126,7 @@ private:
 		trace->transform().setLookRotation(direction);
 
 		static int traceCounter = 0;
-		Animator::add<SetColorAnim>("trace_" + std::to_string(traceCounter++), trace->getComponent<MeshComponent>(), Color(100, 100, 100),
+		_activeScene->getAnimator().add<SetColorAnim>("trace_" + std::to_string(traceCounter++), trace->getComponent<MeshComponent>(), Color(100, 100, 100),
 			0.5f, Animation::InterpolationType::LINEAR, [trace, this]() {
 				_activeScene->removeObject(trace);
 			});
@@ -136,11 +136,17 @@ private:
 	bool in_move = false;
 	bool is_gun_animating = false;
 
+	float yaw{}, pitch{};
+
 	void update() override {
 		if (Input::isKeyPressed(Key::F1)) setDrawFrame(false);
 		if (Input::isKeyPressed(Key::F2)) setDrawFrame(true);
 
 		Mxm::Vec2 mouseDelta = Input::getMouseDelta() * 0.003f;
+		pitch += mouseDelta.y;
+		yaw += mouseDelta.x;
+
+		pitch = fmaxf(-90.0f * Mxm::Consts::DEG2RAD, fminf(90.0f * Mxm::Consts::DEG2RAD, pitch));
 
 		auto& transform = _mainCamera->transform();
 		auto& obj_transform = _object->transform();
@@ -148,8 +154,8 @@ private:
 
 		auto obj_rigid = _object->getComponent<RigidBody>();
 
-		transform.rotate(Mxm::Vec3(mouseDelta.y, 0.0f, 0.0f));
-		_object->transform().rotate(Mxm::Vec3(0.0f, mouseDelta.x, 0.0f));
+		transform.setRotation(Mxm::Vec3(pitch, 0.0f, 0.0f));
+		_object->transform().setRotation(Mxm::Vec3(0.0f, yaw, 0.0f));
 
 		transform.setRotation(Mxm::Vec3(transform.getRotation().x, obj_transform.getRotation().y, 0.0f));
 		transform.setPosition(obj_transform.getPosition() + _cameraOffset);
@@ -183,17 +189,18 @@ private:
 		}
 		else {
 			if (!is_gun_animating) {
-				Animator::add<TranslateToAnim>("gun_back_anim", _gun, _gunOffset, 0.1f, Animation::InterpolationType::COS, [this]() { is_gun_animating = false; });
+				_activeScene->getAnimator().add<TranslateToAnim>("gun_back_anim", _gun, _gunOffset, 0.1f, Animation::InterpolationType::COS, [this]() { is_gun_animating = false; });
+				anim_time = 0.0f;
 				is_gun_animating = true;
 			}
 		}
 
 		if (Input::isKeyPressed(Key::Space) && obj_rigid->isCollision()) {
-			obj_rigid->addForce(obj_transform.getUp() * 8.0f);
+			obj_rigid->addForce(obj_transform.getUp() * 9.0f);
 		}
 
 		if (Input::isKeyPressed(Key::R)) {
-			Animator::add<RotateByAnim>("rotate", _activeScene->getFirstObjectWithName("box"), 
+			_activeScene->getAnimator().add<RotateByAnim>("rotate", _activeScene->getFirstObjectWithName("box"),
 				Mxm::Vec3(Mxm::Consts::DEG2RAD * 90.0f, Mxm::Consts::DEG2RAD * 90.0f, 0.0f), 5.0f, Animation::InterpolationType::COS_BOUNCE);
 		}
 
@@ -218,7 +225,7 @@ private:
 				bulletDot->transform().setPosition(info.point);
 
 				static int anim_id = 0;
-				Animator::add<WaitAnim>("wait_to_delete" + std::to_string(anim_id++), 3.0f, Animation::InterpolationType::EASY_OUT,
+				_activeScene->getAnimator().add<WaitAnim>("wait_to_delete" + std::to_string(anim_id++), 3.0f, Animation::InterpolationType::EASY_OUT,
 					[bulletDot, this]() { _activeScene->removeObject(bulletDot); });
 			}
 			else {
@@ -226,7 +233,7 @@ private:
 				createFireTrace(bulletStartPos, bulletEndPos, 100.0f);
 			}
 
-			Animator::add<RotateByAnim>("gun_rotate", _gun, Mxm::Vec3(-Mxm::Consts::PI * 2.0f, 0.0f, 0.0f),
+			_activeScene->getAnimator().add<RotateByAnim>("gun_rotate", _gun, Mxm::Vec3(-Mxm::Consts::PI * 2.0f, 0.0f, 0.0f),
 				_gunShootSpeed, Animation::InterpolationType::EASY_OUT);
 
 			_gunTimer = 0.0f;

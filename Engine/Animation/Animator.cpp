@@ -1,8 +1,6 @@
 #include "Animator.h"
 #include "../Core/Logger.h"
 
-std::unordered_map<AnimTag, std::deque<std::unique_ptr<Animation>>> Animator::_animationList;
-
 void Animator::update() {
     for (auto& [tag, deque] : _animationList)
     {

@@ -24,22 +24,24 @@ private:
 		}
 	};
 	// *** Optimization ***
-	static std::vector<Edge> _uniqueEdges;
-	static std::vector<Triangle> _polytope;
-	static std::deque<Mxm::Vec3> _simplex;
+	std::vector<Edge> _uniqueEdges;
+	std::vector<Triangle> _polytope;
+	std::deque<Mxm::Vec3> _simplex;
 
-	static Mxm::Vec3 furthestPoint(const std::shared_ptr<Collider>& collider, const Mxm::Vec3& dir);
-	static Mxm::Vec3 minkowskiDifference(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2, const Mxm::Vec3& dir);
-	static bool handleSimplex(std::deque<Mxm::Vec3>& simplex, Mxm::Vec3& direction);
+	Mxm::Vec3 furthestPoint(const std::shared_ptr<Collider>& collider, const Mxm::Vec3& dir);
+	Mxm::Vec3 minkowskiDifference(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2, const Mxm::Vec3& dir);
+	bool handleSimplex(std::deque<Mxm::Vec3>& simplex, Mxm::Vec3& direction);
 
-	static std::pair<Triangle, float> findClosestFace(const std::vector<Triangle>& polytope);
-	static void expandPolytope(std::vector<Triangle>& polytope, const Mxm::Vec3& newPoint);
+	std::pair<Triangle, float> findClosestFace(const std::vector<Triangle>& polytope);
+	void expandPolytope(std::vector<Triangle>& polytope, const Mxm::Vec3& newPoint);
 public:
-	PhysicsSystem() = delete;
-	~PhysicsSystem() = delete;
+	static PhysicsSystem& getInstance() noexcept {
+		static PhysicsSystem sys;
+		return sys;
+	}
 
-	static std::pair<bool, std::deque<Mxm::Vec3>> gjkCollision(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2);
-	static CollisionResult epaAlgorithm(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2, const std::deque<Mxm::Vec3>& simplex);
+	std::pair<bool, std::deque<Mxm::Vec3>> gjkCollision(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2);
+	CollisionResult epaAlgorithm(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2, const std::deque<Mxm::Vec3>& simplex);
 };
 
 #endif // !PHYSICSSYSTEM_H

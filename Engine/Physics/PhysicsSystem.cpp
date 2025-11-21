@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 
 #include "../ComponentSystem/Components/MeshComponent.h"
 #include "../ComponentSystem/Object/GameObject.h"
@@ -8,10 +8,6 @@
 #include "../Core/EngineConsts.h"
 
 #include <array>
-
-std::vector<PhysicsSystem::Edge> PhysicsSystem::_uniqueEdges{};
-std::vector<Triangle> PhysicsSystem::_polytope;
-std::deque<Mxm::Vec3> PhysicsSystem::_simplex;
 
 Mxm::Vec3 PhysicsSystem::furthestPoint(const std::shared_ptr<Collider>& collider, const Mxm::Vec3& dir) {
 	auto& transform = collider->getObject()->transform();
@@ -63,14 +59,11 @@ bool PhysicsSystem::handleSimplex(std::deque<Mxm::Vec3>& simplex, Mxm::Vec3& dir
 			direction = acPerp;
 
 			return true;
+		} else if (abc.dot(ao) < 0.0f) {
+			abc = -abc;
+			simplex = { a, c, b };
 		}
-
-		if (abc.dot(ao) > 0.0f) {
-			direction = abc;
-		}
-		else {
-			direction = -abc;
-		}
+		direction = abc;
 
 		return true;
 	}
@@ -160,7 +153,7 @@ void PhysicsSystem::expandPolytope(std::vector<Triangle>& polytope, const Mxm::V
 	}
 }
 std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2) {
-	Mxm::Vec3 direction = Mxm::Vec3(1.0f, 0.0f, 0.0f);
+	Mxm::Vec3 direction = direction = Mxm::Vec3(1.0f, 0.0f, 0.0f);
 
 	Mxm::Vec3 support = minkowskiDifference(collider1, collider2, direction);
 

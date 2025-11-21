@@ -79,7 +79,10 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 }
 const std::shared_ptr<MeshData>& ResourceManager::getModel(const std::string& name) const {
 	auto it = _meshes.find(name);
-	if (it == _meshes.end()) return nullptr;
+	if (it == _meshes.end()) {
+		Logger::getInstance().log(LogType::Fatal, "model not found");
+		return nullptr;
+	}
 
 	return it->second;
 }

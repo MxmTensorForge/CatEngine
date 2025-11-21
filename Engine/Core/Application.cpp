@@ -21,7 +21,9 @@ void Application::run() {
 	start();
 	_sceneManager.getActiveScene()->start();
 
-	float accumulator = 0.0f;
+	float animAccumulator = 0.0f;
+	float physAccumulator = 0.0f;
+
 	bool isRunning = true;
 	while (isRunning)
 	{
@@ -31,8 +33,14 @@ void Application::run() {
 		Time::update();
 
 		Time::begin("collisions");
-		_sceneManager.getActiveScene()->updatePhysics();
-		_sceneManager.getActiveScene()->updateCollisions();
+		physAccumulator += Time::deltaTime();
+		while (physAccumulator >= Time::fixedDeltaTime()) {
+			_sceneManager.getActiveScene()->updatePhysics();
+			_sceneManager.getActiveScene()->updateCollisions();
+			fixedUpdate();
+
+			physAccumulator -= Time::fixedDeltaTime();
+		}
 		Time::end("collisions");
 
 		Time::begin("game update");
@@ -41,7 +49,7 @@ void Application::run() {
 		Time::end("game update");
 
 		Time::begin("animations");
-		Animator::update();
+		_sceneManager.getActiveScene()->updateAnimator();
 		Time::end("animations");
 
 		_screen.clear();
@@ -82,8 +90,8 @@ void Application::run() {
 		}
 		Time::end("rasterization");
 
-		accumulator += Time::deltaTime();
-		if (accumulator >= 1.0f) {
+		animAccumulator += Time::deltaTime();
+		if (animAccumulator >= 1.0f) {
 			float proj = Time::get("projection");
 			float rast = Time::get("rasterization");
 			float upd = Time::get("game update");
@@ -99,7 +107,7 @@ void Application::run() {
 				<< "Collisions: " << collis << " ms\n"
 				<< "All: " << total << " ms\n";
 
-			accumulator = 0.0f;
+			animAccumulator = 0.0f;
 		}
 
 		_render.drawRect(_width / 2 - 1, _height / 2 - 1, 2, 2, Color(255, 255, 255, 255));

@@ -13,6 +13,7 @@ public:
 
 	static float time() noexcept;
 	static float deltaTime() noexcept;
+	static float fixedDeltaTime() noexcept;
 
 	using Clock = std::chrono::high_resolution_clock;
 	using TimePoint = std::chrono::time_point<Clock>;
@@ -30,6 +31,8 @@ public:
 	static double get(const std::string& tag);
 private:
 	static float _deltaTime;
+	static inline constexpr float _fixedDeltaTime = 1.0f / 60.0f;
+
 	static float _time;
 	static float _lastTime;
 	static bool _firstFrame;

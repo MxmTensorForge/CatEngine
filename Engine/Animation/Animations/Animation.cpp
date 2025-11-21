@@ -34,7 +34,7 @@ bool Animation::updateState() noexcept {
 		_progress = Mxm::Easing::elasticCosBounceIn(t, 3.0f, 1.0f);
 		break;
 	case InterpolationType::EASY_OUT:
-		_progress = Mxm::Easing::easeExp(t, 5.0f);
+		_progress = Mxm::Easing::easeExp(t, 3.0f);
 		break;
 	case InterpolationType::BEZIER:
 		_progress = Mxm::Easing::bezier(t, _point0.x, _point0.y, _point1.x, _point1.y);

@@ -6,33 +6,47 @@
 
 #include "../Physics/PhysicsSystem.h"
 
+#include <iostream>
+
 void Scene::updateCollisions() {
-    for (size_t i = 0; i < _gameObjects.size(); ++i) {
-        auto collider1 = _gameObjects[i]->getComponent<Collider>();
-        if (!collider1) continue;
+    struct CachedObject {
+        std::shared_ptr<GameObject> gameObject;
+        std::shared_ptr<Collider> collider;
+        std::shared_ptr<RigidBody> rigidBody;
+    };
+    std::vector<CachedObject> cachedObjects;
+    cachedObjects.reserve(_gameObjects.size());
 
-        for (size_t j = i + 1; j < _gameObjects.size(); ++j) {
-            auto collider2 = _gameObjects[j]->getComponent<Collider>();
-            if (!collider2) continue;
+    for (auto& obj : _gameObjects) {
+        auto collider = obj->getComponent<Collider>();
+        if (!collider) continue;
 
-            auto rigidBody1 = _gameObjects[i]->getComponent<RigidBody>();
-            auto rigidBody2 = _gameObjects[j]->getComponent<RigidBody>();
-            if (!rigidBody1 && !rigidBody2) continue;
+        auto rigidBody = obj->getComponent<RigidBody>();
+        cachedObjects.push_back({ obj, collider, rigidBody });
+    }
+    
+    for (size_t i = 0; i < cachedObjects.size(); ++i) {
+        auto& obj1 = cachedObjects[i];
 
-            if (!Collider::checkAABB(*collider1, *collider2)) continue;
+        for (size_t j = i + 1; j < cachedObjects.size(); ++j) {
+            auto& obj2 = cachedObjects[j];
 
-            auto collision = PhysicsSystem::gjkCollision(collider1, collider2);
+            if (!obj1.rigidBody && !obj2.rigidBody) continue;
+
+            if (!Collider::checkAABB(*obj1.collider, *obj2.collider)) continue;
+
+            auto collision = PhysicsSystem::getInstance().gjkCollision(obj1.collider, obj2.collider);
             if (!collision.first) continue;
 
-            CollisionResult result = PhysicsSystem::epaAlgorithm(collider1, collider2, collision.second);
+            CollisionResult result = PhysicsSystem::getInstance().epaAlgorithm(obj1.collider, obj2.collider, collision.second);
 
-            if (rigidBody1 && rigidBody1->getPushable()) {
-                RigidBody::resolveCollision(rigidBody1, _gameObjects[j], result);
+            if (obj1.rigidBody && obj1.rigidBody->getPushable()) {
+                RigidBody::resolveCollision(obj1.rigidBody, _gameObjects[j], result);
             }
-            if (rigidBody2 && rigidBody2->getPushable()) {
+            if (obj2.rigidBody && obj2.rigidBody->getPushable()) {
                 CollisionResult invertedResult = result;
                 invertedResult.normal = -result.normal;
-                RigidBody::resolveCollision(rigidBody2, _gameObjects[i], invertedResult);
+                RigidBody::resolveCollision(obj2.rigidBody, _gameObjects[i], invertedResult);
             }
         }
     }
@@ -117,6 +131,10 @@ void Scene::update() {
         if (!obj->getActive() || obj->transform().getParent()) continue;
         updateRecursive(&obj->transform());
 	}
+    _animator.update();
+}
+void Scene::updateAnimator() {
+    _animator.update();
 }
 void Scene::updatePhysics() {
     for (auto& obj : _gameObjects) {
@@ -137,7 +155,7 @@ void Scene::setMainCamera(const std::shared_ptr<GameObject>& camera) {
 	if (camera->hasComponent<Camera>()) _mainCamera = camera;
 }
 const std::shared_ptr<GameObject>& Scene::getMainCamera() const {
-	return _mainCamera;
+    if (auto locked = _mainCamera.lock()) return locked;
 }
 
 bool Scene::rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out, const std::set<std::string>& tags) const {

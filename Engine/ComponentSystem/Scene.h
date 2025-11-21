@@ -3,6 +3,7 @@
 
 #include "Object/GameObject.h"
 #include "Components/MeshComponent.h"
+#include "../Animation/Animator.h"
 
 #include <set>
 
@@ -10,7 +11,9 @@ class Scene final
 {
 private:
 	std::vector<std::shared_ptr<GameObject>> _gameObjects;
-	std::shared_ptr<GameObject> _mainCamera{};
+	std::weak_ptr<GameObject> _mainCamera;
+
+	Animator _animator;
 
 	void updateRecursive(Transform* transform);
 public:
@@ -19,8 +22,8 @@ public:
 
 	std::shared_ptr<GameObject> createObject(const std::string& name, const std::string& tag = "default");
 
-	std::set<std::shared_ptr<GameObject>> getObjectsWithName(const std::string& tag) const;
-	std::shared_ptr<GameObject> getFirstObjectWithName(const std::string& tag) const;
+	std::set<std::shared_ptr<GameObject>> getObjectsWithName(const std::string& name) const;
+	std::shared_ptr<GameObject> getFirstObjectWithName(const std::string& name) const;
 
 	std::set<std::shared_ptr<GameObject>> getObjectsWithTag(const std::string& tag) const;
 	std::shared_ptr<GameObject> getFirstObjectWithTag(const std::string& tag) const;
@@ -31,8 +34,11 @@ public:
 
 	void start();
 	void update();
+	void updateAnimator();
 	void updatePhysics();
 	void updateCollisions();
+
+	inline Animator& getAnimator() noexcept { return _animator; }
 
 	const std::vector<std::shared_ptr<GameObject>>& getGameObjects() const noexcept;
 	void clear();

@@ -9,6 +9,9 @@ Triangle::Triangle(const Mxm::Vec3& vert0, const Mxm::Vec3& vert1, const Mxm::Ve
 Triangle::Triangle(const Mxm::Vec4& vert0, const Mxm::Vec4& vert1, const Mxm::Vec4& vert2, Color col) : _vertices{ vert0, vert1, vert2 }, _color(col) {
 	calcNormal();
 }
+Triangle::Triangle(const Mxm::Vec3& vert0, const Mxm::Vec3& vert1, const Mxm::Vec3& vert2, Color col) : _vertices{ Mxm::Vec4(vert0, 1.0f), Mxm::Vec4(vert1, 1.0f), Mxm::Vec4(vert2, 1.0f) }, _color(col) {
+	calcNormal();
+}
 
 void Triangle::calcNormal() noexcept {
 	Mxm::Vec3 edge1 = (_vertices[1] - _vertices[0]).toVec3();

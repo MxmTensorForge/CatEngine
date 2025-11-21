@@ -60,7 +60,7 @@ const std::vector<Triangle>& Camera::project(const std::shared_ptr<MeshComponent
 			vertices[idx1],
 			vertices[idx2],
 		};
-		tri.applyMatrix(model);
+		tri.applyMatrix(model, true);
 
 		float dot = tri.normal().dot((camera_transform.getWorldPosition() - tri[0].toVec3()).normalized()); //to_camera dot
 		if (dot < 0) continue;
@@ -101,9 +101,9 @@ const std::vector<Triangle>& Camera::project(const std::shared_ptr<MeshComponent
 			float invW1 = 1.0f / clipProjectedTriangle[1].w;
 			float invW2 = 1.0f / clipProjectedTriangle[2].w;
 
-			Triangle clipProjectedNormTriangle = Triangle(clipProjectedTriangle[0] * invW0,
-				clipProjectedTriangle[1] * invW1,
-				clipProjectedTriangle[2] * invW2,
+			Triangle clipProjectedNormTriangle = Triangle(clipProjectedTriangle[0].toVec3() * invW0,
+				clipProjectedTriangle[1].toVec3() * invW1,
+				clipProjectedTriangle[2].toVec3() * invW2,
 				color);
 			clipProjectedNormTriangle.applyMatrix(_screenSpaceMatrix, false);
 

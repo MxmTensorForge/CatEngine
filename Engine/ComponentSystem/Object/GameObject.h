@@ -38,8 +38,8 @@ public:
         static_assert(std::is_base_of<Component, T>::value, "T is not component");
 
         for (const auto& c : _components) {
-            if (auto casted = std::dynamic_pointer_cast<T>(c)) {
-                return casted;
+            if (typeid(*c) == typeid(T) || typeid(*c) == typeid(typename std::remove_const<T>::type)) {
+                return std::static_pointer_cast<T>(c);
             }
         }
         return nullptr;
@@ -50,8 +50,8 @@ public:
         static_assert(std::is_base_of<Component, T>::value, "T is not component");
 
         for (const auto& c : _components) {
-            if (auto casted = std::dynamic_pointer_cast<const T>(c)) {
-                return casted;
+            if (typeid(*c) == typeid(T) || typeid(*c) == typeid(typename std::remove_const<T>::type)) {
+                return std::static_pointer_cast<T>(c);
             }
         }
         return nullptr;

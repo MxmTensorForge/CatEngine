@@ -33,12 +33,12 @@ void RigidBody::resolveCollision(const std::shared_ptr<RigidBody>& object, const
 }
 
 void RigidBody::updatePhysics() {
-	_velocity += _acceleration * Time::deltaTime();
-	getObject()->transform().translate(_velocity * Time::deltaTime());
+	_velocity += _acceleration * Time::fixedDeltaTime();
+	getObject()->transform().translate(_velocity * Time::fixedDeltaTime());
 
 	float friction = _isCollision ? _friction : _airFriction;
 	Mxm::Vec3 frictionForce = -_velocity * friction;
-	_velocity += frictionForce * Time::deltaTime();
+	_velocity += frictionForce * Time::fixedDeltaTime();
 
 	_isCollision = false;
 }

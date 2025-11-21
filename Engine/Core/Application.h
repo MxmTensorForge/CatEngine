@@ -23,6 +23,7 @@ private:
 protected:
 	virtual void start() {}
 	virtual void update() {}
+	virtual void fixedUpdate() {}
 	virtual void shutdown() {}
 
 	void setDrawFrame(bool state) noexcept;

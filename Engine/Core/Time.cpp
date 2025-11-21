@@ -26,6 +26,9 @@ float Time::time() noexcept {
 float Time::deltaTime() noexcept {
 	return _deltaTime;
 }
+float Time::fixedDeltaTime() noexcept {
+	return _fixedDeltaTime;
+}
 
 void Time::begin(const std::string& tag) {
 	auto& rec = _records[tag];
