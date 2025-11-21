@@ -34,7 +34,16 @@ private:
 
 	std::pair<Triangle, float> findClosestFace(const std::vector<Triangle>& polytope);
 	void expandPolytope(std::vector<Triangle>& polytope, const Mxm::Vec3& newPoint);
+
+	PhysicsSystem() = default;
 public:
+	~PhysicsSystem() = default;
+
+	PhysicsSystem(const PhysicsSystem&) = delete;
+	PhysicsSystem& operator=(const PhysicsSystem&) = delete;
+	PhysicsSystem(PhysicsSystem&&) = delete;
+	PhysicsSystem& operator=(PhysicsSystem&&) = delete;
+
 	static PhysicsSystem& getInstance() noexcept {
 		static PhysicsSystem sys;
 		return sys;

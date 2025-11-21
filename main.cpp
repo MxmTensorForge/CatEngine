@@ -9,6 +9,7 @@
 #include "Engine/Core/Input.h"
 #include "Engine/Core/Time.h"
 #include "Engine/Core/ResourceManager.h"
+#include "Engine/Core/AudioManager.h"
 #include "Engine/Animation/Animator.h"
 #include "Engine/Animation/Animations/TransformAnim.h"
 #include "Engine/Animation/Animations/SetColorAnim.h"
@@ -32,7 +33,7 @@ private:
 	float _gunShootSpeed = 0.9f;
 	float _gunTimer = _gunShootSpeed;
 
-	float _gunRecoil = 15.0f;
+	float _gunRecoil = 5.0f;
 
 	float _groundSpeed = 1.1f;
 	float _airSpeed = 0.1f;
@@ -80,6 +81,12 @@ private:
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
 		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
 		ResourceManager::getInstance().loadModelFromFile("gun1", "models/gun1.obj");
+
+		AudioManager::getInstance().loadSound("shoot", "sounds/shoot.mp3", false);
+		AudioManager::getInstance().loadSound("background", "sounds/background.mp3", true);
+
+		AudioManager::getInstance().playSound("background");
+		AudioManager::getInstance().setVolume("shoot", 0.5f);
 
 		Input::setMouseLockState(true);
 		setBackgroundColor(Color(100, 90, 240, 255));
@@ -206,6 +213,8 @@ private:
 
 		_gunTimer += Time::deltaTime();
 		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed) {
+			AudioManager::getInstance().playSound("shoot");
+
 			obj_rigid->addForce(-transform.getForward() * _gunRecoil);
 
 			Mxm::Vec3 gunWorldPos = gun_transform.getWorldPosition();

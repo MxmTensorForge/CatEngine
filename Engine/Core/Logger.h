@@ -19,7 +19,16 @@ private:
 
 	std::string logType2Str(LogType type) const;
 	std::string getTimestep() const;
+
+	Logger() = default;
 public:
+	~Logger() = default;
+
+	Logger(const Logger&) = delete;
+	Logger& operator=(const Logger&) = delete;
+	Logger(Logger&&) = delete;
+	Logger& operator=(Logger&&) = delete;
+
 	static Logger& getInstance();
 
 	void setLogFile(const std::string& name);

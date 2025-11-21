@@ -141,6 +141,7 @@
     <ClCompile Include="Engine\ComponentSystem\SceneManager.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Scene.cpp" />
     <ClCompile Include="Engine\Core\Application.cpp" />
+    <ClCompile Include="Engine\Core\AudioManager.cpp" />
     <ClCompile Include="Engine\Core\Input.cpp" />
     <ClCompile Include="Engine\Core\Logger.cpp" />
     <ClCompile Include="Engine\Core\ResourceManager.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Engine\Geometry\Triangle.cpp" />
     <ClCompile Include="Engine\Graphics\FrameBuffer.cpp" />
     <ClCompile Include="Engine\Graphics\Render.cpp" />
+    <ClCompile Include="Engine\miniaudio\miniaudio.c" />
     <ClCompile Include="Engine\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="main.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
@@ -173,6 +175,7 @@
     <ClInclude Include="Engine\ComponentSystem\SceneManager.h" />
     <ClInclude Include="Engine\ComponentSystem\Scene.h" />
     <ClInclude Include="Engine\Core\Application.h" />
+    <ClInclude Include="Engine\Core\AudioManager.h" />
     <ClInclude Include="Engine\Core\EngineConsts.h" />
     <ClInclude Include="Engine\Core\Input.h" />
     <ClInclude Include="Engine\Core\Logger.h" />
@@ -185,6 +188,7 @@
     <ClInclude Include="Engine\Graphics\Color.h" />
     <ClInclude Include="Engine\Graphics\FrameBuffer.h" />
     <ClInclude Include="Engine\Graphics\Render.h" />
+    <ClInclude Include="Engine\miniaudio\miniaudio.h" />
     <ClInclude Include="Engine\Mxm\Consts.h" />
     <ClInclude Include="Engine\Mxm\Easing.h" />
     <ClInclude Include="Engine\Mxm\Mat2.h" />

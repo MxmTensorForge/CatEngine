@@ -37,6 +37,9 @@
     <Filter Include="Engine\Physics">
       <UniqueIdentifier>{dc2290d5-bc44-4d0e-aa5f-1e37b2ff3b60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\miniaudio">
+      <UniqueIdentifier>{78b8afcb-9fc0-4f27-97cc-67295c140ab6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Application.cpp">
@@ -99,6 +102,12 @@
     </ClCompile>
     <ClCompile Include="Engine\ComponentSystem\Components\Collider.cpp">
       <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\AudioManager.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\miniaudio\miniaudio.c">
+      <Filter>Engine\miniaudio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +224,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Animation\Animations\WaitAnim.h">
       <Filter>Engine\Animation\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\AudioManager.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\miniaudio\miniaudio.h">
+      <Filter>Engine\miniaudio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

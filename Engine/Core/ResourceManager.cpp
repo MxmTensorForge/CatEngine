@@ -75,7 +75,7 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 	}
 	file.close();
 
-	_meshes[name] = _meshes[name] = std::make_shared<MeshData>(std::move(result));
+	_meshes[name] = std::make_shared<MeshData>(std::move(result));
 }
 const std::shared_ptr<MeshData>& ResourceManager::getModel(const std::string& name) const {
 	auto it = _meshes.find(name);

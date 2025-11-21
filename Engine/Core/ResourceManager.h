@@ -11,7 +11,16 @@ class ResourceManager final
 {
 private:
 	std::unordered_map<std::string, std::shared_ptr<MeshData>> _meshes;
+
+	ResourceManager() = default;
 public:
+	~ResourceManager() = default;
+
+	ResourceManager(const ResourceManager&) = delete;
+	ResourceManager& operator=(const ResourceManager&) = delete;
+	ResourceManager(ResourceManager&&) = delete;
+	ResourceManager& operator=(ResourceManager&&) = delete;
+
 	static ResourceManager& getInstance();
 
 	void loadModelFromFile(const std::string& name, const std::string& path);
