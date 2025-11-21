@@ -15,7 +15,7 @@ std::deque<Mxm::Vec3> PhysicsSystem::_simplex;
 
 Mxm::Vec3 PhysicsSystem::furthestPoint(const std::shared_ptr<Collider>& collider, const Mxm::Vec3& dir) {
 	auto& transform = collider->getObject()->transform();
-	Mxm::Vec3 localDir = (transform.getWorldMatrix().transposed() * Mxm::Vec4(dir, 1.0f)).toVec3(); //UPD: We need to ignore the offset, keep the scale and invert the rotation
+	Mxm::Vec3 localDir = (transform.getWorldMatrix().transposed() * Mxm::Vec4(dir, 0.0f)).toVec3(); //UPD: We need to ignore the offset, keep the scale and invert the rotation
 
 	float greatestDot = -std::numeric_limits<float>::max();
 	Mxm::Vec3 furthestPoint{};

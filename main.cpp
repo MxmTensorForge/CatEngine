@@ -14,8 +14,6 @@
 #include "Engine/Animation/Animations/SetColorAnim.h"
 #include "Engine/Animation/Animations/WaitAnim.h"
 
-#include "Engine/Animation/Interpolation.h"
-
 #include <iostream>
 
 class Game final : public Application
@@ -33,6 +31,8 @@ private:
 
 	float _gunShootSpeed = 0.9f;
 	float _gunTimer = _gunShootSpeed;
+
+	float _gunRecoil = 5.0f;
 
 	float _groundSpeed = 1.1f;
 	float _airSpeed = 0.1f;
@@ -71,6 +71,8 @@ private:
 
 		createObject("small_house", "cube", Mxm::Vec3(7.0f, 2.0f, -9.5f), Mxm::Vec3(2.0f, 2.0f, 2.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(80, 120, 200));
 		createObject("small_roof", "frustum", Mxm::Vec3(7.0f, 5.5f, -9.5f), Mxm::Vec3(2.5f, 1.5f, 3.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 60, 50));
+
+		createObject("box", "cube", Mxm::Vec3(0.0f, 3.0f, -4.0f), Mxm::Vec3(0.8f, 0.8f, 0.8f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(255, 60, 50));
 	}
 
 	void start() override {
@@ -175,8 +177,7 @@ private:
 		if (in_move && obj_rigid->isCollision()) {
 			anim_time += Time::deltaTime();
 
-			transform.translate(Mxm::Vec3(0.0f, sinf(anim_time * 10.0f) * 0.1f, 0.0f));
-			_gun->transform().translate(Mxm::Vec3(sinf(anim_time * 7.0f) * 0.008f, sinf(anim_time * 7.0f) * 0.008f, 0.0f));
+			_gun->transform().translate(Mxm::Vec3(sinf(anim_time * 7.0f) * 0.009f, sinf(anim_time * 7.0f) * 0.008f, 0.0f));
 
 			is_gun_animating = false;
 		}
@@ -191,9 +192,14 @@ private:
 			obj_rigid->addForce(obj_transform.getUp() * 8.0f);
 		}
 
+		if (Input::isKeyPressed(Key::R)) {
+			Animator::add<RotateByAnim>("rotate", _activeScene->getFirstObjectWithName("box"), 
+				Mxm::Vec3(Mxm::Consts::DEG2RAD * 90.0f, Mxm::Consts::DEG2RAD * 90.0f, 0.0f), 5.0f, Animation::InterpolationType::COS_BOUNCE);
+		}
+
 		_gunTimer += Time::deltaTime();
 		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed) {
-			obj_rigid->addForce(-transform.getForward() * 0.0f);
+			obj_rigid->addForce(-transform.getForward() * _gunRecoil);
 
 			Mxm::Vec3 gunWorldPos = gun_transform.getWorldPosition();
 			Mxm::Vec3 gunForward = gun_transform.getForward();
@@ -225,8 +231,6 @@ private:
 
 			_gunTimer = 0.0f;
 		}
-
-		//_activeScene->getFirstObjectWithTag("plane")->getComponent<Transform>()->rotate(Mxm::Vec3(0.001f, 0.001f, 0.0f));
 	}
 public:
 	Game() : Application() {}

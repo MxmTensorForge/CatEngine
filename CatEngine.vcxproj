@@ -133,7 +133,6 @@
   <ItemGroup>
     <ClCompile Include="Engine\Animation\Animations\Animation.cpp" />
     <ClCompile Include="Engine\Animation\Animator.cpp" />
-    <ClCompile Include="Engine\Animation\Interpolation.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\Camera.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\Collider.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\MeshComponent.cpp" />
@@ -164,7 +163,6 @@
     <ClInclude Include="Engine\Animation\Animations\FloatAnim.h" />
     <ClInclude Include="Engine\Animation\Animations\WaitAnim.h" />
     <ClInclude Include="Engine\Animation\Animator.h" />
-    <ClInclude Include="Engine\Animation\Interpolation.h" />
     <ClInclude Include="Engine\ComponentSystem\Component.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\Camera.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\Collider.h" />

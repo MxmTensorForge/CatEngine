@@ -9,9 +9,8 @@ class Animation
 public:
 	enum class InterpolationType
 	{
-		LINEAR, COS, ABS_COS_BOUNCE,
-		COS_BOUNCE, EASY_OUT, BEZIER,
-		CUSTOM
+		LINEAR, COS, COS_BOUNCE,
+		ELASTIC_COS_BOUNCE, EASY_OUT, BEZIER
 	};
 
 	using CompleteCallback = std::function<void()>;

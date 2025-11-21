@@ -79,9 +79,6 @@
     <ClCompile Include="Engine\Animation\Animator.cpp">
       <Filter>Engine\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Animation\Interpolation.cpp">
-      <Filter>Engine\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Animation\Animations\Animation.cpp">
       <Filter>Engine\Animation\Animations</Filter>
     </ClCompile>
@@ -155,9 +152,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Animation\Animations\Animation.h">
       <Filter>Engine\Animation\Animations</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Animation\Interpolation.h">
-      <Filter>Engine\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Animation\Animations\TransformAnim.h">
       <Filter>Engine\Animation\Animations</Filter>

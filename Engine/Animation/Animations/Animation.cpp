@@ -1,6 +1,6 @@
 #include "Animation.h"
-#include "../Interpolation.h"
 #include "../../Mxm/Consts.h"
+#include "../../Mxm/Easing.h"
 
 #include "../../Core/Time.h"
 
@@ -22,25 +22,22 @@ bool Animation::updateState() noexcept {
 	switch (_type)
 	{
 	case InterpolationType::LINEAR:
-		_progress = Interpolation::Linear(t) / Interpolation::Linear(1.0f);
+		_progress = t;
 		break;
 	case InterpolationType::COS:
-		_progress = Interpolation::Cos(t) / Interpolation::Cos(1.0f);
+		_progress = Mxm::Easing::easeInSine(t);
 		break;
 	case InterpolationType::COS_BOUNCE:
-		_progress = Interpolation::CosBounce(t) / Interpolation::CosBounce(1.0f);
+		_progress = Mxm::Easing::cosBounceIn(t, 3.0f, 1.0f);
 		break;
-	case InterpolationType::ABS_COS_BOUNCE:
-		_progress = Interpolation::AbsCosBounce(t) / Interpolation::AbsCosBounce(1.0f);
+	case InterpolationType::ELASTIC_COS_BOUNCE:
+		_progress = Mxm::Easing::elasticCosBounceIn(t, 3.0f, 1.0f);
 		break;
 	case InterpolationType::EASY_OUT:
-		_progress = Interpolation::EasyOut(t) / Interpolation::EasyOut(1.0f);
+		_progress = Mxm::Easing::easeExp(t, 5.0f);
 		break;
 	case InterpolationType::BEZIER:
-		_progress = Interpolation::Bezier(t, _point0, _point1);
-		break;
-	case InterpolationType::CUSTOM:
-		_progress = Interpolation::Custom(t) / Interpolation::Custom(1.0f);
+		_progress = Mxm::Easing::bezier(t, _point0.x, _point0.y, _point1.x, _point1.y);
 		break;
 	}
 

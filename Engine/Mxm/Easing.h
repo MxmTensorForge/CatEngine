@@ -6,7 +6,7 @@
 
 namespace Mxm
 {
-	namespace Func {
+	namespace Easing {
 		float easeInQuad(float x) noexcept;
 		float easeOutQuad(float x) noexcept;
 
@@ -29,9 +29,11 @@ namespace Mxm
 
 		float elasticCosBounceIn(float x, float bounces, float decay) noexcept;
 		float elasticCosBounceIn(float x, float bounces, float decay) noexcept;
+
+		float bezier(float t, float x1, float y1, float x2, float y2) noexcept;
 	}
 }
 
 #include "src/Easing.inl"
 
-#endif // !FUNC_H
+#endif // !EASING_H
