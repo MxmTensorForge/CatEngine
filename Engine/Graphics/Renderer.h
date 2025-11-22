@@ -6,13 +6,13 @@
 
 class Screen;
 
-class Render
+class Renderer
 {
 private:
     FrameBuffer _fbo;
 
 public:
-    Render(int width, int height);
+    Renderer(int width, int height);
 
     void clear(Color color);
     void present(Screen& screen) const;

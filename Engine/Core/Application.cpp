@@ -5,6 +5,8 @@
 #include "../ComponentSystem/Components/Camera.h"
 #include "../Animation/Animator.h"
 
+#include "../UI/UISystem.h"
+
 #include "Logger.h"
 #include "Time.h"
 #include "EngineConsts.h"
@@ -53,7 +55,7 @@ void Application::run() {
 		Time::end("animations");
 
 		_screen.clear();
-		_render.clear(_backgroundColor);
+		_renderer.clear(_backgroundColor);
 		
 		Time::begin("projection");
 		_projectedTriangles.clear();
@@ -74,14 +76,14 @@ void Application::run() {
 		Time::begin("rasterization");
 		for (const auto& t : _projectedTriangles) {
 			if (_isDrawingFrame) {
-				_render.drawTriangleFrame(
+				_renderer.drawTriangleFrame(
 					static_cast<int>(t[0].x), static_cast<int>(t[0].y), t[0].z,
 					static_cast<int>(t[1].x), static_cast<int>(t[1].y), t[1].z,
 					static_cast<int>(t[2].x), static_cast<int>(t[2].y), t[2].z,
 					Color(255, 255, 255, 255));
 			}
 			else {
-				_render.drawTriangle(
+				_renderer.drawTriangle(
 					static_cast<int>(t[0].x), static_cast<int>(t[0].y), t[0].z,
 					static_cast<int>(t[1].x), static_cast<int>(t[1].y), t[1].z,
 					static_cast<int>(t[2].x), static_cast<int>(t[2].y), t[2].z,
@@ -110,9 +112,12 @@ void Application::run() {
 			animAccumulator = 0.0f;
 		}
 
-		_render.drawRect(_width / 2 - 1, _height / 2 - 1, 2, 2, Color(255, 255, 255, 255));
+		_renderer.drawRect(_width / 2 - 1, _height / 2 - 1, 2, 2, Color(255, 255, 255, 255));
 
-		_render.present(_screen);
+		_renderer.present(_screen);
+		UISystem::getInstance().renderCommands(_screen.getSDLRendererUnsafe());
+
+		_screen.present();
 	}
 	shutdown();
 	_screen.close();
@@ -129,4 +134,4 @@ SceneManager& Application::getSceneManager() {
 	return _sceneManager;
 }
 
-Application::Application() : _width(EngineConsts::SCALED_WIDTH), _height(EngineConsts::SCALED_HEIGHT), _render(EngineConsts::SCALED_WIDTH, EngineConsts::SCALED_HEIGHT), _screen() {}
+Application::Application() : _width(EngineConsts::SCALED_WIDTH), _height(EngineConsts::SCALED_HEIGHT), _renderer(EngineConsts::SCALED_WIDTH, EngineConsts::SCALED_HEIGHT), _screen() {}

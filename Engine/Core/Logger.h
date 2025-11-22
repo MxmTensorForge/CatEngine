@@ -21,8 +21,8 @@ private:
 	std::string getTimestep() const;
 
 	Logger() = default;
-public:
 	~Logger() = default;
+public:
 
 	Logger(const Logger&) = delete;
 	Logger& operator=(const Logger&) = delete;

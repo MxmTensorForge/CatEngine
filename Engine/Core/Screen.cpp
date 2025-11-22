@@ -19,6 +19,7 @@ bool Screen::open(int width, int height) {
 		Logger::getInstance().log(LogType::Fatal, "Renderer creation error [sdl error]");
 		return false;
 	}
+	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
 	Logger::getInstance().log(LogType::Message, "Renderer created successfully");
 
 	_texture = SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width * EngineConsts::SCREEN_SCALE, height * EngineConsts::SCREEN_SCALE);
@@ -51,7 +52,7 @@ bool Screen::pollEvents() {
 	return true;
 }
 
-void Screen::present(const FrameBuffer& fbo) {
+void Screen::drawFBO(const FrameBuffer& fbo) {
 	SDL_UpdateTexture(_texture, nullptr, (void*)fbo.data(), fbo.width() * sizeof(uint32_t));
 
 	SDL_Vertex vertices[4];
@@ -78,6 +79,8 @@ void Screen::present(const FrameBuffer& fbo) {
 	int indices[6] = { 0, 1, 2, 2, 3, 0 };
 
 	SDL_RenderGeometry(_renderer, _texture, vertices, 4, indices, 6);
+}
+void Screen::present() {
 	SDL_RenderPresent(_renderer);
 }
 void Screen::clear() {

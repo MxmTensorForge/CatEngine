@@ -2,7 +2,7 @@
 #define APPLICATION_H
 
 #include "Screen.h"
-#include "../Graphics/Render.h"
+#include "../Graphics/Renderer.h"
 #include "../Geometry/Triangle.h"
 
 #include "../ComponentSystem/SceneManager.h"
@@ -12,7 +12,7 @@ class Application
 private:
 	SceneManager _sceneManager;
 	Screen _screen;
-	Render _render;
+	Renderer _renderer;
 
 	int _width, _height;
 	bool _isDrawingFrame = false;

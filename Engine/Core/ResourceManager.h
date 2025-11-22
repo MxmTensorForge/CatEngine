@@ -13,9 +13,8 @@ private:
 	std::unordered_map<std::string, std::shared_ptr<MeshData>> _meshes;
 
 	ResourceManager() = default;
-public:
 	~ResourceManager() = default;
-
+public:
 	ResourceManager(const ResourceManager&) = delete;
 	ResourceManager& operator=(const ResourceManager&) = delete;
 	ResourceManager(ResourceManager&&) = delete;

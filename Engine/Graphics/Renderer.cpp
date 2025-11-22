@@ -1,26 +1,26 @@
-﻿#include "Render.h"
+﻿#include "Renderer.h"
 #include "../Core/Screen.h"
 #include "../Mxm/Consts.h"
 
 #include <cstdlib>
 
-Render::Render(int width, int height) : _fbo(width, height) {}
+Renderer::Renderer(int width, int height) : _fbo(width, height) {}
 
-void Render::clear(Color color) {
+void Renderer::clear(Color color) {
 	_fbo.clear(color);
 }
-void Render::present(Screen& screen) const {
-	screen.present(_fbo);
+void Renderer::present(Screen& screen) const {
+	screen.drawFBO(_fbo);
 }
 
-void Render::drawRect(int x, int y, int width, int height, Color color) {
+void Renderer::drawRect(int x, int y, int width, int height, Color color) {
     for (int i = x; i < x + width; i++) {
         for (int j = y; j < y + height; j++) {
             _fbo.setPixel(i, j, color);
         }
     }
 }
-void Render::drawLine(int x0, int y0, float z0, int x1, int y1, float z1, Color color) {
+void Renderer::drawLine(int x0, int y0, float z0, int x1, int y1, float z1, Color color) {
     int dx = x1 - x0;
     int dy = y1 - y0;
 
@@ -45,12 +45,12 @@ void Render::drawLine(int x0, int y0, float z0, int x1, int y1, float z1, Color 
         z += zInc;
     }
 }
-void Render::drawTriangleFrame(int x0, int y0, float z0, int x1, int y1, float z1, int x2, int y2, float z2, Color color) {
+void Renderer::drawTriangleFrame(int x0, int y0, float z0, int x1, int y1, float z1, int x2, int y2, float z2, Color color) {
 	drawLine(x0, y0, z0, x1, y1, z1, color);
 	drawLine(x1, y1, z1, x2, y2, z2, color);
 	drawLine(x2, y2, z2, x0, y0, z0, color);
 }
-void Render::drawTriangle(
+void Renderer::drawTriangle(
     int x0, int y0, float z0,
     int x1, int y1, float z1,
     int x2, int y2, float z2,

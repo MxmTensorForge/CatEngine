@@ -15,6 +15,8 @@
 #include "Engine/Animation/Animations/SetColorAnim.h"
 #include "Engine/Animation/Animations/WaitAnim.h"
 
+#include "Engine/UI/UISystem.h"
+
 #include <iostream>
 
 class Game final : public Application
@@ -51,7 +53,7 @@ private:
 	void createMap() {
 		createObject("ground", "plane", Mxm::Vec3(0.0f, 0.0f, 0.0f), Mxm::Vec3(30.0f, 1.0f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(30, 180, 30));
 
-		createObject("path", "cube", Mxm::Vec3(0.0f, 0.1f, 0.0f), Mxm::Vec3(5.0f, 0.1f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(150, 150, 150));
+		createObject("path", "cube", Mxm::Vec3(0.0f, 0.0f, 0.1f), Mxm::Vec3(5.0f, 0.1f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(150, 150, 150));
 
 		createObject("main_building", "cube", Mxm::Vec3(0.0f, 3.0f, 8.0f), Mxm::Vec3(6.0f, 3.0f, 4.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 80, 60));
 		createObject("roof", "frustum", Mxm::Vec3(0.0f, 9.0f, 8.0f), Mxm::Vec3(6.5f, 3.0f, 4.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(110, 50, 50));
@@ -104,6 +106,7 @@ private:
 		_object = _activeScene->createObject("body");
 		_object->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 200, 70, 255));
 		_object->transform().setScale(Mxm::Vec3(0.7f, 2.0f, 0.7f));
+		_object->transform().setPosition(Mxm::Vec3(0.0f, 5.0f, 0.0f));
 		_object->transform().translate(Mxm::Vec3(0.0f, 8.0f, 0.0f));
 
 		_object->addComponent<RigidBody>();
@@ -146,6 +149,10 @@ private:
 	float yaw{}, pitch{};
 
 	void update() override {
+		UISystem& ui = UISystem::getInstance();
+		ui.drawQuad(Mxm::Vec2i(0, 0), Mxm::Vec2i(300, 300), Color(255, 255, 255, 100));
+		ui.drawText(Mxm::Vec2i(50, 50), "fps:5", 2, Color(0, 0, 0, 255));
+
 		if (Input::isKeyPressed(Key::F1)) setDrawFrame(false);
 		if (Input::isKeyPressed(Key::F2)) setDrawFrame(true);
 
@@ -196,7 +203,7 @@ private:
 		}
 		else {
 			if (!is_gun_animating) {
-				_activeScene->getAnimator().add<TranslateToAnim>("gun_back_anim", _gun, _gunOffset, 0.1f, Animation::InterpolationType::COS, [this]() { is_gun_animating = false; });
+				_activeScene->getAnimator().add<TranslateToAnim>("gun_back_anim", _gun, _gunOffset, 0.1f, Animation::InterpolationType::LINEAR, [this]() { is_gun_animating = false; });
 				anim_time = 0.0f;
 				is_gun_animating = true;
 			}

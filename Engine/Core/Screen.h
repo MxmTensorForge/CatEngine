@@ -20,8 +20,11 @@ public:
 	bool open(int width, int height);
 	void close();
 	bool pollEvents();
-	void present(const FrameBuffer& fbo);
+	void drawFBO(const FrameBuffer& fbo);
+	void present();
 	void clear();
+
+	SDL_Renderer* getSDLRendererUnsafe() { return _renderer; }
 };
 
 #endif // !SCREEN_H

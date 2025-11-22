@@ -40,6 +40,9 @@
     <Filter Include="Engine\miniaudio">
       <UniqueIdentifier>{78b8afcb-9fc0-4f27-97cc-67295c140ab6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{c9dd3a7d-b391-4af3-a312-e5094c7f39a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Application.cpp">
@@ -51,7 +54,7 @@
     <ClCompile Include="Engine\Graphics\FrameBuffer.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Graphics\Render.cpp">
+    <ClCompile Include="Engine\Graphics\Renderer.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
@@ -109,6 +112,9 @@
     <ClCompile Include="Engine\miniaudio\miniaudio.c">
       <Filter>Engine\miniaudio</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\UI\UISystem.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Application.h">
@@ -150,7 +156,7 @@
     <ClInclude Include="Engine\Graphics\Color.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\Render.h">
+    <ClInclude Include="Engine\Graphics\Renderer.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Geometry\Plane.h">
@@ -231,6 +237,15 @@
     <ClInclude Include="Engine\miniaudio\miniaudio.h">
       <Filter>Engine\miniaudio</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\UI\UISystem.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\TextData.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mxm\Vec2i.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Mxm\src\Easing.inl">
@@ -252,6 +267,9 @@
       <Filter>Engine\Mxm\src</Filter>
     </None>
     <None Include="Engine\Mxm\src\Vec4.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+    <None Include="Engine\Mxm\src\Vec2i.inl">
       <Filter>Engine\Mxm\src</Filter>
     </None>
   </ItemGroup>

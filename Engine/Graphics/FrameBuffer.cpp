@@ -3,7 +3,7 @@
 #include <SDL3/SDL.h>
 
 FrameBuffer::FrameBuffer(int width, int height)
-	: _width(width), _height(height), _pixels(width * height, 0), _zBuffer(width * height, 1.0f) {}
+	: _width(width), _height(height), _pixels(width * height, 0), _zBuffer(width * height, 0.0f) {}
 
 void FrameBuffer::clear(Color color) {
 	std::fill(_pixels.begin(), _pixels.end(), color.argb());

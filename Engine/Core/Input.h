@@ -54,6 +54,9 @@ private:
 	friend class Application;
 	friend class Screen;
 public:
+	Input() = delete;
+	~Input() = delete;
+
 	static bool isKeyDown(Key key);
 	static bool isKeyPressed(Key key);
 	static bool isKeyReleased(Key key);

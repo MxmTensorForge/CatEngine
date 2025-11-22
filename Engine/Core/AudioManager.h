@@ -18,9 +18,8 @@ private:
 	std::unordered_map<std::string, AudioData> _sounds;
 
 	AudioManager();
-public:
 	~AudioManager();
-
+public:
 	AudioManager(const AudioManager&) = delete;
 	AudioManager& operator=(const AudioManager&) = delete;
 	AudioManager(AudioManager&&) = delete;
