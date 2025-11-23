@@ -154,8 +154,8 @@ void Scene::clear() {
 void Scene::setMainCamera(const std::shared_ptr<GameObject>& camera) {
 	if (camera->hasComponent<Camera>()) _mainCamera = camera;
 }
-const std::shared_ptr<GameObject>& Scene::getMainCamera() const {
-    if (auto locked = _mainCamera.lock()) return locked;
+std::shared_ptr<GameObject> Scene::getMainCamera() const {
+    return _mainCamera.lock();
 }
 
 bool Scene::rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out, const std::set<std::string>& tags) const {

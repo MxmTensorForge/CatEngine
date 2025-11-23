@@ -47,6 +47,7 @@ private:
 
 	static Mxm::Vec2 _mouse_position;
 	static Mxm::Vec2 _mouse_delta;
+	static bool _is_mouse_locked;
 
 	static void update();
 	static void handleEvent(const SDL_Event& event);
@@ -66,6 +67,7 @@ public:
 	static bool isMouseButtonReleased(MouseButton key);
 
 	static void setMouseLockState(bool state);
+	static bool getMouseLockState();
 
 	static const Mxm::Vec2& getMousePosition();
 	static const Mxm::Vec2& getMouseDelta();

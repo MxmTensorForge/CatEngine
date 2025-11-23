@@ -39,12 +39,11 @@ const std::vector<Triangle>& Camera::project(const std::shared_ptr<MeshComponent
 	const auto& vertices = mesh->getVertices();
 	const auto& indices = mesh->getIndices();
 
-	if (vertices.empty() || indices.empty()) return {};
-
+	_projectedTris.clear();
+	if (vertices.empty() || indices.empty()) return _projectedTris;
 	auto& camera_transform = getObject()->transform();
 
 	_projectedTris.reserve(indices.size() / 3);
-	_projectedTris.clear();
 
 	Mxm::Mat4 model = transform.getWorldMatrix();
 

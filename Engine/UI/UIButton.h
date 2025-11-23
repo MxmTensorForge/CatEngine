@@ -1,0 +1,48 @@
+#ifndef UIBUTTON_H
+#define UIBUTTON_H
+
+#include "UIText.h"
+#include "UIRect.h"
+
+#include <functional>
+#include <memory>
+
+class UIButton final : public UIElement
+{
+private:
+	std::unique_ptr<UIRect> _background;
+	std::unique_ptr<UIText> _text;
+	Mxm::Vec2i _textOffset;
+
+	std::function<void()> _onPress = nullptr;
+	std::function<void()> _onHover = nullptr;
+	std::function<void()> _onDown = nullptr;
+	bool _isHover = false;
+
+	Color _baseColor;
+	Color _hoverColor;
+	Color _downedColor;
+public:
+	UIButton(const Mxm::Vec2i& pos, const Mxm::Vec2i& size, const std::string& text, const Mxm::Vec2i& textOffset, int textScale, Color textColor, Color baseColor, Color hoverColor, Color downedColor);
+	void render(SDL_Renderer* renderer) const noexcept override;
+	void update() noexcept override;
+
+	void setPosition(const Mxm::Vec2i& pos) noexcept;
+	void setSize(const Mxm::Vec2i& size) noexcept;
+
+	void setTextOffset(const Mxm::Vec2i& offset) noexcept { _textOffset = offset; }
+	void setTextScale(int scale) noexcept { _text->setScale(scale); }
+
+	void setOnPress(const std::function<void()>& func) noexcept { _onPress = func; }
+	void setOnHover(const std::function<void()>& func) noexcept { _onHover = func; }
+	void setOnDown(const std::function<void()>& func) noexcept { _onDown = func; }
+
+	void setBaseColor(Color color) { _baseColor = color; }
+	Color getBaseColor() { return _baseColor; }
+	void setHoverColor(Color color) { _hoverColor = color; }
+	Color getHoverColor() { return _hoverColor; }
+	void setDownedColor(Color color) { _downedColor = color; }
+	Color getDownedColor() { return _downedColor; }
+};
+
+#endif // !UIBUTTON_H

@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "EngineConsts.h"
 
 SDL_Window* Input::_window = nullptr;
 
@@ -9,6 +10,8 @@ std::bitset<KEY_COUNT> Input::_keys_released;
 std::bitset<MOUSE_COUNT> Input::_mouse_down;
 std::bitset<MOUSE_COUNT> Input::_mouse_pressed;
 std::bitset<MOUSE_COUNT> Input::_mouse_released;
+
+bool Input::_is_mouse_locked = false;;
 
 Mxm::Vec2 Input::_mouse_position{};
 Mxm::Vec2 Input::_mouse_delta{};
@@ -101,6 +104,8 @@ void Input::update()
 	float deltaX{}, deltaY{};
 	SDL_GetRelativeMouseState(&deltaX, &deltaY);
 	_mouse_delta = Mxm::Vec2(deltaX, deltaY);
+
+	if (_is_mouse_locked) SDL_WarpMouseInWindow(nullptr, EngineConsts::STANDART_WIDTH * 0.5f, EngineConsts::STANDART_HEIGHT * 0.5f);
 }
 void Input::handleEvent(const SDL_Event& event)
 {
@@ -147,7 +152,11 @@ bool Input::isMouseButtonPressed(MouseButton button) { return _mouse_pressed[sta
 bool Input::isMouseButtonReleased(MouseButton button) { return _mouse_released[static_cast<size_t>(button)]; }
 
 void Input::setMouseLockState(bool state) {
+	_is_mouse_locked = state;
 	SDL_SetWindowRelativeMouseMode(_window, state);
+}
+bool Input::getMouseLockState() {
+	return _is_mouse_locked;
 }
 
 const Mxm::Vec2& Input::getMousePosition() { return _mouse_position; }

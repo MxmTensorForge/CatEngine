@@ -31,6 +31,7 @@ void Application::run() {
 	{
 		Input::update();
 		isRunning = _screen.pollEvents();
+		UISystem::getInstance().newFrame();
 
 		Time::update();
 
@@ -115,7 +116,7 @@ void Application::run() {
 		_renderer.drawRect(_width / 2 - 1, _height / 2 - 1, 2, 2, Color(255, 255, 255, 255));
 
 		_renderer.present(_screen);
-		UISystem::getInstance().renderCommands(_screen.getSDLRendererUnsafe());
+		UISystem::getInstance().render(_screen.getSDLRendererUnsafe());
 
 		_screen.present();
 	}

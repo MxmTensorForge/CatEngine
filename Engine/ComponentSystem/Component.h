@@ -18,6 +18,7 @@ public:
 	void setObject(const std::shared_ptr<GameObject>& object) noexcept { _object = object; }
 	std::shared_ptr<GameObject> getObject() const noexcept {
 		if (auto locked = _object.lock()) return locked;
+		return nullptr;
 	}
 };
 

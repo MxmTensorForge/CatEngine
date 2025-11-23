@@ -1,5 +1,5 @@
-﻿#ifndef TEXTDATA_H
-#define TEXTDATA_H
+﻿#ifndef FONTDATA_H
+#define FONTDATA_H
 
 #include <unordered_map>
 
@@ -663,6 +663,8 @@ namespace FontData
     inline const std::unordered_map<char, FontChar> myFont = createFont();
     inline constexpr size_t myFontHeight = 8;
     inline constexpr size_t myFontWidth = 8;
+    inline constexpr size_t myFontIndentX = 2;
+    inline constexpr size_t myFontIndentY = 4;
 }
 
 #endif // !TEXTDATA_H

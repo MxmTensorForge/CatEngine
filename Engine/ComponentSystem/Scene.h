@@ -44,7 +44,7 @@ public:
 	void clear();
 
 	void setMainCamera(const std::shared_ptr<GameObject>& camera);
-	const std::shared_ptr<GameObject>& getMainCamera() const;
+	std::shared_ptr<GameObject> getMainCamera() const;
 
 	bool rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out, const std::set<std::string>& tags) const;
 };

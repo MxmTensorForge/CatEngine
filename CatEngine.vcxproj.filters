@@ -112,6 +112,15 @@
     <ClCompile Include="Engine\miniaudio\miniaudio.c">
       <Filter>Engine\miniaudio</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\UI\UIButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\UIRect.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\UI\UIText.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\UI\UISystem.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -237,14 +246,29 @@
     <ClInclude Include="Engine\miniaudio\miniaudio.h">
       <Filter>Engine\miniaudio</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\UI\UISystem.h">
+    <ClInclude Include="Engine\UI\UIScreen.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\UI\TextData.h">
+    <ClInclude Include="Engine\UI\FontData.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Mxm\Vec2i.h">
       <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\UIButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\UIElement.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\UIRect.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\UIText.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\UISystem.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

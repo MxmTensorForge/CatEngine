@@ -16,6 +16,7 @@
 #include "Engine/Animation/Animations/WaitAnim.h"
 
 #include "Engine/UI/UISystem.h"
+#include "Engine/UI/UIButton.h"
 
 #include <iostream>
 
@@ -39,6 +40,8 @@ private:
 
 	float _groundSpeed = 1.1f;
 	float _airSpeed = 0.1f;
+
+	bool _menu = false;
 
 	void createObject(const std::string& name, const std::string& modelName, const Mxm::Vec3& pos, const Mxm::Vec3& scale, const Mxm::Vec3& rotation, Color color) {
 		auto obj = _activeScene->createObject(name, "map");
@@ -85,12 +88,13 @@ private:
 		ResourceManager::getInstance().loadModelFromFile("gun1", "models/gun1.obj");
 
 		AudioManager::getInstance().loadSound("shoot", "sounds/shoot.mp3", false);
+		AudioManager::getInstance().loadSound("click", "sounds/click.mp3", false);
 		AudioManager::getInstance().loadSound("background", "sounds/background.mp3", true);
 
 		AudioManager::getInstance().playSound("background");
 		AudioManager::getInstance().setVolume("shoot", 0.5f);
 
-		Input::setMouseLockState(true);
+		Input::setMouseLockState(!_menu);
 		setBackgroundColor(Color(100, 90, 240, 255));
 
 		_activeScene = getSceneManager().createScene();
@@ -122,6 +126,16 @@ private:
 		_gun->transform().translate(_gunOffset);
 
 		_gun->transform().setParent(&_mainCamera->transform());
+
+
+		UISystem& ui = UISystem::getInstance();
+		auto* screen = ui.addScreen("game");
+		ui.setCurrentScreen("game");
+
+		auto* button = screen->add<UIButton>(Mxm::Vec2i(50, 50), Mxm::Vec2i(230, 40), "Click button", Mxm::Vec2i(10, 10), 2,
+			Color(255, 255, 255), Color(100, 200, 50), Color(0, 0, 0), Color(50, 50, 50));
+		button->setOnPress([this]() { _object->getComponent<RigidBody>()->addForce(Mxm::Vec3(0.0f, 15.0f, 0.0f)); });
+		button->setOnHover([this]() { AudioManager::getInstance().playSound("click"); });
 	}
 
 	void createFireTrace(const Mxm::Vec3& from, const Mxm::Vec3& to, float length) {
@@ -149,16 +163,15 @@ private:
 	float yaw{}, pitch{};
 
 	void update() override {
-		UISystem& ui = UISystem::getInstance();
-		ui.drawQuad(Mxm::Vec2i(0, 0), Mxm::Vec2i(300, 300), Color(255, 255, 255, 100));
-		ui.drawText(Mxm::Vec2i(50, 50), "fps:5", 2, Color(0, 0, 0, 255));
 
 		if (Input::isKeyPressed(Key::F1)) setDrawFrame(false);
 		if (Input::isKeyPressed(Key::F2)) setDrawFrame(true);
 
 		Mxm::Vec2 mouseDelta = Input::getMouseDelta() * 0.003f;
-		pitch += mouseDelta.y;
-		yaw += mouseDelta.x;
+		if (!_menu) {
+			pitch += mouseDelta.y;
+			yaw += mouseDelta.x;
+		}
 
 		pitch = fmaxf(-90.0f * Mxm::Consts::DEG2RAD, fminf(90.0f * Mxm::Consts::DEG2RAD, pitch));
 
@@ -177,19 +190,24 @@ private:
 		in_move = false;
 		float speed = obj_rigid->isCollision() ? _groundSpeed : _airSpeed;
 
-		if (Input::isKeyDown(Key::W)) {
+		if (Input::isKeyPressed(Key::Escape)) {
+			_menu = !_menu;
+			Input::setMouseLockState(!_menu);
+		}
+
+		if (Input::isKeyDown(Key::W) && !_menu) {
 			obj_rigid->addForce(obj_transform.getForward() * speed);
 			in_move = true;
 		}
-		if (Input::isKeyDown(Key::S)) {
+		if (Input::isKeyDown(Key::S) && !_menu) {
 			obj_rigid->addForce(-obj_transform.getForward() * speed);
 			in_move = true;
 		}
-		if (Input::isKeyDown(Key::D)) {
+		if (Input::isKeyDown(Key::D) && !_menu) {
 			obj_rigid->addForce(obj_transform.getRight() * speed);
 			in_move = true;
 		}
-		if (Input::isKeyDown(Key::A)) {
+		if (Input::isKeyDown(Key::A) && !_menu) {
 			obj_rigid->addForce(-obj_transform.getRight() * speed);
 			in_move = true;
 		}
@@ -219,7 +237,7 @@ private:
 		}
 
 		_gunTimer += Time::deltaTime();
-		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed) {
+		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed && !_menu) {
 			AudioManager::getInstance().playSound("shoot");
 
 			obj_rigid->addForce(-transform.getForward() * _gunRecoil);
