@@ -33,6 +33,8 @@ public:
 	void setTextOffset(const Mxm::Vec2i& offset) noexcept { _textOffset = offset; }
 	void setTextScale(int scale) noexcept { _text->setScale(scale); }
 
+	void setText(const std::string& text) noexcept { _text->setText(text); }
+
 	void setOnPress(const std::function<void()>& func) noexcept { _onPress = func; }
 	void setOnHover(const std::function<void()>& func) noexcept { _onHover = func; }
 	void setOnDown(const std::function<void()>& func) noexcept { _onDown = func; }

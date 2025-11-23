@@ -10,7 +10,6 @@
 class Application
 {
 private:
-	SceneManager _sceneManager;
 	Screen _screen;
 	Renderer _renderer;
 
@@ -28,8 +27,6 @@ protected:
 
 	void setDrawFrame(bool state) noexcept;
 	void setBackgroundColor(Color color) noexcept;
-
-	SceneManager& getSceneManager();
 public:
 	Application();
 	virtual ~Application() = default;

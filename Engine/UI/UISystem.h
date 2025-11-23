@@ -33,6 +33,7 @@ public:
 
 	void setCurrentScreen(const std::string& name);
 	UIScreen* getCurrentScreen();
+	UIScreen* getScreen(const std::string& name);
 };
 
 #endif // !UISYSTEM_H

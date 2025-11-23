@@ -7,15 +7,9 @@ std::shared_ptr<Scene> SceneManager::createScene() {
 
 	return scene;
 }
+
 void SceneManager::setActiveScene(const std::shared_ptr<Scene>& scene) {
-	for (size_t i = 0; i < _scenes.size(); i++)
-	{
-		if (_scenes[i] == scene) {
-			_indexActiveScene = i;
-			return;
-		}
-	}
-	Logger::getInstance().log(LogType::Fatal, "scene not found in GameManager");
+	if (scene) _pendingActiveScene = scene;
 }
 
 std::shared_ptr<Scene> SceneManager::getActiveScene() const {
@@ -26,17 +20,31 @@ std::shared_ptr<Scene> SceneManager::getActiveScene() const {
 	return nullptr;
 }
 
+void SceneManager::processPendingScene() {
+	if (!_pendingActiveScene) return;
+
+	for (size_t i = 0; i < _scenes.size(); i++) {
+		if (_scenes[i] == _pendingActiveScene) {
+			_scenes[i]->start();
+			_indexActiveScene = i;
+			Logger::getInstance().log(LogType::Message, "Scene index activated: " + std::to_string(i));
+			break;
+		}
+	}
+
+	_pendingActiveScene = nullptr;
+}
+bool SceneManager::hasPendingScene() {
+	return _pendingActiveScene.get();
+}
+
 void SceneManager::removeScene(const std::shared_ptr<Scene>& scene) {
 	auto it = std::find(_scenes.begin(), _scenes.end(), scene);
-	if (it == _scenes.end()) return;
-
-	size_t index = std::distance(_scenes.begin(), it);
-	_scenes.erase(it);
-
-	if (_indexActiveScene == index) {
-		_indexActiveScene = _scenes.empty() ? 0 : std::min(index, _scenes.size() - 1);
-	}
-	else if (index < _indexActiveScene) {
-		--_indexActiveScene;
+	if (it != _scenes.end()) {
+		if (_scenes[_indexActiveScene] == scene) {
+			_indexActiveScene = 0;
+			_pendingActiveScene = nullptr;
+		}
+		_scenes.erase(it);
 	}
 }

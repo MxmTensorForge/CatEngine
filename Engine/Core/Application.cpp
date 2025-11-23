@@ -19,9 +19,10 @@ void Application::run() {
 	Logger::getInstance().setLogFile("log.txt");
 
 	if (!_screen.open(_width / EngineConsts::SCREEN_SCALE, _height / EngineConsts::SCREEN_SCALE)) return;
+	auto& sceneManager = SceneManager::getInstance();
 
 	start();
-	_sceneManager.getActiveScene()->start();
+	sceneManager.processPendingScene();
 
 	float animAccumulator = 0.0f;
 	float physAccumulator = 0.0f;
@@ -35,11 +36,15 @@ void Application::run() {
 
 		Time::update();
 
+		if (sceneManager.hasPendingScene()) {
+			sceneManager.processPendingScene();
+		}
+
 		Time::begin("collisions");
 		physAccumulator += Time::deltaTime();
 		while (physAccumulator >= Time::fixedDeltaTime()) {
-			_sceneManager.getActiveScene()->updatePhysics();
-			_sceneManager.getActiveScene()->updateCollisions();
+			sceneManager.getActiveScene()->updatePhysics();
+			sceneManager.getActiveScene()->updateCollisions();
 			fixedUpdate();
 
 			physAccumulator -= Time::fixedDeltaTime();
@@ -48,11 +53,11 @@ void Application::run() {
 
 		Time::begin("game update");
 		update();
-		_sceneManager.getActiveScene()->update();
+		sceneManager.getActiveScene()->update();
 		Time::end("game update");
 
 		Time::begin("animations");
-		_sceneManager.getActiveScene()->updateAnimator();
+		sceneManager.getActiveScene()->updateAnimator();
 		Time::end("animations");
 
 		_screen.clear();
@@ -61,7 +66,7 @@ void Application::run() {
 		Time::begin("projection");
 		_projectedTriangles.clear();
 
-		for (const auto& obj : _sceneManager.getActiveScene()->getGameObjects()) {
+		for (const auto& obj : sceneManager.getActiveScene()->getGameObjects()) {
 			if (!obj->getActive()) continue;
 
 			auto mesh_ptr = obj->getComponent<MeshComponent>();
@@ -69,7 +74,7 @@ void Application::run() {
 
 			auto& transform = obj->transform();
 
-			auto& tris = _sceneManager.getActiveScene()->getMainCamera()->getComponent<Camera>()->project(mesh_ptr, transform);
+			auto& tris = sceneManager.getActiveScene()->getMainCamera()->getComponent<Camera>()->project(mesh_ptr, transform);
 			_projectedTriangles.insert(_projectedTriangles.end(), tris.begin(), tris.end());
 		}
 		Time::end("projection");
@@ -113,8 +118,6 @@ void Application::run() {
 			animAccumulator = 0.0f;
 		}
 
-		_renderer.drawRect(_width / 2 - 1, _height / 2 - 1, 2, 2, Color(255, 255, 255, 255));
-
 		_renderer.present(_screen);
 		UISystem::getInstance().render(_screen.getSDLRendererUnsafe());
 
@@ -129,10 +132,6 @@ void Application::setDrawFrame(bool state) noexcept {
 }
 void Application::setBackgroundColor(Color color) noexcept {
 	_backgroundColor = color;
-}
-
-SceneManager& Application::getSceneManager() {
-	return _sceneManager;
 }
 
 Application::Application() : _width(EngineConsts::SCALED_WIDTH), _height(EngineConsts::SCALED_HEIGHT), _renderer(EngineConsts::SCALED_WIDTH, EngineConsts::SCALED_HEIGHT), _screen() {}

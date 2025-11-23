@@ -97,7 +97,8 @@ private:
 		Input::setMouseLockState(!_menu);
 		setBackgroundColor(Color(100, 90, 240, 255));
 
-		_activeScene = getSceneManager().createScene();
+		_activeScene = SceneManager::getInstance().createScene();
+		SceneManager::getInstance().setActiveScene(_activeScene);
 
 		_mainCamera = _activeScene->createObject("camera");
 		_mainCamera->addComponent<Camera>();
@@ -136,6 +137,8 @@ private:
 			Color(255, 255, 255), Color(100, 200, 50), Color(0, 0, 0), Color(50, 50, 50));
 		button->setOnPress([this]() { _object->getComponent<RigidBody>()->addForce(Mxm::Vec3(0.0f, 15.0f, 0.0f)); });
 		button->setOnHover([this]() { AudioManager::getInstance().playSound("click"); });
+
+		auto* rect = screen->add<UIRect>(Mxm::Vec2i(398, 298), Mxm::Vec2i(4, 4), Color(255, 255, 255));
 	}
 
 	void createFireTrace(const Mxm::Vec3& from, const Mxm::Vec3& to, float length) {
@@ -250,7 +253,7 @@ private:
 				+ gun_transform.getRight() * _gunBulletOffset.x;
 
 			IntersectionInfo info;
-			if (getSceneManager().getActiveScene()->rayCast(transform.getPosition(), transform.getForward(), info, {"map"})) {
+			if (SceneManager::getInstance().getActiveScene()->rayCast(transform.getPosition(), transform.getForward(), info, {"map"})) {
 				createFireTrace(bulletStartPos, info.point, (info.point - bulletStartPos).length());
 
 				std::shared_ptr<GameObject> bulletDot = _activeScene->createObject("bullet_dot");

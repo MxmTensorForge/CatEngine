@@ -7,6 +7,8 @@ UIText::UIText(const Mxm::Vec2i& pos, const Mxm::Vec2i& size, const std::string&
 }
 
 void UIText::render(SDL_Renderer* renderer) const noexcept {
+	if (_text.empty()) return;
+
 	Mxm::Vec2i currentPos = _pos;
 	int lineHeight = FontData::myFontHeight * _scale;
 	int charWidth = FontData::myFontWidth * _scale + 2;
