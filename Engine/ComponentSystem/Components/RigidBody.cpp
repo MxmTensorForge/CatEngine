@@ -33,12 +33,16 @@ void RigidBody::resolveCollision(const std::shared_ptr<RigidBody>& object, const
 }
 
 void RigidBody::updatePhysics() {
-	_velocity += _acceleration * Time::fixedDeltaTime();
-	getObject()->transform().translate(_velocity * Time::fixedDeltaTime());
+	float damping = _isCollision ? _linearDamping : _airDamping;
 
-	float friction = _isCollision ? _friction : _airFriction;
-	Mxm::Vec3 frictionForce = -_velocity * friction;
-	_velocity += frictionForce * Time::fixedDeltaTime();
+	Mxm::Vec3 acceleration = _gravity;
+	_velocity += acceleration * Time::fixedDeltaTime();
+
+	_velocity *= 1.0f - damping * Time::fixedDeltaTime();
+	_angularVelocity *= 1.0f - _angularDamping * Time::fixedDeltaTime();
+
+	getObject()->transform().translate(_velocity * Time::fixedDeltaTime());
+	getObject()->transform().rotate(_angularVelocity * Time::fixedDeltaTime());
 
 	_isCollision = false;
 }
@@ -46,3 +50,34 @@ void RigidBody::updatePhysics() {
 void RigidBody::setCollisionCallback(const Callback& func) {
 	_collisionCallback = func;
 }
+
+
+void RigidBody::addImpulse(const Mxm::Vec3& vec) noexcept { _velocity += vec / _mass; }
+void RigidBody::addForce(const Mxm::Vec3& vec) noexcept { _velocity += vec / _mass * Time::fixedDeltaTime(); }
+
+void RigidBody::addTorque(const Mxm::Vec3& vec) noexcept { _angularVelocity += vec / _mass; }
+void RigidBody::addAngularImpulse(const Mxm::Vec3& vec) noexcept { _angularVelocity += vec / _mass * Time::fixedDeltaTime(); }
+
+void RigidBody::setGravity(const Mxm::Vec3& vec) noexcept { _gravity = vec; }
+const Mxm::Vec3& RigidBody::getGravity() const noexcept { return _gravity; }
+
+void RigidBody::setVelocity(const Mxm::Vec3& vec) noexcept { _velocity = vec; }
+const Mxm::Vec3& RigidBody::getVelocity() const noexcept { return _velocity; }
+
+void RigidBody::setAngularVelocity(const Mxm::Vec3& vec) noexcept { _angularVelocity = vec; }
+const Mxm::Vec3& RigidBody::getAngularVelocity() const noexcept { return _angularVelocity; }
+
+void RigidBody::setMomentOfInertia(const Mxm::Vec3& vec) noexcept { _momentOfInertia = vec; }
+const Mxm::Vec3& RigidBody::getMomentOfInertia() const noexcept { return _momentOfInertia; }
+
+void RigidBody::setMass(float value) noexcept { _mass = value; }
+float RigidBody::getMass() const noexcept { return _mass; }
+
+void RigidBody::setLinearDamping(float value) noexcept { _linearDamping = value; }
+float RigidBody::getLinearDamping() const noexcept { return _linearDamping; }
+
+void RigidBody::setAirDamping(float value) noexcept { _airDamping = value; }
+float RigidBody::getAirDamping() const noexcept { return _airDamping; }
+
+void RigidBody::setAngularDamping(float value) noexcept { _angularDamping = value; }
+float RigidBody::getAngularDamping() const noexcept { return _angularDamping; }

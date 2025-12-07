@@ -14,6 +14,7 @@ std::bitset<MOUSE_COUNT> Input::_mouse_released;
 bool Input::_is_mouse_locked = false;;
 
 Mxm::Vec2 Input::_mouse_position{};
+Mxm::Vec2 Input::_mouse_wheel{};
 Mxm::Vec2 Input::_mouse_delta{};
 
 Key Input::scancodeToKey(SDL_Scancode scancode) noexcept
@@ -105,6 +106,8 @@ void Input::update()
 	SDL_GetRelativeMouseState(&deltaX, &deltaY);
 	_mouse_delta = Mxm::Vec2(deltaX, deltaY);
 
+	_mouse_wheel = Mxm::Vec2();
+
 	if (_is_mouse_locked) SDL_WarpMouseInWindow(nullptr, EngineConsts::STANDART_WIDTH * 0.5f, EngineConsts::STANDART_HEIGHT * 0.5f);
 }
 void Input::handleEvent(const SDL_Event& event)
@@ -141,6 +144,9 @@ void Input::handleEvent(const SDL_Event& event)
 		_mouse_down[static_cast<size_t>(button)] = false;
 		_mouse_released[static_cast<size_t>(button)] = true;
 	}
+	else if (event.type == SDL_EVENT_MOUSE_WHEEL) {
+		_mouse_wheel = Mxm::Vec2(event.wheel.x, event.wheel.y);
+	}
 }
 
 bool Input::isKeyDown(Key key) { return _keys_down[static_cast<size_t>(key)]; }
@@ -160,4 +166,5 @@ bool Input::getMouseLockState() {
 }
 
 const Mxm::Vec2& Input::getMousePosition() { return _mouse_position; }
+const Mxm::Vec2& Input::getMouseWheel() { return _mouse_wheel; }
 const Mxm::Vec2& Input::getMouseDelta() { return _mouse_delta; }

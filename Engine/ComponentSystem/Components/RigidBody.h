@@ -15,34 +15,54 @@ class RigidBody final : public Component
 private:
 	using Callback = std::function<void(std::shared_ptr<GameObject>, const CollisionResult&)>;
 
-	Mxm::Vec3 _acceleration{};
+	Mxm::Vec3 _gravity{0.0f, -9.81f, 0.0f};
 	Mxm::Vec3 _velocity{};
 
-	float _friction{};
-	float _airFriction{};
+	Mxm::Vec3 _angularVelocity{};
+	Mxm::Vec3 _momentOfInertia{ 1.0f };
 
-	bool _pushable = true;
+	float _mass = 1.0f;
+
+	float _linearDamping{};
+	float _airDamping{};
+	float _angularDamping{};
 
 	bool _isCollision{};
 	Callback _collisionCallback;
 public:
 	static void resolveCollision(const std::shared_ptr<RigidBody>& object, const std::shared_ptr<GameObject>& other, const CollisionResult& result);
 
-	void setAcceleration(const Mxm::Vec3& vec) noexcept { _acceleration = vec; }
-	void addForce(const Mxm::Vec3& vec) noexcept { _velocity += vec; }
+	void addImpulse(const Mxm::Vec3& vec) noexcept;
+	void addForce(const Mxm::Vec3& vec) noexcept;
 
-	void setVelocity(const Mxm::Vec3& vec) noexcept { _velocity = vec; }
-	const Mxm::Vec3& getVelocity() const noexcept { return _velocity; }
+	void addTorque(const Mxm::Vec3& vec) noexcept;
+	void addAngularImpulse(const Mxm::Vec3& vec) noexcept;
 
-	void setFriction(float value) noexcept { _friction = value; }
-	float getFriction() const noexcept { return _friction; }
-	void setAirFriction(float value) noexcept { _airFriction = value; }
-	float getAirFriction() const noexcept { return _airFriction; }
+	void setGravity(const Mxm::Vec3& vec) noexcept;
+	const Mxm::Vec3& getGravity() const noexcept;
+
+	void setVelocity(const Mxm::Vec3& vec) noexcept;
+	const Mxm::Vec3& getVelocity() const noexcept;
+
+	void setAngularVelocity(const Mxm::Vec3& vec) noexcept;
+	const Mxm::Vec3& getAngularVelocity() const noexcept;
+
+	void setMomentOfInertia(const Mxm::Vec3& vec) noexcept;
+	const Mxm::Vec3& getMomentOfInertia() const noexcept;
+
+	void setMass(float value) noexcept;
+	float getMass() const noexcept;
+
+	void setLinearDamping(float value) noexcept;
+	float getLinearDamping() const noexcept;
+
+	void setAirDamping(float value) noexcept;
+	float getAirDamping() const noexcept;
+
+	void setAngularDamping(float value) noexcept;
+	float getAngularDamping() const noexcept;
 
 	bool isCollision() const noexcept { return _isCollision; }
-
-	void setPushable(bool state) noexcept { _pushable = state; }
-	bool getPushable() const noexcept { return _pushable; }
 
 	void setCollisionCallback(const Callback& func);
 

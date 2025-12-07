@@ -19,7 +19,9 @@ void UISystem::setCurrentScreen(const std::string& name) {
 	auto screen = _screens.find(name);
 	if (screen != _screens.end()) {
 		_currentScreen = screen->second.get();
+		return;
 	}
+	_currentScreen = nullptr;
 }
 UIScreen* UISystem::getCurrentScreen() {
 	return _currentScreen;

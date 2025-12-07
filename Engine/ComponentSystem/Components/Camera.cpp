@@ -9,7 +9,7 @@
 
 void Camera::start() {
 	_zNear = 0.1f;
-	_zFar = 200.0f;
+	_zFar = 3000.0f;
 	_fov = Mxm::Consts::DEG2RAD * 90.0f;
 	_aspect = (float)EngineConsts::STANDART_WIDTH / (float)EngineConsts::STANDART_HEIGHT;
 
@@ -64,7 +64,7 @@ const std::vector<Triangle>& Camera::project(const std::shared_ptr<MeshComponent
 		float dot = tri.normal().dot((camera_transform.getWorldPosition() - tri[0].toVec3()).normalized()); //to_camera dot
 		if (dot < 0) continue;
 
-		dot = tri.normal().dot((Mxm::Vec3(15.0f, 10.0f, 15.0f) - tri[0].toVec3()).normalized()); //to_light dot
+		dot = tri.normal().dot((Mxm::Vec3(15.0f, 10.0f, -15.0f) - tri[0].toVec3()).normalized()); //to_light dot
 
 		tri.applyMatrix(_viewMatrix, false);
 

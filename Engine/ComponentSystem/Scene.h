@@ -7,13 +7,22 @@
 
 #include <set>
 
+class Collider;
+class RigidBody;
+
 class Scene final
 {
 private:
 	std::vector<std::shared_ptr<GameObject>> _gameObjects;
 	std::weak_ptr<GameObject> _mainCamera;
-
 	Animator _animator;
+
+	struct CachedObject {
+		std::shared_ptr<GameObject> gameObject;
+		std::shared_ptr<Collider> collider;
+		std::shared_ptr<RigidBody> rigidBody;
+	};
+	std::vector<CachedObject> _cachedObjects;
 
 	void updateRecursive(Transform* transform);
 public:

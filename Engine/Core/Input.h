@@ -46,6 +46,7 @@ private:
 	static Key scancodeToKey(SDL_Scancode scancode) noexcept;
 
 	static Mxm::Vec2 _mouse_position;
+	static Mxm::Vec2 _mouse_wheel;
 	static Mxm::Vec2 _mouse_delta;
 	static bool _is_mouse_locked;
 
@@ -70,6 +71,7 @@ public:
 	static bool getMouseLockState();
 
 	static const Mxm::Vec2& getMousePosition();
+	static const Mxm::Vec2& getMouseWheel();
 	static const Mxm::Vec2& getMouseDelta();
 };
 

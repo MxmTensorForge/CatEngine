@@ -5,31 +5,26 @@
 #include "Components/MeshComponent.h"
 
 #include "../Physics/PhysicsSystem.h"
+#include "../Core/Logger.h"
 
 #include <iostream>
 
 void Scene::updateCollisions() {
-    struct CachedObject {
-        std::shared_ptr<GameObject> gameObject;
-        std::shared_ptr<Collider> collider;
-        std::shared_ptr<RigidBody> rigidBody;
-    };
-    std::vector<CachedObject> cachedObjects;
-    cachedObjects.reserve(_gameObjects.size());
+    _cachedObjects.clear();
 
     for (auto& obj : _gameObjects) {
         auto collider = obj->getComponent<Collider>();
         if (!collider) continue;
 
         auto rigidBody = obj->getComponent<RigidBody>();
-        cachedObjects.push_back({ obj, collider, rigidBody });
+        _cachedObjects.push_back({ obj, collider, rigidBody });
     }
     
-    for (size_t i = 0; i < cachedObjects.size(); ++i) {
-        auto& obj1 = cachedObjects[i];
+    for (size_t i = 0; i < _cachedObjects.size(); ++i) {
+        auto& obj1 = _cachedObjects[i];
 
-        for (size_t j = i + 1; j < cachedObjects.size(); ++j) {
-            auto& obj2 = cachedObjects[j];
+        for (size_t j = i + 1; j < _cachedObjects.size(); ++j) {
+            auto& obj2 = _cachedObjects[j];
 
             if (!obj1.rigidBody && !obj2.rigidBody) continue;
 
@@ -40,10 +35,10 @@ void Scene::updateCollisions() {
 
             CollisionResult result = PhysicsSystem::getInstance().epaAlgorithm(obj1.collider, obj2.collider, collision.second);
 
-            if (obj1.rigidBody && obj1.rigidBody->getPushable()) {
+            if (obj1.rigidBody) {
                 RigidBody::resolveCollision(obj1.rigidBody, _gameObjects[j], result);
             }
-            if (obj2.rigidBody && obj2.rigidBody->getPushable()) {
+            if (obj2.rigidBody) {
                 CollisionResult invertedResult = result;
                 invertedResult.normal = -result.normal;
                 RigidBody::resolveCollision(obj2.rigidBody, _gameObjects[i], invertedResult);

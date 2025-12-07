@@ -14,7 +14,7 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 	std::ifstream file;
 	file.open(path, std::ios::binary);
 	if (!file.is_open()) {
-		Logger::getInstance().log(LogType::Fatal, "model file not opened");
+		Logger::getInstance().log(LogType::Fatal, "Model file not opened (" + path + ").");
 		return;
 	}
 
@@ -76,11 +76,12 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 	file.close();
 
 	_meshes[name] = std::make_shared<MeshData>(std::move(result));
+	Logger::getInstance().log(LogType::Message, name + " (" + path + ") model has been loaded successfully.");
 }
 const std::shared_ptr<MeshData>& ResourceManager::getModel(const std::string& name) const {
 	auto it = _meshes.find(name);
 	if (it == _meshes.end()) {
-		Logger::getInstance().log(LogType::Fatal, "model not found");
+		Logger::getInstance().log(LogType::Fatal, "Model not found (" + name + ").");
 		return nullptr;
 	}
 
