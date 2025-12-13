@@ -33,9 +33,6 @@ public:
 	static void resolveCollision(const std::shared_ptr<RigidBody>& object, const std::shared_ptr<GameObject>& other, const CollisionResult& result);
 
 	void addImpulse(const Mxm::Vec3& vec) noexcept;
-	void addForce(const Mxm::Vec3& vec) noexcept;
-
-	void addTorque(const Mxm::Vec3& vec) noexcept;
 	void addAngularImpulse(const Mxm::Vec3& vec) noexcept;
 
 	void setGravity(const Mxm::Vec3& vec) noexcept;

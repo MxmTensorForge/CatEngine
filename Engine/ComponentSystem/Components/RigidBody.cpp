@@ -53,10 +53,7 @@ void RigidBody::setCollisionCallback(const Callback& func) {
 
 
 void RigidBody::addImpulse(const Mxm::Vec3& vec) noexcept { _velocity += vec / _mass; }
-void RigidBody::addForce(const Mxm::Vec3& vec) noexcept { _velocity += vec / _mass * Time::fixedDeltaTime(); }
-
-void RigidBody::addTorque(const Mxm::Vec3& vec) noexcept { _angularVelocity += vec / _mass; }
-void RigidBody::addAngularImpulse(const Mxm::Vec3& vec) noexcept { _angularVelocity += vec / _mass * Time::fixedDeltaTime(); }
+void RigidBody::addAngularImpulse(const Mxm::Vec3& vec) noexcept { _angularVelocity += vec / _momentOfInertia; }
 
 void RigidBody::setGravity(const Mxm::Vec3& vec) noexcept { _gravity = vec; }
 const Mxm::Vec3& RigidBody::getGravity() const noexcept { return _gravity; }
