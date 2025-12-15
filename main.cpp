@@ -43,7 +43,8 @@ private:
 	float _groundSpeed = 70.0f;
 	float _airSpeed = 5.0f;
 
-	bool _menu = false;
+	bool _menu = true;
+	bool _prevMenu = false;
 
 	void createObject(const std::string& name, const std::string& modelName, const Mxm::Vec3& pos, const Mxm::Vec3& scale, const Mxm::Vec3& rotation, Color color) {
 		auto obj = _activeScene->createObject(name, "map");
@@ -83,7 +84,7 @@ private:
 		createObject("box", "cube", Mxm::Vec3(0.0f, 3.0f, -4.0f), Mxm::Vec3(0.8f, 0.8f, 0.8f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(255, 60, 50));
 	}
 
-	void start() override {
+	void prepareGame() {
 		ResourceManager::getInstance().loadModelFromFile("cube", "models/cube.obj");
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
 		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
@@ -93,14 +94,9 @@ private:
 		AudioManager::getInstance().loadSound("click", "sounds/click.mp3", false);
 		AudioManager::getInstance().loadSound("background", "sounds/background.mp3", true);
 
-		AudioManager::getInstance().playSound("background");
 		AudioManager::getInstance().setVolume("shoot", 0.5f);
 
-		Input::setMouseLockState(!_menu);
-		setBackgroundColor(Color(100, 90, 240, 255));
-
 		_activeScene = SceneManager::getInstance().createScene();
-		SceneManager::getInstance().setActiveScene(_activeScene);
 
 		_mainCamera = _activeScene->createObject("camera");
 		_mainCamera->addComponent<Camera>();
@@ -129,18 +125,32 @@ private:
 		_gun->transform().translate(_gunOffset);
 
 		_gun->transform().setParent(&_mainCamera->transform());
+	}
 
+	void start() override {
+		prepareGame();
+		setBackgroundColor(Color(100, 120, 100, 255));
+
+		auto menuScene = SceneManager::getInstance().createScene();
+		SceneManager::getInstance().setActiveScene(menuScene);
 
 		UISystem& ui = UISystem::getInstance();
 		auto* screen = ui.addScreen("game");
+		auto* startScreen = ui.addScreen("startScreen");
 		ui.setCurrentScreen("game");
 
-		auto* button = screen->add<UIButton>(Mxm::Vec2i(50, 50), Mxm::Vec2i(230, 40), "Click button", Mxm::Vec2i(10, 10), 2,
-			Color(255, 255, 255), Color(100, 200, 50), Color(0, 0, 0), Color(50, 50, 50));
-		button->setOnPress([this]() { _object->getComponent<RigidBody>()->addImpulse(Mxm::Vec3(0.0f, 15.0f, 0.0f)); });
-		button->setOnHover([this]() { AudioManager::getInstance().playSound("click"); });
+		auto* rect = startScreen->add<UIRect>(Mxm::Vec2i(398, 298), Mxm::Vec2i(4, 4), Color(255, 255, 255));
 
-		auto* rect = screen->add<UIRect>(Mxm::Vec2i(398, 298), Mxm::Vec2i(4, 4), Color(255, 255, 255));
+		auto* button = screen->add<UIButton>(Mxm::Vec2i(50, 50), Mxm::Vec2i(300, 40), "Play game", Mxm::Vec2i(10, 10), 2,
+			Color(255, 255, 255), Color(100, 200, 50), Color(0, 0, 0), Color(50, 50, 50));
+		button->setOnPress([this]() { 
+			SceneManager::getInstance().setActiveScene(_activeScene);
+			UISystem::getInstance().setCurrentScreen("startScreen");
+			AudioManager::getInstance().playSound("background");
+			setBackgroundColor(Color(100, 90, 240, 255));
+			_menu = false;
+			});
+		button->setOnHover([this]() { AudioManager::getInstance().playSound("click"); });
 	}
 
 	void createFireTrace(const Mxm::Vec3& from, const Mxm::Vec3& to, float length) {
@@ -168,14 +178,15 @@ private:
 	float yaw{}, pitch{};
 
 	void update() override {
+		if (_menu) { _prevMenu = true; return; }
+		Input::setMouseLockState(true);
+
 		if (Input::isKeyPressed(Key::F1)) setDrawFrame(false);
 		if (Input::isKeyPressed(Key::F2)) setDrawFrame(true);
 
 		Mxm::Vec2 mouseDelta = Input::getMouseDelta() * 0.003f;
-		if (!_menu) {
-			pitch += mouseDelta.y;
-			yaw += mouseDelta.x;
-		}
+		pitch += mouseDelta.y;
+		yaw += mouseDelta.x;
 
 		pitch = fmaxf(-90.0f * Mxm::Consts::DEG2RAD, fminf(90.0f * Mxm::Consts::DEG2RAD, pitch));
 
@@ -194,27 +205,25 @@ private:
 		in_move = false;
 		float speed = obj_rigid->isCollision() ? _groundSpeed : _airSpeed;
 
-		if (Input::isKeyPressed(Key::Escape)) {
-			_menu = !_menu;
-			Input::setMouseLockState(!_menu);
-		}
-
-		if (Input::isKeyDown(Key::W) && !_menu) {
-			obj_rigid->addImpulse(obj_transform.getForward() * speed * Time::deltaTime());
+		Mxm::Vec2 input;
+		if (Input::isKeyDown(Key::W)) {
+			input.y += 1.0f;
 			in_move = true;
 		}
-		if (Input::isKeyDown(Key::S) && !_menu) {
-			obj_rigid->addImpulse(-obj_transform.getForward() * speed * Time::deltaTime());
+		if (Input::isKeyDown(Key::S)) {
+			input.y -= 1.0f;
 			in_move = true;
 		}
-		if (Input::isKeyDown(Key::D) && !_menu) {
-			obj_rigid->addImpulse(obj_transform.getRight() * speed * Time::deltaTime());
+		if (Input::isKeyDown(Key::D)) {
+			input.x += 1.0f;
 			in_move = true;
 		}
-		if (Input::isKeyDown(Key::A) && !_menu) {
-			obj_rigid->addImpulse(-obj_transform.getRight() * speed * Time::deltaTime());
+		if (Input::isKeyDown(Key::A)) {
+			input.x -= 1.0f;
 			in_move = true;
 		}
+		input = input.normalized();
+		obj_rigid->addImpulse((obj_transform.getRight() * input.x + obj_transform.getForward() * input.y) * speed * Time::deltaTime());
 
 		if (in_move && obj_rigid->isCollision()) {
 			anim_time += Time::deltaTime();
@@ -237,11 +246,11 @@ private:
 
 		if (Input::isKeyPressed(Key::R)) {
 			_activeScene->getAnimator().add<RotateByAnim>("rotate", _activeScene->getFirstObjectWithName("box"),
-				Mxm::Vec3(Mxm::Consts::DEG2RAD * 90.0f, Mxm::Consts::DEG2RAD * 90.0f, 0.0f), 5.0f, Animation::InterpolationType::COS_BOUNCE);
+				Mxm::Vec3(Mxm::Consts::DEG2RAD * 90.0f, Mxm::Consts::DEG2RAD * 90.0f, 0.0f), 5.0f, Animation::InterpolationType::ELASTIC_COS_BOUNCE);
 		}
 
 		_gunTimer += Time::deltaTime();
-		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed && !_menu) {
+		if (Input::isMouseButtonPressed(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed && !_prevMenu) {
 			AudioManager::getInstance().playSound("shoot");
 
 			obj_rigid->addImpulse(-transform.getForward() * _gunRecoil);
@@ -280,6 +289,8 @@ private:
 		if (obj_transform.getPosition().y < -100.0f) {
 			obj_transform.setPosition(Mxm::Vec3(0.0f, 5.0f, 0.0f));
 		}
+
+		_prevMenu = false;
 	}
 public:
 	Game() : Application() {}

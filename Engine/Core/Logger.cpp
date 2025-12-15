@@ -5,7 +5,7 @@
 #include <ctime>
 #include <iostream>
 
-std::string Logger::logType2Str(LogType type) const {
+std::string Logger::logTypeToStr(LogType type) const {
 	switch (type) {
 	case LogType::Message: return "[MESSAGE]";
 	case LogType::Warning: return "[WARNING]";
@@ -17,7 +17,7 @@ std::string Logger::logType2Str(LogType type) const {
 std::string Logger::getTimestep() const {
 	time_t t = std::time(nullptr);
 	std::string str(std::ctime(&t));
-	str.pop_back();
+	str.pop_back(); //remove \n
 
 	return str;
 }
@@ -31,7 +31,7 @@ void Logger::setLogFile(const std::string& name) {
 	_file.open(name, std::ios::ate | std::ios::out);
 }
 void Logger::log(LogType type, const std::string& info) {
-	std::string out = "[" + getTimestep() + "]" + logType2Str(type) + ": " + info;
+	std::string out = "[" + getTimestep() + "]" + logTypeToStr(type) + ": " + info;
 
 	std::cout << out << std::endl;
 

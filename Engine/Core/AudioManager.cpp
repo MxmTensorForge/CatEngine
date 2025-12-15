@@ -4,7 +4,7 @@
 AudioManager::AudioManager() {
 	ma_result result = ma_engine_init(nullptr, &_engine);
 	if (result != MA_SUCCESS) {
-		Logger::getInstance().log(LogType::Fatal, "audio engine failed");
+		Logger::getInstance().log(LogType::Fatal, "Audio engine failed");
 	}
 }
 AudioManager::~AudioManager() {
@@ -24,14 +24,14 @@ bool AudioManager::loadSound(const std::string& name, const std::string& path, b
 
 	if (result != MA_SUCCESS) {
 		_sounds.erase(it);
-		Logger::getInstance().log(LogType::Fatal, "audio sound failed");
+		Logger::getInstance().log(LogType::Fatal, "Audio sound failed");
 		return false;
 	}
 
 	data._repeat = repeat;
 	ma_sound_set_looping(&data.sound, repeat);
 
-	Logger::getInstance().log(LogType::Message, "sound loaded successfully: " + name);
+	Logger::getInstance().log(LogType::Message, "Sound loaded successfully: " + name);
 	return true;
 }
 void AudioManager::playSound(const std::string& name) {

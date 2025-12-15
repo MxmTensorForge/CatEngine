@@ -97,7 +97,7 @@ public:
 	}
 };
 
-class SetScaleAnim final : public Animation
+class ScaleToAnim final : public Animation
 {
 private:
 	std::weak_ptr<GameObject> _object;
@@ -119,7 +119,7 @@ private:
 	}
 public:
 	template <typename... Args>
-	SetScaleAnim(const std::shared_ptr<GameObject>& object, const Mxm::Vec3& value, Args&&... args)
+	ScaleToAnim(const std::shared_ptr<GameObject>& object, const Mxm::Vec3& value, Args&&... args)
 		: Animation(std::forward<Args>(args)...), _object(object), _end(value) {
 	}
 };

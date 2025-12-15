@@ -17,7 +17,7 @@ class Logger final
 private:
 	std::ofstream _file;
 
-	std::string logType2Str(LogType type) const;
+	std::string logTypeToStr(LogType type) const;
 	std::string getTimestep() const;
 
 	Logger() = default;
