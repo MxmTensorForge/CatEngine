@@ -51,9 +51,6 @@
     <ClCompile Include="Engine\Core\Screen.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Graphics\FrameBuffer.cpp">
-      <Filter>Engine\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Graphics\Renderer.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
@@ -131,9 +128,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Core\Screen.h">
       <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Graphics\FrameBuffer.h">
-      <Filter>Engine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\EngineConsts.h">
       <Filter>Engine\Core</Filter>
