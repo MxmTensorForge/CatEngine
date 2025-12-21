@@ -19,6 +19,8 @@ void Renderer::init() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
 	_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
 	_shader->use();
 }
@@ -55,6 +57,6 @@ void Renderer::drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshCompon
 		_shader->setUniform("uTexture", 0);
 	}
 
-	mesh->getGPUData().draw();
+	mesh->getData()->data.draw();
 	glDepthMask(GL_TRUE);
 }

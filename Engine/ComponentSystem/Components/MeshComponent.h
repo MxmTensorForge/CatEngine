@@ -8,8 +8,6 @@
 #include <string>
 #include <memory>
 
-#include "../../Graphics/GPUData.h"
-
 struct IntersectionInfo
 {
 	float distance = 0.0f;
@@ -25,8 +23,6 @@ private:
 	std::string _textureName;
 	Color _color;
 
-	GPUData _data;
-
 public:
 	MeshComponent(const std::shared_ptr<MeshData>& mesh, Color color);
 	MeshComponent(const std::shared_ptr<MeshData>& mesh, const std::string& textureName);
@@ -39,7 +35,7 @@ public:
 	inline Color& getColor() noexcept { return _color; }
 	inline const Color& getColor() const noexcept { return _color; }
 
-	inline const GPUData& getGPUData() const noexcept { return _data; }
+	inline const std::shared_ptr<MeshData>& getData() const noexcept { return _mesh; }
 
 	bool intersection(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out);
 };

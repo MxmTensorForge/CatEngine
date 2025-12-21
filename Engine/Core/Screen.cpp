@@ -28,6 +28,8 @@ bool Screen::open(int width, int height) {
 		Logger::getInstance().log(LogType::Fatal, "Glad init error");
 	}
 
+	SDL_GL_SetSwapInterval(1);
+
 	Input::setWindow(_window);
 
 	return true;

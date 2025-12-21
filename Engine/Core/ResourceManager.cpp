@@ -84,6 +84,7 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 	file.close();
 
 	result.calculateNormals();
+	result.data.loadData(result.vertices, result.normals, result.textureCoords);
 
 	_meshes[name] = std::make_shared<MeshData>(std::move(result));
 	Logger::getInstance().log(LogType::Message, "Model " + name + " (" + path + ") has been loaded successfully.");

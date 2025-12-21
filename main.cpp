@@ -31,8 +31,8 @@ private:
 	std::shared_ptr<Scene> _activeScene;
 
 	Mxm::Vec3 _cameraOffset = Mxm::Vec3(0.0f, 1.4f, 0.0f);
-	Mxm::Vec3 _gunOffset = Mxm::Vec3(0.55f, -0.35f, 1.0f);
-	Mxm::Vec3 _gunBulletOffset = Mxm::Vec3(0.0f, 0.0f, 1.0f);
+	Mxm::Vec3 _gunOffset = Mxm::Vec3(0.55f, -0.4f, 1.0f);
+	Mxm::Vec3 _gunBulletOffset = Mxm::Vec3(0.1f, 0.2f, 0.5f);
 
 	Mxm::Vec2 _inputDir{};
 
@@ -58,7 +58,7 @@ private:
 	}
 
 	void createMap() {
-		createObject("path", "cube", Mxm::Vec3(0.0f, 0.0f, 0.1f), Mxm::Vec3(5.0f, 0.1f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(150, 150, 150));
+		createObject("path", "cube", Mxm::Vec3(0.0f, 0.0f, 0.1f), Mxm::Vec3(5.0f, 0.1f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(145, 78, 47));
 
 		createObject("main_building", "cube", Mxm::Vec3(0.0f, 3.0f, 8.0f), Mxm::Vec3(6.0f, 3.0f, 4.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 80, 60));
 		createObject("roof", "frustum", Mxm::Vec3(0.0f, 9.0f, 8.0f), Mxm::Vec3(6.5f, 3.0f, 4.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(110, 50, 50));
@@ -95,7 +95,7 @@ private:
 		ResourceManager::getInstance().loadModelFromFile("textureCube", "models/textureCube.obj");
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
 		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
-		ResourceManager::getInstance().loadModelFromFile("gun1", "models/gun1.obj");
+		ResourceManager::getInstance().loadModelFromFile("gun1", "models/glock.obj");
 		ResourceManager::getInstance().loadModelFromFile("monkey", "models/gener.obj");
 
 		AudioManager::getInstance().loadSound("shoot", "sounds/shoot.mp3", false);
@@ -104,7 +104,7 @@ private:
 
 		AudioManager::getInstance().setVolume("shoot", 0.5f);
 
-		TextureManager::getInstance().loadTexture("texture", "textures/wall.jpg");
+		TextureManager::getInstance().loadTexture("texture", "textures/grass.jpg");
 
 		_activeScene = SceneManager::getInstance().createScene();
 
@@ -130,9 +130,11 @@ private:
 		_object->addComponent<Collider>()->generateSimpleFromMesh();
 
 		_gun = _activeScene->createObject("gun1");
-		_gun->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("gun1"));
-		_gun->transform().setScale(Mxm::Vec3(0.5f, 0.5f, 0.5f));
+		_gun->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("gun1"), Color(50, 50, 50));
+		_gun->transform().setScale(Mxm::Vec3(0.3f, 0.3f, 0.3f));
 		_gun->transform().translate(_gunOffset);
+
+		_gun->transform().rotate(Mxm::Vec3(0.0f, 0.0f, 0.0f));
 
 		_gun->transform().setParent(&_mainCamera->transform());
 	}
