@@ -49,6 +49,9 @@
     <Filter Include="main">
       <UniqueIdentifier>{69a8d439-7970-4083-803d-3d51802002a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\stb_image">
+      <UniqueIdentifier>{9226c50b-ac2b-4cea-8a23-b5b67b79f08a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Application.cpp">
@@ -135,9 +138,6 @@
     <ClCompile Include="Engine\Graphics\GPUData.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Graphics\Renderer.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
     <ClCompile Include="glad\src\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
@@ -146,6 +146,15 @@
     </ClCompile>
     <ClCompile Include="Engine\Geometry\MeshData.cpp">
       <Filter>Engine\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Texture.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Core\TextureManager.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\Renderer.cpp">
+      <Filter>Engine\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,8 +308,17 @@
     <ClInclude Include="Engine\Graphics\VertexArray.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Graphics\Renderer.h">
+    <ClInclude Include="Engine\Graphics\Texture.h">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\TextureManager.h">
       <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\stb_image\stb_image.h">
+      <Filter>Engine\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\Renderer.h">
+      <Filter>Engine\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

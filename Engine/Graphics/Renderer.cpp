@@ -5,6 +5,8 @@
 
 #include "../ComponentSystem/Object/GameObject.h"
 
+#include "../Core/TextureManager.h"
+
 Renderer::Renderer() : _shader(nullptr) {}
 Renderer::~Renderer() {}
 
@@ -37,12 +39,22 @@ void Renderer::drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshCompon
 	_shader->use();
 	_shader->setUniform("uModel", model.data(), true);
 
-	Color color = mesh->getColor();
-	_shader->setUniform("uColor", color.rf(), color.gf(), color.bf(), color.af());
+	std::string texName = mesh->getTextureName();
+	if (texName.empty()) {
+		Color color = mesh->getColor();
+		_shader->setUniform("uUseTexture", 0);
+		_shader->setUniform("uColor", color.rf(), color.gf(), color.bf(), color.af());
 
-	if (color.af() < 1.0f) {
-		glDepthMask(GL_FALSE);
+		if (color.af() < 1.0f) {
+			glDepthMask(GL_FALSE);
+		}
 	}
+	else {
+		TextureManager::getInstance().getTexture(texName)->bind(GL_TEXTURE0);
+		_shader->setUniform("uUseTexture", 1);
+		_shader->setUniform("uTexture", 0);
+	}
+
 	mesh->getGPUData().draw();
 	glDepthMask(GL_TRUE);
 }

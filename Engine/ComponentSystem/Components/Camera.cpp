@@ -10,7 +10,7 @@
 void Camera::start() {
 	_zNear = 0.1f;
 	_zFar = 3000.0f;
-	_fov = Mxm::Consts::DEG2RAD * 90.0f;
+	_fov = Mxm::Consts::DEG2RAD * 100.0f;
 	_aspect = (float)EngineConsts::STANDART_WIDTH / (float)EngineConsts::STANDART_HEIGHT;
 
 	_projectionMatrix = Mxm::Mat4::perspective(_fov, _aspect, _zNear, _zFar);

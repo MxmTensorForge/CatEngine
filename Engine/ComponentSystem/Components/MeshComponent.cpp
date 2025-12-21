@@ -10,11 +10,15 @@
 
 MeshComponent::MeshComponent(const std::shared_ptr<MeshData>& mesh, Color color) : _mesh{mesh}, _color(color), _data()
 {
-	_data.loadData(_mesh->vertices, _mesh->normals);
+	_data.loadData(_mesh->vertices, _mesh->normals, _mesh->textureCoords);
+}
+MeshComponent::MeshComponent(const std::shared_ptr<MeshData>& mesh, const std::string& textureName) : _mesh{ mesh }, _textureName(textureName), _data()
+{
+	_data.loadData(_mesh->vertices, _mesh->normals, _mesh->textureCoords);
 }
 MeshComponent::MeshComponent(const std::shared_ptr<MeshData>& mesh) : _mesh{mesh}, _color(Color(255, 255, 255, 255)), _data()
 {
-	_data.loadData(_mesh->vertices, _mesh->normals);
+	_data.loadData(_mesh->vertices, _mesh->normals, _mesh->textureCoords);
 }
 
 bool MeshComponent::intersection(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out) {

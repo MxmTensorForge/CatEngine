@@ -3,7 +3,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #define STB_IMAGE_IMPLEMENTATION
-#include "../../stb_image.h"
+#include "../stb_image/stb_image.h"
 
 Texture::Texture() : _id(0), _width(0), _height(0), _channels(0) {}
 
@@ -21,7 +21,7 @@ void Texture::load(const std::string& path) noexcept {
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
 	if (!data) {
-		Logger::getInstance().log(LogType::Error, "Image load failed");
+		Logger::getInstance().log(LogType::Fatal, "Image load failed");
 	}
 
 	GLuint texture;

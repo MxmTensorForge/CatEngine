@@ -20,6 +20,7 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 
 	MeshData result;
 	std::vector<Mxm::Vec3> verticesBuffer;
+	std::vector<Mxm::Vec2> texCoordsBuffer;
 
 	std::string line;
 
@@ -38,21 +39,34 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 
 			verticesBuffer.emplace_back(x, y, z);
 		}
+		else if (type == "vt") {
+			float s, t;
+			ss >> s >> t;
+
+			texCoordsBuffer.emplace_back(s, t);
+		}
 		else if (type == "f") {
 			std::string faceData;
 			std::vector<unsigned int> faceIndices;
+			std::vector<unsigned int> texCoordsIndices;
 
 			while (ss >> faceData)
 			{
 				size_t slash = faceData.find('/');
-				int vertexIndex = 0;
 
-				if (slash != std::string::npos)
-					vertexIndex = std::stoi(faceData.substr(0, slash));
-				else
-					vertexIndex = std::stoi(faceData);
+				if (slash != std::string::npos) {
+					int vertexIndex = std::stoi(faceData.substr(0, slash));
+					faceIndices.push_back(vertexIndex - 1);
 
-				faceIndices.push_back(vertexIndex - 1);
+					size_t slash1 = faceData.find('/', slash + 1);
+					int uvIndex = std::stoi(faceData.substr(slash + 1, slash1 - slash - 1));
+					texCoordsIndices.push_back(uvIndex - 1);
+				}
+				else {
+					int vertexIndex = std::stoi(faceData);
+					faceIndices.push_back(vertexIndex - 1);
+					texCoordsIndices.push_back(0);
+				}
 			}
 
 			for (size_t i = 1; i + 1 < faceIndices.size(); i++)
@@ -60,6 +74,10 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 				result.vertices.push_back(verticesBuffer[faceIndices[0]]);
 				result.vertices.push_back(verticesBuffer[faceIndices[i]]);
 				result.vertices.push_back(verticesBuffer[faceIndices[i + 1]]);
+
+				result.textureCoords.push_back(texCoordsIndices[0] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[0]] : Mxm::Vec2(0.0f));
+				result.textureCoords.push_back(texCoordsIndices[0] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[i]] : Mxm::Vec2(0.0f));
+				result.textureCoords.push_back(texCoordsIndices[0] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[i + 1]] : Mxm::Vec2(0.0f));
 			}
 		}
 	}

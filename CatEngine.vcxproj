@@ -146,6 +146,7 @@
     <ClCompile Include="Engine\Core\Logger.cpp" />
     <ClCompile Include="Engine\Core\ResourceManager.cpp" />
     <ClCompile Include="Engine\Core\Screen.cpp" />
+    <ClCompile Include="Engine\Core\TextureManager.cpp" />
     <ClCompile Include="Engine\Core\Time.cpp" />
     <ClCompile Include="Engine\Geometry\MeshData.cpp" />
     <ClCompile Include="Engine\Geometry\Plane.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Engine\Graphics\GPUData.cpp" />
     <ClCompile Include="Engine\Graphics\Renderer.cpp" />
     <ClCompile Include="Engine\Graphics\Shader.cpp" />
+    <ClCompile Include="Engine\Graphics\Texture.cpp" />
     <ClCompile Include="Engine\Graphics\VertexArray.cpp" />
     <ClCompile Include="Engine\miniaudio\miniaudio.c" />
     <ClCompile Include="Engine\Physics\PhysicsSystem.cpp" />
@@ -190,6 +192,7 @@
     <ClInclude Include="Engine\Core\Logger.h" />
     <ClInclude Include="Engine\Core\ResourceManager.h" />
     <ClInclude Include="Engine\Core\Screen.h" />
+    <ClInclude Include="Engine\Core\TextureManager.h" />
     <ClInclude Include="Engine\Core\Time.h" />
     <ClInclude Include="Engine\Geometry\MeshData.h" />
     <ClInclude Include="Engine\Geometry\Plane.h" />
@@ -199,6 +202,7 @@
     <ClInclude Include="Engine\Graphics\GPUData.h" />
     <ClInclude Include="Engine\Graphics\Renderer.h" />
     <ClInclude Include="Engine\Graphics\Shader.h" />
+    <ClInclude Include="Engine\Graphics\Texture.h" />
     <ClInclude Include="Engine\Graphics\VertexArray.h" />
     <ClInclude Include="Engine\miniaudio\miniaudio.h" />
     <ClInclude Include="Engine\Mxm\Consts.h" />
@@ -212,6 +216,7 @@
     <ClInclude Include="Engine\Mxm\Vec4.h" />
     <ClInclude Include="Engine\Physics\CollisionResult.h" />
     <ClInclude Include="Engine\Physics\PhysicsSystem.h" />
+    <ClInclude Include="Engine\stb_image\stb_image.h" />
     <ClInclude Include="Engine\UI\FontData.h" />
     <ClInclude Include="Engine\UI\UIButton.h" />
     <ClInclude Include="Engine\UI\UIElement.h" />

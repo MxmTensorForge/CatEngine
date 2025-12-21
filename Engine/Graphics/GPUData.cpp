@@ -10,7 +10,7 @@ GPUData::~GPUData() {
 
 }
 
-void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector<Mxm::Vec3>& normals) {
+void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector<Mxm::Vec3>& normals, const std::vector<Mxm::Vec2>& texCoords) {
 	_verticesCount = vertices.size();
 
 	_vao->bind();
@@ -26,15 +26,20 @@ void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector
 		vertexData.push_back(normals[i / 3].x);
 		vertexData.push_back(normals[i / 3].y);
 		vertexData.push_back(normals[i / 3].z);
+
+		vertexData.push_back(texCoords[i].x);
+		vertexData.push_back(texCoords[i].y);
     }
 
 	_vbo->bind();
 	_vbo->bufferData(vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
 
-	_vao->setAttribute(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	_vao->setAttribute(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	_vao->enableAttribute(0);
-	_vao->setAttribute(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	_vao->setAttribute(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	_vao->enableAttribute(1);
+	_vao->setAttribute(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	_vao->enableAttribute(2);
 
 	_vbo->unBind();
 	_vao->unBind();

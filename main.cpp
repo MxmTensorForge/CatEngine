@@ -10,6 +10,7 @@
 #include "Engine/Core/Time.h"
 #include "Engine/Core/ResourceManager.h"
 #include "Engine/Core/AudioManager.h"
+#include "Engine/Core/TextureManager.h"
 #include "Engine/Animation/Animator.h"
 #include "Engine/Animation/Animations/TransformAnim.h"
 #include "Engine/Animation/Animations/SetColorAnim.h"
@@ -57,8 +58,6 @@ private:
 	}
 
 	void createMap() {
-		createObject("ground", "plane", Mxm::Vec3(0.0f, 0.0f, 0.0f), Mxm::Vec3(30.0f, 1.0f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(30, 180, 30));
-
 		createObject("path", "cube", Mxm::Vec3(0.0f, 0.0f, 0.1f), Mxm::Vec3(5.0f, 0.1f, 30.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(150, 150, 150));
 
 		createObject("main_building", "cube", Mxm::Vec3(0.0f, 3.0f, 8.0f), Mxm::Vec3(6.0f, 3.0f, 4.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 80, 60));
@@ -82,10 +81,18 @@ private:
 		createObject("small_roof", "frustum", Mxm::Vec3(7.0f, 5.5f, -9.5f), Mxm::Vec3(2.5f, 1.5f, 3.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 60, 50, 20));
 
 		createObject("box", "monkey", Mxm::Vec3(0.0f, 3.0f, -4.0f), Mxm::Vec3(0.8f, 0.8f, 0.8f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(255, 60, 50, 255));
+
+		auto obj = _activeScene->createObject("ground", "map");
+		obj->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("plane"), "texture");
+		obj->transform().setPosition(Mxm::Vec3(0.0f, 0.0f, 0.0f));
+		obj->transform().setScale(Mxm::Vec3(30.0f, 1.0f, 30.0f));
+
+		obj->addComponent<Collider>()->generateFromMesh();
 	}
 
 	void prepareGame() {
 		ResourceManager::getInstance().loadModelFromFile("cube", "models/cube.obj");
+		ResourceManager::getInstance().loadModelFromFile("textureCube", "models/textureCube.obj");
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
 		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
 		ResourceManager::getInstance().loadModelFromFile("gun1", "models/gun1.obj");
@@ -96,6 +103,8 @@ private:
 		AudioManager::getInstance().loadSound("background", "sounds/background.mp3", true);
 
 		AudioManager::getInstance().setVolume("shoot", 0.5f);
+
+		TextureManager::getInstance().loadTexture("texture", "textures/wall.jpg");
 
 		_activeScene = SceneManager::getInstance().createScene();
 

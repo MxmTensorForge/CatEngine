@@ -29,7 +29,7 @@ public:
 	GPUData(GPUData&&) noexcept = default;
 	GPUData& operator=(GPUData&&) noexcept = default;
 
-	void loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector<Mxm::Vec3>& normals);
+	void loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector<Mxm::Vec3>& normals, const std::vector<Mxm::Vec2>& texCoords);
 	void draw() const noexcept;
 };
 

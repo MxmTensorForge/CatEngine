@@ -22,15 +22,19 @@ class MeshComponent final : public Component
 {
 private:
 	std::shared_ptr<MeshData> _mesh;
+	std::string _textureName;
 	Color _color;
+
 	GPUData _data;
 
 public:
 	MeshComponent(const std::shared_ptr<MeshData>& mesh, Color color);
+	MeshComponent(const std::shared_ptr<MeshData>& mesh, const std::string& textureName);
 	MeshComponent(const std::shared_ptr<MeshData>& mesh);
-	MeshComponent() = default;	
+	MeshComponent() = delete;	
 
-	inline std::vector<Mxm::Vec3>& getVertices() noexcept { return _mesh->vertices; }
+	inline const std::vector<Mxm::Vec3>& getVertices() const noexcept { return _mesh->vertices; }
+	inline const std::string& getTextureName() const noexcept { return _textureName; }
 
 	inline Color& getColor() noexcept { return _color; }
 	inline const Color& getColor() const noexcept { return _color; }
