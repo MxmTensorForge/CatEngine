@@ -2,15 +2,12 @@
 #define SCREEN_H
 
 #include <SDL3/SDL.h>
-#include "../Graphics/FrameBuffer.h"
 
 class Screen final
 {
 private:
 	SDL_Window* _window = nullptr;
-
-	SDL_Renderer* _renderer = nullptr;
-	SDL_Texture* _texture = nullptr;
+	SDL_GLContext _context = nullptr;
 
 	SDL_Event _event{};
 
@@ -20,11 +17,7 @@ public:
 	bool open(int width, int height);
 	void close();
 	bool pollEvents();
-	void drawFBO(const FrameBuffer& fbo);
-	void present();
-	void clear();
-
-	SDL_Renderer* getSDLRendererUnsafe() { return _renderer; }
+	void swap();
 };
 
 #endif // !SCREEN_H

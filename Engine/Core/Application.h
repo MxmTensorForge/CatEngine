@@ -17,8 +17,6 @@ private:
 	bool _isDrawingFrame = false;
 
 	Color _backgroundColor = Color(255, 255, 255, 255);
-
-	std::vector<Triangle> _projectedTriangles;
 protected:
 	virtual void start() {}
 	virtual void update() {}

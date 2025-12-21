@@ -18,8 +18,10 @@
 void Application::run() {
 	Logger::getInstance().setLogFile("log.txt");
 
-	if (!_screen.open(_width / EngineConsts::SCREEN_SCALE, _height / EngineConsts::SCREEN_SCALE)) return;
+	if (!_screen.open(_width, _height)) return;
 	auto& sceneManager = SceneManager::getInstance();
+
+	_renderer.init();
 
 	start();
 	sceneManager.processPendingScene();
@@ -60,11 +62,13 @@ void Application::run() {
 		sceneManager.getActiveScene()->updateAnimator();
 		Time::end("animations");
 
-		_screen.clear();
-		_renderer.clear(_backgroundColor);
+		auto camera = sceneManager.getActiveScene()->getMainCamera();
+		if (camera) {
+			_renderer.update(sceneManager.getActiveScene()->getMainCamera()->getComponent<Camera>());
+		}
+		_renderer.clear(Mxm::Vec4(_backgroundColor.rf(), _backgroundColor.gf(), _backgroundColor.bf(), _backgroundColor.af()));
 		
 		Time::begin("projection");
-		_projectedTriangles.clear();
 
 		for (const auto& obj : sceneManager.getActiveScene()->getGameObjects()) {
 			if (!obj->getActive()) continue;
@@ -74,29 +78,9 @@ void Application::run() {
 
 			auto& transform = obj->transform();
 
-			auto& tris = sceneManager.getActiveScene()->getMainCamera()->getComponent<Camera>()->project(mesh_ptr, transform);
-			_projectedTriangles.insert(_projectedTriangles.end(), tris.begin(), tris.end());
+			_renderer.drawMesh(transform.getWorldMatrix(), mesh_ptr);
 		}
 		Time::end("projection");
-
-		Time::begin("rasterization");
-		for (const auto& t : _projectedTriangles) {
-			if (_isDrawingFrame) {
-				_renderer.drawTriangleFrame(
-					static_cast<int>(t[0].x), static_cast<int>(t[0].y), t[0].z,
-					static_cast<int>(t[1].x), static_cast<int>(t[1].y), t[1].z,
-					static_cast<int>(t[2].x), static_cast<int>(t[2].y), t[2].z,
-					Color(255, 255, 255, 255));
-			}
-			else {
-				_renderer.drawTriangle(
-					static_cast<int>(t[0].x), static_cast<int>(t[0].y), t[0].z,
-					static_cast<int>(t[1].x), static_cast<int>(t[1].y), t[1].z,
-					static_cast<int>(t[2].x), static_cast<int>(t[2].y), t[2].z,
-					t.color());
-			}
-		}
-		Time::end("rasterization");
 
 		animAccumulator += Time::deltaTime();
 		if (animAccumulator >= 1.0f) {
@@ -118,10 +102,10 @@ void Application::run() {
 			animAccumulator = 0.0f;
 		}
 
-		_renderer.present(_screen);
-		UISystem::getInstance().render(_screen.getSDLRendererUnsafe());
+		//_renderer.present(_screen);
+		//UISystem::getInstance().render(_screen.getSDLRendererUnsafe());
 
-		_screen.present();
+		_screen.swap();
 	}
 	shutdown();
 	_screen.close();
@@ -134,4 +118,4 @@ void Application::setBackgroundColor(Color color) noexcept {
 	_backgroundColor = color;
 }
 
-Application::Application() : _width(EngineConsts::SCALED_WIDTH), _height(EngineConsts::SCALED_HEIGHT), _renderer(EngineConsts::SCALED_WIDTH, EngineConsts::SCALED_HEIGHT), _screen() {}
+Application::Application() : _width(EngineConsts::STANDART_WIDTH), _height(EngineConsts::STANDART_HEIGHT), _screen() {}

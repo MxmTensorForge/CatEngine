@@ -19,11 +19,9 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 	}
 
 	MeshData result;
+	std::vector<Mxm::Vec3> verticesBuffer;
 
 	std::string line;
-	size_t currentMatIndex = 0;
-
-	Color currentColor = Color(255, 255, 255);
 
 	while (std::getline(file, line))
 	{
@@ -38,13 +36,7 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 			float x, y, z;
 			ss >> x >> y >> z;
 
-			result.vertices.emplace_back(x, y, z);
-		}
-		else if (type == "color") {
-			int colorR, colorG, colorB;
-			ss >> colorR >> colorG >> colorB;
-
-			currentColor = Color(colorR, colorG, colorB);
+			verticesBuffer.emplace_back(x, y, z);
 		}
 		else if (type == "f") {
 			std::string faceData;
@@ -65,15 +57,15 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 
 			for (size_t i = 1; i + 1 < faceIndices.size(); i++)
 			{
-				result.indices.push_back(faceIndices[0]);
-				result.indices.push_back(faceIndices[i]);
-				result.indices.push_back(faceIndices[i + 1]);
-
-				result.triangleColors.push_back(currentColor);
+				result.vertices.push_back(verticesBuffer[faceIndices[0]]);
+				result.vertices.push_back(verticesBuffer[faceIndices[i]]);
+				result.vertices.push_back(verticesBuffer[faceIndices[i + 1]]);
 			}
 		}
 	}
 	file.close();
+
+	result.calculateNormals();
 
 	_meshes[name] = std::make_shared<MeshData>(std::move(result));
 	Logger::getInstance().log(LogType::Message, "Model " + name + " (" + path + ") has been loaded successfully.");

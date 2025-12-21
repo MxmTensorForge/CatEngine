@@ -7,8 +7,9 @@
 
 struct MeshData {
 	std::vector<Mxm::Vec3> vertices;
-	std::vector<unsigned int> indices;
-	std::vector<Color> triangleColors;
+	std::vector<Mxm::Vec3> normals;
+
+	void calculateNormals() noexcept;
 };
 
 #endif // !MESH_H

@@ -1,26 +1,33 @@
-#ifndef RENDER_H
-#define RENDER_H
+#ifndef RENDERER_H
+#define RENDERER_H
 
-#include "FrameBuffer.h"
-#include "Color.h"
+#include <memory>
 
-class Screen;
+#include "Shader.h"
+#include "Buffer.h"
+#include "VertexArray.h"
 
-class Renderer
+#include "../Mxm/Mat4.h"
+#include "GPUData.h"
+
+class Camera;
+class MeshComponent;
+
+class Renderer final
 {
 private:
-    FrameBuffer _fbo;
-
+	std::unique_ptr<Shader> _shader;
 public:
-    Renderer(int width, int height);
+	Renderer();
+	~Renderer();
 
-    void clear(Color color);
-    void present(Screen& screen) const;
+	void init();
+	void update(const std::shared_ptr<Camera>& camera);
 
-    void drawRect(int x, int y, int width, int height, Color color);
-    void drawLine(int x0, int y0, float z0, int x1, int y1, float z1, Color color);
-    void drawTriangleFrame(int x0, int y0, float z0, int x1, int y1, float z1, int x2, int y2, float z2, Color color);
-    void drawTriangle(int x0, int y0, float z0, int x1, int y1, float z1, int x2, int y2, float z2, Color color);
+	void clear(const Mxm::Vec4& color) const noexcept;
+	void viewport(GLsizei width, GLsizei height) const noexcept;
+
+	void drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshComponent>& mesh);
 };
 
-#endif // RENDER_H
+#endif // !RENDERER_H

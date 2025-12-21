@@ -18,6 +18,8 @@ namespace Mxm
              float a30, float a31, float a32, float a33) noexcept;
         explicit Mat4(const Vec4& vec1, const Vec4& vec2, const Vec4& vec3, const Vec4& vec4) noexcept;
 
+        const float* data() const noexcept { return &(_m[0][0]); }
+
         Vec4 operator[](size_t index) const noexcept;
         Vec4 col(size_t index) const noexcept;
 

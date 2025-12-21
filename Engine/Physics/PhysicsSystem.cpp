@@ -198,7 +198,7 @@ CollisionResult PhysicsSystem::epaAlgorithm(const std::shared_ptr<Collider>& col
 
 		//If we have reached the boundaries of the Minkowski set, then there is no point in continuing the algorithm.
 		float newDist = closestFace.normal().dot(newPoint);
-		if (newDist - closestDist < 0.001f) {
+		if (newDist - closestDist < 0.1f) {
 			return CollisionResult{ closestFace.normal(), closestDist };
 		}
 

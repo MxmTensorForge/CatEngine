@@ -17,24 +17,15 @@ private:
 	float _zNear{}, _zFar{};
 	float _fov{};
 
-	std::vector<Plane> _clippingPlanes;
-
-	std::vector<Triangle> _clippedTris;
-	std::vector<Triangle> _tempClippedTris;
-
-	std::vector<Mxm::Vec4> _outsidePoints;
-	std::vector<Mxm::Vec4> _insidePoints;
-
-	std::vector<Triangle> _projectedTris;
-
 	Mxm::Mat4 _projectionMatrix{};
 	Mxm::Mat4 _viewMatrix{};
-	Mxm::Mat4 _screenSpaceMatrix{};
 
 	void start() override;
 	void update() override;
 public:
-	const std::vector<Triangle>& project(const std::shared_ptr<MeshComponent>& mesh, const Transform& transform);
+	const Mxm::Mat4& getViewMatrix() const { return _viewMatrix; }
+	const Mxm::Mat4& getProjectionMatrix() const { return _projectionMatrix; }
+	Mxm::Mat4 getViewProjection() const { return _projectionMatrix * _viewMatrix; }
 };
 
 #endif

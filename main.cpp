@@ -38,7 +38,7 @@ private:
 	float _gunShootSpeed = 0.9f;
 	float _gunTimer = _gunShootSpeed;
 
-	float _gunRecoil = 5.0f;
+	float _gunRecoil = 8.0f;
 
 	float _groundSpeed = 70.0f;
 	float _airSpeed = 5.0f;
@@ -78,10 +78,10 @@ private:
 		createObject("rock1", "cube", Mxm::Vec3(-12.0f, 0.3f, -20.0f), Mxm::Vec3(1.5f, 1.5f, 1.5f), Mxm::Vec3(45.0f, 45.0f, 0.0f), Color(150, 150, 160));
 		createObject("rock2", "cube", Mxm::Vec3(-14.5f, 1.0f, -17.0f), Mxm::Vec3(3.0f, 3.0f, 3.0f), Mxm::Vec3(20.0f, 20.0f, 0.0f), Color(140, 140, 150));
 
-		createObject("small_house", "cube", Mxm::Vec3(7.0f, 2.0f, -9.5f), Mxm::Vec3(2.0f, 2.0f, 2.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(80, 120, 200));
-		createObject("small_roof", "frustum", Mxm::Vec3(7.0f, 5.5f, -9.5f), Mxm::Vec3(2.5f, 1.5f, 3.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 60, 50));
+		createObject("small_house", "cube", Mxm::Vec3(7.0f, 2.0f, -9.5f), Mxm::Vec3(2.0f, 2.0f, 2.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(80, 120, 200, 20));
+		createObject("small_roof", "frustum", Mxm::Vec3(7.0f, 5.5f, -9.5f), Mxm::Vec3(2.5f, 1.5f, 3.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 60, 50, 20));
 
-		createObject("box", "cube", Mxm::Vec3(0.0f, 3.0f, -4.0f), Mxm::Vec3(0.8f, 0.8f, 0.8f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(255, 60, 50));
+		createObject("box", "monkey", Mxm::Vec3(0.0f, 3.0f, -4.0f), Mxm::Vec3(0.8f, 0.8f, 0.8f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(255, 60, 50, 255));
 	}
 
 	void prepareGame() {
@@ -89,6 +89,7 @@ private:
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
 		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
 		ResourceManager::getInstance().loadModelFromFile("gun1", "models/gun1.obj");
+		ResourceManager::getInstance().loadModelFromFile("monkey", "models/gener.obj");
 
 		AudioManager::getInstance().loadSound("shoot", "sounds/shoot.mp3", false);
 		AudioManager::getInstance().loadSound("click", "sounds/click.mp3", false);
@@ -109,7 +110,7 @@ private:
 		_object = _activeScene->createObject("body");
 		_object->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 200, 70, 255));
 		_object->transform().setScale(Mxm::Vec3(0.7f, 2.0f, 0.7f));
-		_object->transform().setPosition(Mxm::Vec3(0.0f, 5.0f, 0.0f));
+		_object->transform().setPosition(Mxm::Vec3(0.0f, 15.0f, 0.0f));
 		_object->transform().translate(Mxm::Vec3(0.0f, 8.0f, 0.0f));
 
 		_object->addComponent<RigidBody>();
@@ -165,8 +166,8 @@ private:
 		trace->transform().setLookRotation(direction);
 
 		static int traceCounter = 0;
-		_activeScene->getAnimator().add<SetColorAnim>("trace_" + std::to_string(traceCounter++), trace->getComponent<MeshComponent>(), Color(100, 100, 100),
-			0.5f, Animation::InterpolationType::LINEAR, [trace, this]() {
+		_activeScene->getAnimator().add<SetColorAnim>("trace_" + std::to_string(traceCounter++), trace->getComponent<MeshComponent>(), Color(100, 100, 100, 0),
+			2.0f, Animation::InterpolationType::LINEAR, [trace, this]() {
 				_activeScene->removeObject(trace);
 			});
 	}
@@ -281,7 +282,7 @@ private:
 			}
 
 			_activeScene->getAnimator().add<RotateByAnim>("gun_rotate", _gun, Mxm::Vec3(-Mxm::Consts::PI * 2.0f, 0.0f, 0.0f),
-				_gunShootSpeed, Animation::InterpolationType::EASY_OUT);
+			_gunShootSpeed, Animation::InterpolationType::EASY_OUT);
 
 			_gunTimer = 0.0f;
 		}

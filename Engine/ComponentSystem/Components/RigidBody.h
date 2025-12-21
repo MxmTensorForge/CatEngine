@@ -13,7 +13,7 @@
 class RigidBody final : public Component
 {
 private:
-	using Callback = std::function<void(std::shared_ptr<GameObject>, const CollisionResult&)>;
+	using Callback = std::function<void(const std::shared_ptr<GameObject>&, const CollisionResult&)>;
 
 	Mxm::Vec3 _gravity{0.0f, -9.81f, 0.0f};
 	Mxm::Vec3 _velocity{};

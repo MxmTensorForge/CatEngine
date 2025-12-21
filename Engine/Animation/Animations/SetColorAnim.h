@@ -20,7 +20,7 @@ private:
 		if (!obj) { stop(); return; }
 
 		if (!_initialized) {
-			_start = obj->getTriangleColor(0);
+			_start = obj->getColor();
 			_initialized = true;
 		}
 
@@ -31,7 +31,7 @@ private:
 			static_cast<uint8_t>(_start.b() * (1 - t) + _end.b() * t),
 			static_cast<uint8_t>(_start.a() * (1 - t) + _end.a() * t)
 		);
-		obj->applyColorToAllTriangles(current);
+		obj->getColor() = current;;
 	}
 public:
 	template <typename... Args>
