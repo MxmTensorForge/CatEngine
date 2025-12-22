@@ -160,11 +160,20 @@ bool Scene::rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionI
 
     for (const auto& obj : _gameObjects) {
         auto mesh_ptr = obj->getComponent<MeshComponent>();
-        if (!mesh_ptr) continue;
+        auto collider_ptr = obj->getComponent<Collider>();
+        if (!mesh_ptr || !collider_ptr) continue;
 
         if (std::find(tags.begin(), tags.end(), obj->getTag()) == tags.end()) continue;
 
-        if (mesh_ptr->intersection(origin, dir, temp)) {
+        auto& model = obj->transform().getWorldMatrix();
+        Mxm::Mat4 inverseModel = obj->transform().getInverseWorldMatrix();
+
+        Mxm::Vec3 invOrigin = (inverseModel * Mxm::Vec4(origin, 1.0f)).toVec3();
+        Mxm::Vec3 invDir = (inverseModel * Mxm::Vec4(dir, 0.0f)).toVec3();
+
+        if (!collider_ptr->getLocalAABB().isIntersection(invOrigin, invDir)) continue;
+
+        if (mesh_ptr->intersection(invOrigin, invDir, temp)) {
             if (temp.distance < closestDistance) {
                 closestDistance = temp.distance;
                 out = temp;

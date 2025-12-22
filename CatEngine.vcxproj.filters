@@ -156,6 +156,9 @@
     <ClCompile Include="Engine\Graphics\Renderer.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Geometry\AABB.cpp">
+      <Filter>Engine\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Application.h">
@@ -319,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Graphics\Renderer.h">
       <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Geometry\AABB.h">
+      <Filter>Engine\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

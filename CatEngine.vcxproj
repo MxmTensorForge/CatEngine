@@ -148,6 +148,7 @@
     <ClCompile Include="Engine\Core\Screen.cpp" />
     <ClCompile Include="Engine\Core\TextureManager.cpp" />
     <ClCompile Include="Engine\Core\Time.cpp" />
+    <ClCompile Include="Engine\Geometry\AABB.cpp" />
     <ClCompile Include="Engine\Geometry\MeshData.cpp" />
     <ClCompile Include="Engine\Geometry\Plane.cpp" />
     <ClCompile Include="Engine\Geometry\Triangle.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Engine\Core\Screen.h" />
     <ClInclude Include="Engine\Core\TextureManager.h" />
     <ClInclude Include="Engine\Core\Time.h" />
+    <ClInclude Include="Engine\Geometry\AABB.h" />
     <ClInclude Include="Engine\Geometry\MeshData.h" />
     <ClInclude Include="Engine\Geometry\Plane.h" />
     <ClInclude Include="Engine\Geometry\Triangle.h" />

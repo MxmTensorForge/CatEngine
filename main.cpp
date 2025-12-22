@@ -32,14 +32,14 @@ private:
 
 	Mxm::Vec3 _cameraOffset = Mxm::Vec3(0.0f, 1.4f, 0.0f);
 	Mxm::Vec3 _gunOffset = Mxm::Vec3(0.55f, -0.4f, 1.0f);
-	Mxm::Vec3 _gunBulletOffset = Mxm::Vec3(0.1f, 0.2f, 0.5f);
+	Mxm::Vec3 _gunBulletOffset = Mxm::Vec3(0.0f, 0.2f, 0.5f);
 
 	Mxm::Vec2 _inputDir{};
 
-	float _gunShootSpeed = 0.9f;
+	float _gunShootSpeed = 1.0f;
 	float _gunTimer = _gunShootSpeed;
 
-	float _gunRecoil = 8.0f;
+	float _gunRecoil = 5.0f;
 
 	float _groundSpeed = 70.0f;
 	float _airSpeed = 5.0f;
@@ -69,7 +69,7 @@ private:
 		createObject("tree2_trunk", "cube", Mxm::Vec3(10.0f, 1.5f, -3.0f), Mxm::Vec3(0.5f, 2.0f, 0.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(120, 80, 40));
 		createObject("tree2_top", "frustum", Mxm::Vec3(10.0f, 3.5f, -3.0f), Mxm::Vec3(2.0f, 1.5f, 2.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(40, 150, 40));
 
-		for (int i = -4; i <= 4; i++) {
+		for (int i = -4; i <= 6; i++) {
 			createObject("fence_left_" + std::to_string(i), "cube", Mxm::Vec3(-12.0f, 0.8f, i * 3.0f), Mxm::Vec3(0.2f, 1.0f, 0.2f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 200, 200));
 			createObject("fence_right_" + std::to_string(i), "cube", Mxm::Vec3(12.0f, 0.8f, i * 3.0f), Mxm::Vec3(0.2f, 1.0f, 0.2f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 200, 200));
 		}
@@ -77,10 +77,11 @@ private:
 		createObject("rock1", "cube", Mxm::Vec3(-12.0f, 0.3f, -20.0f), Mxm::Vec3(1.5f, 1.5f, 1.5f), Mxm::Vec3(45.0f, 45.0f, 0.0f), Color(150, 150, 160));
 		createObject("rock2", "cube", Mxm::Vec3(-14.5f, 1.0f, -17.0f), Mxm::Vec3(3.0f, 3.0f, 3.0f), Mxm::Vec3(20.0f, 20.0f, 0.0f), Color(140, 140, 150));
 
-		createObject("small_house", "cube", Mxm::Vec3(7.0f, 2.0f, -9.5f), Mxm::Vec3(2.0f, 2.0f, 2.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(80, 120, 200, 20));
-		createObject("small_roof", "frustum", Mxm::Vec3(7.0f, 5.5f, -9.5f), Mxm::Vec3(2.5f, 1.5f, 3.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 60, 50, 20));
+		createObject("small_house", "cube", Mxm::Vec3(7.0f, 2.0f, -9.5f), Mxm::Vec3(2.0f, 2.0f, 2.5f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(80, 120, 200));
+		createObject("small_roof", "frustum", Mxm::Vec3(7.0f, 5.5f, -9.5f), Mxm::Vec3(2.5f, 1.5f, 3.0f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(200, 60, 50));
 
-		createObject("box", "monkey", Mxm::Vec3(0.0f, 3.0f, -4.0f), Mxm::Vec3(0.8f, 0.8f, 0.8f), Mxm::Vec3(0.0f, 0.0f, 0.0f), Color(255, 60, 50, 255));
+		createObject("box", "gener", Mxm::Vec3(15.0f, 0.8f, -4.0f), Mxm::Vec3(0.8f, 0.8f, 0.8f), Mxm::Vec3(0.0f, 45.0f, -5.0f), Color(100, 100, 100));
+
 
 		auto obj = _activeScene->createObject("ground", "map");
 		obj->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("plane"), "texture");
@@ -96,7 +97,7 @@ private:
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
 		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
 		ResourceManager::getInstance().loadModelFromFile("gun1", "models/glock.obj");
-		ResourceManager::getInstance().loadModelFromFile("monkey", "models/gener.obj");
+		ResourceManager::getInstance().loadModelFromFile("gener", "models/gener.obj");
 
 		AudioManager::getInstance().loadSound("shoot", "sounds/shoot.mp3", false);
 		AudioManager::getInstance().loadSound("click", "sounds/click.mp3", false);
@@ -132,7 +133,7 @@ private:
 		_gun = _activeScene->createObject("gun1");
 		_gun->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("gun1"), Color(50, 50, 50));
 		_gun->transform().setScale(Mxm::Vec3(0.3f, 0.3f, 0.3f));
-		_gun->transform().translate(_gunOffset);
+		//_gun->transform().translate(_gunOffset);
 
 		_gun->transform().rotate(Mxm::Vec3(0.0f, 0.0f, 0.0f));
 
@@ -196,7 +197,7 @@ private:
 		if (Input::isKeyPressed(Key::F1)) setDrawFrame(false);
 		if (Input::isKeyPressed(Key::F2)) setDrawFrame(true);
 
-		Mxm::Vec2 mouseDelta = Input::getMouseDelta() * 0.003f;
+		Mxm::Vec2 mouseDelta = Input::getMouseDelta() * 0.0025f;
 		pitch += mouseDelta.y;
 		yaw += mouseDelta.x;
 
@@ -240,14 +241,19 @@ private:
 		if (in_move && obj_rigid->isCollision()) {
 			anim_time += Time::deltaTime();
 
-			_gun->transform().translate(Mxm::Vec3(sinf(anim_time * 7.0f) * 0.009f, sinf(anim_time * 7.0f) * 0.008f, 0.0f));
+			Mxm::Vec3 shakeOffset = Mxm::Vec3(
+				sinf(anim_time * 7.0f) * 0.1f,
+				sinf(anim_time * 7.0f) * 0.1f,
+				0.0f
+			);
+
+			_gun->transform().setPosition(_gunOffset + shakeOffset);
 
 			is_gun_animating = false;
 		}
 		else {
 			if (!is_gun_animating) {
-				_activeScene->getAnimator().add<TranslateToAnim>("gun_back_anim", _gun, _gunOffset, 0.1f, Animation::InterpolationType::LINEAR, [this]() { is_gun_animating = false; });
-				anim_time = 0.0f;
+				_activeScene->getAnimator().add<TranslateToAnim>("gun_back_anim", _gun, _gunOffset, 0.2f, Animation::InterpolationType::LINEAR, [this]() { is_gun_animating = false; anim_time = 0.0f; });
 				is_gun_animating = true;
 			}
 		}

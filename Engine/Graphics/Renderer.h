@@ -26,6 +26,7 @@ public:
 
 	void clear(const Mxm::Vec4& color) const noexcept;
 	void viewport(GLsizei width, GLsizei height) const noexcept;
+	void setDrawFrame(bool state) const noexcept;
 
 	void drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshComponent>& mesh);
 };

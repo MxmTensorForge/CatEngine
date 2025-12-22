@@ -12,13 +12,15 @@ Renderer::~Renderer() {}
 
 void Renderer::init() {
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
@@ -36,20 +38,20 @@ void Renderer::clear(const Mxm::Vec4& color) const noexcept {
 void Renderer::viewport(GLsizei width, GLsizei height) const noexcept {
 	glViewport(0, 0, width, height);
 }
+void Renderer::setDrawFrame(bool state) const noexcept {
+	glPolygonMode(GL_FRONT_AND_BACK, state ? GL_LINE : GL_FILL);
+}
 
 void Renderer::drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshComponent>& mesh) {
 	_shader->use();
 	_shader->setUniform("uModel", model.data(), true);
 
+	Color color = mesh->getColor();
+	_shader->setUniform("uColor", color.rf(), color.gf(), color.bf(), color.af());
+
 	std::string texName = mesh->getTextureName();
 	if (texName.empty()) {
-		Color color = mesh->getColor();
 		_shader->setUniform("uUseTexture", 0);
-		_shader->setUniform("uColor", color.rf(), color.gf(), color.bf(), color.af());
-
-		if (color.af() < 1.0f) {
-			glDepthMask(GL_FALSE);
-		}
 	}
 	else {
 		TextureManager::getInstance().getTexture(texName)->bind(GL_TEXTURE0);
@@ -58,5 +60,4 @@ void Renderer::drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshCompon
 	}
 
 	mesh->getData()->data.draw();
-	glDepthMask(GL_TRUE);
 }

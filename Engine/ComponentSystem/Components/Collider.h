@@ -3,14 +3,9 @@
 
 #include "../Component.h"
 #include "../../Mxm/Vec3.h"
+#include "../../Geometry/AABB.h"
 #include <vector>
 #include <memory>
-
-struct AABB
-{
-	Mxm::Vec3 center;
-	Mxm::Vec3 extent;
-};
 
 class Collider final : public Component
 {
@@ -29,6 +24,7 @@ public:
 	static bool checkAABB(const Collider& collider1, const Collider& collider2) noexcept;
 
 	void generateLocalAABB() noexcept;
+	const AABB& getLocalAABB() const noexcept { return _localAABB; }
 
 	void generateFromMesh();
 	void generateSimpleFromMesh();

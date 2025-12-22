@@ -112,7 +112,7 @@ void Application::run() {
 }
 
 void Application::setDrawFrame(bool state) noexcept {
-	_isDrawingFrame = state;
+	_renderer.setDrawFrame(state);
 }
 void Application::setBackgroundColor(Color color) noexcept {
 	_backgroundColor = color;

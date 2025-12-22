@@ -21,12 +21,6 @@ MeshComponent::MeshComponent(const std::shared_ptr<MeshData>& mesh) : _mesh{mesh
 bool MeshComponent::intersection(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out) {
 	const auto& vertices = getVertices();
 
-	auto& model = getObject()->transform().getWorldMatrix();
-	Mxm::Mat4 inverseModel = getObject()->transform().getInverseWorldMatrix();
-
-	Mxm::Vec3 invOrigin = (inverseModel * Mxm::Vec4(origin, 1.0f)).toVec3();
-	Mxm::Vec3 invDir = (inverseModel * Mxm::Vec4(dir, 0.0f)).toVec3();
-
 	Mxm::Vec3 intersection_point;
 	float dist{};
 
@@ -37,11 +31,12 @@ bool MeshComponent::intersection(const Mxm::Vec3& origin, const Mxm::Vec3& dir, 
 		Triangle tri = Triangle(vertices[i], vertices[i + 1], vertices[i + 2]);
 		//if ((origin - Vector3D(tri[0])).dot(tri.normal()) < 0.0f) continue;
 
-		if (tri.intersection(invOrigin, invDir, intersection_point, dist)) {
+		if (tri.intersection(origin, dir, intersection_point, dist)) {
 			if (dist < closest_distance) {
 				closest_distance = dist;
 
 				auto obj = getObject();
+				auto& model = obj->transform().getWorldMatrix();
 				out = { dist, (model * Mxm::Vec4(intersection_point, 1.0f)).toVec3(), obj, obj->getTag()};
 				hit = true;
 			}

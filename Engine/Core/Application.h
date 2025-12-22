@@ -14,7 +14,6 @@ private:
 	Renderer _renderer;
 
 	int _width, _height;
-	bool _isDrawingFrame = false;
 
 	Color _backgroundColor = Color(255, 255, 255, 255);
 protected:
