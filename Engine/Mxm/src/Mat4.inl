@@ -331,6 +331,14 @@ namespace Mxm
             0, 0, 1, 0
         );
     }
+    inline Mat4 Mat4::ortho(float r, float l, float t, float b, float n, float f) noexcept {
+        return Mat4(
+            2.0f / (r - l), 0, 0, (-r - l) / (r - l),
+            0, 2.0f / (t - b), 0, (-t - b) / (t - b),
+            0, 0, 2.0f / (f - n), (-f - n) / (f - n),
+            0, 0, 0, 1.0f
+        );
+    }
     inline Mat4 Mat4::view(const Vec3& right, const Vec3& up, const Vec3& forward, const Vec3& pos) {
         return Mat4(
             right.x, right.y, right.z, -right.dot(pos),

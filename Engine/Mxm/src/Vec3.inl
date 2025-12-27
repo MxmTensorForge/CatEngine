@@ -99,6 +99,10 @@ namespace Mxm {
 		return !(*this == vec);
 	}
 
+	inline Vec2 Vec3::toVec2() const noexcept {
+		return Vec2(this->x, this->y);
+	}
+
 	inline Vec3 Vec3::operator-() const noexcept {
 		return Vec3(-x, -y, -z);
 	}

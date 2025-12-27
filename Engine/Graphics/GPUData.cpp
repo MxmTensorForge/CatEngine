@@ -46,5 +46,6 @@ void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector
 }
 void GPUData::draw() const noexcept {
 	_vao->bind();
+	_vbo->bind();
 	glDrawArrays(GL_TRIANGLES, 0, _verticesCount);
 }

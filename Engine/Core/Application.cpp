@@ -22,6 +22,7 @@ void Application::run() {
 	auto& sceneManager = SceneManager::getInstance();
 
 	_renderer.init();
+	_uiRenderer.init(_width, _height);
 
 	start();
 	sceneManager.processPendingScene();
@@ -102,8 +103,8 @@ void Application::run() {
 			animAccumulator = 0.0f;
 		}
 
-		//_renderer.present(_screen);
-		//UISystem::getInstance().render(_screen.getSDLRendererUnsafe());
+		UISystem::getInstance().render(_uiRenderer);
+		_uiRenderer.flush();
 
 		_screen.swap();
 	}
@@ -118,4 +119,4 @@ void Application::setBackgroundColor(Color color) noexcept {
 	_backgroundColor = color;
 }
 
-Application::Application() : _width(EngineConsts::STANDART_WIDTH), _height(EngineConsts::STANDART_HEIGHT), _screen() {}
+Application::Application() : _width(EngineConsts::STANDART_WIDTH), _height(EngineConsts::STANDART_HEIGHT), _screen(), _uiRenderer() {}

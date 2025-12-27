@@ -13,11 +13,11 @@ private:
 	int _channels;
 public:
 	Texture();
-	Texture(const std::string& path);
+	Texture(const std::string& path, bool isText);
 
 	~Texture();
 
-	void load(const std::string& path) noexcept;
+	void load(const std::string& path, bool isText) noexcept;
 	void bind(GLenum texture) const noexcept;
 
 	GLuint getID() const { return _id; }

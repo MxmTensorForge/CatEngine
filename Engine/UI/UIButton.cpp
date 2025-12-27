@@ -2,13 +2,13 @@
 #include "../Core/Input.h"
 
 UIButton::UIButton(const Mxm::Vec2i& pos, const Mxm::Vec2i& size,
-	const std::string& text,const Mxm::Vec2i& textOffset, int textScale, Color textColor,
+	const std::string& text,const Mxm::Vec2i& textOffset, float textScale, Color textColor,
 	Color baseColor, Color hoverColor, Color downedColor)
 	: UIElement(pos, size), _textOffset(textOffset),
 	_baseColor(baseColor), _hoverColor(hoverColor), _downedColor(downedColor)
 {
 	_background = std::make_unique<UIRect>(pos, size, baseColor);
-	_text =       std::make_unique<UIText>(pos + _textOffset, size, text, textScale, textColor);
+	_text =       std::make_unique<UIText>(pos + _textOffset, text, textScale, textColor);
 }
 
 void UIButton::setPosition(const Mxm::Vec2i& pos) noexcept {
@@ -23,7 +23,7 @@ void UIButton::setSize(const Mxm::Vec2i& size) noexcept {
 	if (_text)       _text->setSize(size);
 }
 
-void UIButton::render(SDL_Renderer* renderer) const noexcept {
+void UIButton::render(UIRenderer& renderer) const noexcept {
 	_background->render(renderer);
 	_text->render(renderer);
 }

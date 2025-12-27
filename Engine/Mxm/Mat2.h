@@ -15,6 +15,8 @@ namespace Mxm
 		explicit Mat2(float a00, float a01, float a10, float a11) noexcept;
 		explicit Mat2(const Vec2& vec1, const Vec2& vec2) noexcept;
 
+		float* data() noexcept { return &(_m[0][0]); }
+
 		Vec2 operator[](size_t index) const noexcept;
 		Vec2 col(size_t index) const noexcept;
 

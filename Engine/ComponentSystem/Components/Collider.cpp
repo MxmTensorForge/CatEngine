@@ -68,8 +68,10 @@ void Collider::generateFromMesh() {
 	auto mesh = getObject()->getComponent<MeshComponent>();
 	if (!mesh) return;
 
-	_vertices = mesh->getVertices();
+	_meshData = mesh->getData();
 	generateLocalAABB();
+
+	_useSimple = false;
 }
 void Collider::generateSimpleFromMesh() {
 	auto mesh = getObject()->getComponent<MeshComponent>();
@@ -87,8 +89,10 @@ void Collider::generateSimpleFromMesh() {
 	_vertices.emplace_back(aabb.center + Mxm::Vec3(aabb.extent.x, -aabb.extent.y, aabb.extent.z));
 
 	_localAABB = aabb;
+
+	_useSimple = true;
 }
 
 const std::vector<Mxm::Vec3>& Collider::getVertices() const noexcept {
-	return _vertices;
+	return _useSimple ? _vertices : _meshData->vertices;
 }

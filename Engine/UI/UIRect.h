@@ -10,7 +10,7 @@ private:
 	Color _color;
 public:
 	UIRect(const Mxm::Vec2i& pos, const Mxm::Vec2i& size, Color color);
-	void render(SDL_Renderer* renderer) const noexcept override;
+	void render(UIRenderer& renderer) const noexcept override;
 
 	void setColor(Color color) noexcept { _color = color; }
 	Color getColor() const noexcept { return _color; }

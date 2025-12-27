@@ -159,6 +159,9 @@
     <ClCompile Include="Engine\Geometry\AABB.cpp">
       <Filter>Engine\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\UI\UIRenderer.cpp">
+      <Filter>Engine\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Application.h">
@@ -278,9 +281,6 @@
     <ClInclude Include="Engine\UI\UIScreen.h">
       <Filter>Engine\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\UI\FontData.h">
-      <Filter>Engine\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Mxm\Vec2i.h">
       <Filter>Engine\Mxm</Filter>
     </ClInclude>
@@ -325,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Geometry\AABB.h">
       <Filter>Engine\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\UI\UIRenderer.h">
+      <Filter>Engine\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

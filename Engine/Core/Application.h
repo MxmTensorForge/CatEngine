@@ -3,7 +3,7 @@
 
 #include "Screen.h"
 #include "../Graphics/Renderer.h"
-#include "../Geometry/Triangle.h"
+#include "../UI/UIRenderer.h"
 
 #include "../ComponentSystem/SceneManager.h"
 
@@ -12,6 +12,7 @@ class Application
 private:
 	Screen _screen;
 	Renderer _renderer;
+	UIRenderer _uiRenderer;
 
 	int _width, _height;
 

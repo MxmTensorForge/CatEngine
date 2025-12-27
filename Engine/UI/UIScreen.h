@@ -26,8 +26,7 @@ public:
 	void update() noexcept {
 		for (auto& e : _elements) e->update();
 	}
-	void render(SDL_Renderer* renderer) noexcept {
-		if (!renderer) return;
+	void render(UIRenderer& renderer) noexcept {
 		for (const auto& e : _elements) e->render(renderer);
 	}
 };

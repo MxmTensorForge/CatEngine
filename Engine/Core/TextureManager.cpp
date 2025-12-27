@@ -9,7 +9,7 @@ TextureManager& TextureManager::getInstance() {
 }
 
 void TextureManager::loadTexture(const std::string& name, const std::string& path) {
-	std::unique_ptr<Texture> tex = std::make_unique<Texture>(path);
+	std::unique_ptr<Texture> tex = std::make_unique<Texture>(path, false);
 	_textures[name] = std::move(tex);
 }
 const std::unique_ptr<Texture>& TextureManager::getTexture(const std::string& name) const {

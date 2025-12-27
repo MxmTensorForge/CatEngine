@@ -116,6 +116,9 @@ namespace Mxm {
 	inline Vec3 Vec4::toVec3() const noexcept {
 		return Vec3(this->x, this->y, this->z);
 	}
+	inline Vec2 Vec4::toVec2() const noexcept {
+		return Vec2(this->x, this->y);
+	}
 
 	inline float Vec4::dot(const Vec4& vec) const noexcept {
 		return x * vec.x + y * vec.y + z * vec.z + w * vec.w;

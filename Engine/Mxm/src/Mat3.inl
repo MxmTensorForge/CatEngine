@@ -219,4 +219,19 @@ namespace Mxm
             0.0f, 0.0f, 1.0f
         );
     }
+
+    inline Mat3 Mat3::translation(float tx, float ty) noexcept {
+        return Mat3(
+            1.0f, 0.0f, tx,
+            0.0f, 1.0f, ty,
+            0.0f, 0.0f, 1.0f
+        );
+    }
+    inline Mat3 Mat3::translation(const Vec2& tv) noexcept {
+        return Mat3(
+            1.0f, 0.0f, tv.x,
+            0.0f, 1.0f, tv.y,
+            0.0f, 0.0f, 1.0f
+        );
+    }
 }

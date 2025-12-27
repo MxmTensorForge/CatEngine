@@ -24,9 +24,9 @@ void Renderer::init() {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
-	_shader->use();
 }
 void Renderer::update(const std::shared_ptr<Camera>& camera) {
+	_shader->use();
 	_shader->setUniform("uProjection", camera->getProjectionMatrix().data(), true);
 	_shader->setUniform("uView", camera->getViewMatrix().data(), true);
 }
@@ -43,7 +43,6 @@ void Renderer::setDrawFrame(bool state) const noexcept {
 }
 
 void Renderer::drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshComponent>& mesh) {
-	_shader->use();
 	_shader->setUniform("uModel", model.data(), true);
 
 	Color color = mesh->getColor();

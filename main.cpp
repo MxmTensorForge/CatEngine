@@ -27,6 +27,7 @@ private:
 	std::shared_ptr<GameObject> _mainCamera;
 	std::shared_ptr<GameObject> _object;
 	std::shared_ptr<GameObject> _gun;
+	UIText* _text = nullptr;
 
 	std::shared_ptr<Scene> _activeScene;
 
@@ -148,22 +149,26 @@ private:
 		SceneManager::getInstance().setActiveScene(menuScene);
 
 		UISystem& ui = UISystem::getInstance();
-		auto* screen = ui.addScreen("game");
-		auto* startScreen = ui.addScreen("startScreen");
+		auto* screen = ui.addScreen("game"); 
+		auto* gameScreen = ui.addScreen("gameScreen");
 		ui.setCurrentScreen("game");
 
-		auto* rect = startScreen->add<UIRect>(Mxm::Vec2i(398, 298), Mxm::Vec2i(4, 4), Color(255, 255, 255));
+		auto* rect = gameScreen->add<UIRect>(Mxm::Vec2i(1920 / 2 - 2, 1080 / 2 - 2), Mxm::Vec2i(4, 4), Color(255, 255, 255));
+		_text = gameScreen->add<UIText>(Mxm::Vec2i(50, 50), "", 1.0f, Color(255, 255, 255, 255));
 
-		auto* button = screen->add<UIButton>(Mxm::Vec2i(50, 50), Mxm::Vec2i(300, 40), "Play game", Mxm::Vec2i(10, 10), 2,
+
+		auto* button = screen->add<UIButton>(Mxm::Vec2i(100, 50), Mxm::Vec2i(300, 40), "Start demo", Mxm::Vec2i(10, 5), 1.0f,
 			Color(255, 255, 255), Color(100, 200, 50), Color(0, 0, 0), Color(50, 50, 50));
 		button->setOnPress([this]() { 
 			SceneManager::getInstance().setActiveScene(_activeScene);
-			UISystem::getInstance().setCurrentScreen("startScreen");
+			UISystem::getInstance().setCurrentScreen("gameScreen");
 			AudioManager::getInstance().playSound("background");
 			setBackgroundColor(Color(100, 90, 240, 255));
 			_menu = false;
 			});
 		button->setOnHover([this]() { AudioManager::getInstance().playSound("click"); });
+
+		screen->add<UIText>(Mxm::Vec2i(1200, 50), "This engine was created by TensorForge.\nIt features GJK/EPA, raycasting,\nUI, and much more.", 1.0f, Color(255, 255, 255, 255));
 	}
 
 	void createFireTrace(const Mxm::Vec3& from, const Mxm::Vec3& to, float length) {
@@ -191,11 +196,11 @@ private:
 	float yaw{}, pitch{};
 
 	void update() override {
-		if (_menu) { _prevMenu = true; return; }
-		Input::setMouseLockState(true);
-
 		if (Input::isKeyPressed(Key::F1)) setDrawFrame(false);
 		if (Input::isKeyPressed(Key::F2)) setDrawFrame(true);
+
+		if (_menu) { _prevMenu = true; return; }
+		Input::setMouseLockState(true);
 
 		Mxm::Vec2 mouseDelta = Input::getMouseDelta() * 0.0025f;
 		pitch += mouseDelta.y;
@@ -208,6 +213,10 @@ private:
 		auto& gun_transform = _gun->transform();
 
 		auto obj_rigid = _object->getComponent<RigidBody>();
+
+		_text->setText("X: " + std::to_string(obj_transform.getWorldPosition().x) + 
+					   "\nY: " + std::to_string(obj_transform.getWorldPosition().y) +
+					   "\nZ: " + std::to_string(obj_transform.getWorldPosition().z));
 
 		transform.setRotation(Mxm::Vec3(pitch, 0.0f, 0.0f));
 		_object->transform().setRotation(Mxm::Vec3(0.0f, yaw, 0.0f));
@@ -290,7 +299,7 @@ private:
 				bulletDot->transform().setPosition(info.point);
 
 				static int anim_id = 0;
-				_activeScene->getAnimator().add<WaitAnim>("wait_to_delete" + std::to_string(anim_id++), 3.0f, Animation::InterpolationType::EASY_OUT,
+				_activeScene->getAnimator().add<WaitAnim>("wait_to_delete" + std::to_string(anim_id++), 5.0f, Animation::InterpolationType::LINEAR,
 					[bulletDot, this]() { _activeScene->removeObject(bulletDot); });
 			}
 			else {
@@ -304,7 +313,7 @@ private:
 			_gunTimer = 0.0f;
 		}
 
-		if (obj_transform.getPosition().y < -100.0f) {
+		if (obj_transform.getPosition().y < -30.0f) {
 			obj_transform.setPosition(Mxm::Vec3(0.0f, 5.0f, 0.0f));
 		}
 

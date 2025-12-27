@@ -10,11 +10,11 @@ class UIText final : public UIElement
 {
 private:
 	std::string _text;
-	int _scale = 1;
+	float _scale = 1;
 	Color _color;
 public:
-	UIText(const Mxm::Vec2i& pos, const Mxm::Vec2i& size, const std::string& text, int scale, Color color);
-	void render(SDL_Renderer* renderer) const noexcept override;
+	UIText(const Mxm::Vec2i& pos, const std::string& text, float scale, Color color);
+	void render(UIRenderer& renderer) const noexcept override;
 
 	void setColor(Color color) noexcept { _color = color; }
 	Color getColor() const noexcept { return _color; }

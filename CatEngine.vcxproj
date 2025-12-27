@@ -162,6 +162,7 @@
     <ClCompile Include="Engine\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Engine\UI\UIButton.cpp" />
     <ClCompile Include="Engine\UI\UIRect.cpp" />
+    <ClCompile Include="Engine\UI\UIRenderer.cpp" />
     <ClCompile Include="Engine\UI\UISystem.cpp" />
     <ClCompile Include="Engine\UI\UIText.cpp" />
     <ClCompile Include="glad\src\glad.c" />
@@ -219,10 +220,10 @@
     <ClInclude Include="Engine\Physics\CollisionResult.h" />
     <ClInclude Include="Engine\Physics\PhysicsSystem.h" />
     <ClInclude Include="Engine\stb_image\stb_image.h" />
-    <ClInclude Include="Engine\UI\FontData.h" />
     <ClInclude Include="Engine\UI\UIButton.h" />
     <ClInclude Include="Engine\UI\UIElement.h" />
     <ClInclude Include="Engine\UI\UIRect.h" />
+    <ClInclude Include="Engine\UI\UIRenderer.h" />
     <ClInclude Include="Engine\UI\UIScreen.h" />
     <ClInclude Include="Engine\UI\UISystem.h" />
     <ClInclude Include="Engine\UI\UIText.h" />

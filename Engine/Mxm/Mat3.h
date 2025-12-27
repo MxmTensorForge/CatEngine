@@ -17,6 +17,8 @@ namespace Mxm
             float a20, float a21, float a22) noexcept;
         explicit Mat3(const Vec3& vec1, const Vec3& vec2, const Vec3& vec3) noexcept;
 
+        float* data() noexcept { return &(_m[0][0]); }
+
         Vec3 operator[](size_t index) const noexcept;
         Vec3 col(size_t index) const noexcept;
 
@@ -53,6 +55,9 @@ namespace Mxm
         static Mat3 rotationX(float angle) noexcept;
         static Mat3 rotationY(float angle) noexcept;
         static Mat3 rotationZ(float angle) noexcept;
+
+        static Mat3 translation(float tx, float ty) noexcept;
+        static Mat3 translation(const Vec2& tv) noexcept;
     };
 }
 

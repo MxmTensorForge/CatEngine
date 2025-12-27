@@ -3,7 +3,7 @@
 
 #include "../Mxm/Vec2i.h"
 
-struct SDL_Renderer;
+class UIRenderer;
 
 class UIElement
 {
@@ -13,7 +13,7 @@ protected:
 	bool _visible = false;
 public:
 	virtual ~UIElement() = default;
-	virtual void render(SDL_Renderer* renderer) const noexcept = 0;
+	virtual void render(UIRenderer& renderer) const noexcept = 0;
 	virtual void update() noexcept {}
 
 	UIElement(const Mxm::Vec2i& pos, const Mxm::Vec2i& size)

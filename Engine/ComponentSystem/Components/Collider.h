@@ -4,6 +4,7 @@
 #include "../Component.h"
 #include "../../Mxm/Vec3.h"
 #include "../../Geometry/AABB.h"
+#include "../../Geometry/MeshData.h"
 #include <vector>
 #include <memory>
 
@@ -11,6 +12,8 @@ class Collider final : public Component
 {
 private:
 	std::vector<Mxm::Vec3> _vertices{};
+	std::shared_ptr<MeshData> _meshData = nullptr;
+	bool _useSimple = false;
 
 	AABB _localAABB{};
 	AABB _worldAABB{};

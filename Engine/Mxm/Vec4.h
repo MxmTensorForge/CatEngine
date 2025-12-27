@@ -45,6 +45,7 @@ namespace Mxm
 		bool operator!=(const Vec4& vec) const noexcept;
 
 		Vec3 toVec3() const noexcept;
+		Vec2 toVec2() const noexcept;
 
 		float dot(const Vec4& vec) const noexcept;
 		float length() const noexcept;

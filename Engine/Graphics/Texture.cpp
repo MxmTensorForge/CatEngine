@@ -9,16 +9,16 @@
 
 Texture::Texture() : _id(0), _width(0), _height(0), _channels(0) {}
 
-Texture::Texture(const std::string& path) : Texture() {
-	load(path);
+Texture::Texture(const std::string& path, bool isText) : Texture() {
+	load(path, isText);
 }
 
 Texture::~Texture() {
 	if (_id) glDeleteTextures(1, &_id);
 }
 
-void Texture::load(const std::string& path) noexcept {
-	stbi_set_flip_vertically_on_load(true);
+void Texture::load(const std::string& path, bool isText) noexcept {
+	stbi_set_flip_vertically_on_load(false);
 	int width, height, channels;
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
@@ -35,18 +35,20 @@ void Texture::load(const std::string& path) noexcept {
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, isText ? GL_NEAREST : GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, isText ? GL_NEAREST : GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	if (!isText) glGenerateMipmap(GL_TEXTURE_2D);;
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	stbi_image_free(data);
 
 	_id = texture;
+	_width = width;
+	_height = height;
 }
 void Texture::bind(GLenum texture) const noexcept {
 	glBindTexture(GL_TEXTURE_2D, _id);

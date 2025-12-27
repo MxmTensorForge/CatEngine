@@ -23,9 +23,9 @@ private:
 	Color _hoverColor;
 	Color _downedColor;
 public:
-	UIButton(const Mxm::Vec2i& pos, const Mxm::Vec2i& size, const std::string& text = "", const Mxm::Vec2i& textOffset = Mxm::Vec2i(), int textScale = 2,
+	UIButton(const Mxm::Vec2i& pos, const Mxm::Vec2i& size, const std::string& text = "", const Mxm::Vec2i& textOffset = Mxm::Vec2i(), float textScale = 1.0f,
 		Color textColor = Color(255, 255, 255), Color baseColor = Color(0, 0, 0), Color hoverColor = Color(40, 40, 40), Color downedColor = Color(60, 100, 15));
-	void render(SDL_Renderer* renderer) const noexcept override;
+	void render(UIRenderer& renderer) const noexcept override;
 	void update() noexcept override;
 
 	void setPosition(const Mxm::Vec2i& pos) noexcept;
