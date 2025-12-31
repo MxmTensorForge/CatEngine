@@ -52,6 +52,9 @@
     <Filter Include="Engine\stb_image">
       <UniqueIdentifier>{9226c50b-ac2b-4cea-8a23-b5b67b79f08a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Utility">
+      <UniqueIdentifier>{7c710c6f-38ee-4dad-a0c9-edf317495e1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Application.cpp">
@@ -161,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="Engine\UI\UIRenderer.cpp">
       <Filter>Engine\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Utility\Random.cpp">
+      <Filter>Engine\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="Engine\UI\UIRenderer.h">
       <Filter>Engine\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Components\PointLight.h">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utility\Random.h">
+      <Filter>Engine\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

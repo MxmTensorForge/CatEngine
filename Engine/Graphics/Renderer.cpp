@@ -28,13 +28,45 @@ void Renderer::init() {
 
 	Logger::getInstance().log(LogType::Message, "Renderer has been successfully initialized");
 }
-void Renderer::update(const std::shared_ptr<Camera>& camera) {
+void Renderer::update(const std::shared_ptr<Camera>& camera, 
+					  const std::vector<std::shared_ptr<PointLight>>& lights, const std::shared_ptr<DirectionLight>& directionLight) {
 	_shader->use();
 	_shader->setUniform("uProjection", camera->getProjectionMatrix().data(), true);
 	_shader->setUniform("uView", camera->getViewMatrix().data(), true);
 
 	Mxm::Vec3 camPos = camera->getObject()->transform().getWorldPosition();
 	_shader->setUniform("uCameraPos", camPos.x, camPos.y, camPos.z);
+
+	int lightCount = lights.size();
+	_shader->setUniform("pointLightsCount", lightCount);
+	for (int i = 0; i < lightCount; i++) {
+		if (i > 8) break;
+
+		auto light = lights[i];
+		if (!light || !light->getObject()->getActive()) continue;
+
+		std::string name = "pointLights[" + std::to_string(i) + "].";
+		_shader->setUniform(name + "linearFading", light->getLinearFading());
+		_shader->setUniform(name + "quadraticFading", light->getQuadraticFading());
+		_shader->setUniform(name + "intensity", light->getIntensity());
+
+		Color color = light->getLightColor();
+		_shader->setUniform(name + "lightColor", color.rf(), color.gf(), color.bf());
+
+		Mxm::Vec3 pos = light->getObject()->transform().getWorldPosition();
+		_shader->setUniform(name + "lightPos", pos.x, pos.y, pos.z);
+	}
+
+	if (directionLight && directionLight->getObject()->getActive()) {
+		std::string name = "directionLight.";
+		_shader->setUniform(name + "intensity", directionLight->getIntensity());
+
+		Color color = directionLight->getLightColor();
+		_shader->setUniform(name + "lightColor", color.rf(), color.gf(), color.bf());
+
+		Mxm::Vec3 dir = directionLight->getObject()->transform().getForward();
+		_shader->setUniform(name + "direction", dir.x, dir.y, dir.z);
+	}
 }
 
 void Renderer::clear(const Mxm::Vec4& color) const noexcept {

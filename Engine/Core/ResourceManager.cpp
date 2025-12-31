@@ -19,7 +19,6 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 	}
 
 	MeshData result;
-	std::vector<Mxm::Vec2> texCoordsBuffer;
 
 	std::string line;
 
@@ -42,7 +41,7 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 			float s, t;
 			ss >> s >> t;
 
-			texCoordsBuffer.emplace_back(s, t);
+			result.textureCoords.emplace_back(s, t);
 		}
 		else if (type == "f") {
 			std::string faceData;
@@ -73,17 +72,19 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 				result.indices.push_back(faceIndices[0]);
 				result.indices.push_back(faceIndices[i]);
 				result.indices.push_back(faceIndices[i + 1]);
-
-				result.textureCoords.push_back(texCoordsIndices[0] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[0]] : Mxm::Vec2(0.0f));
-				result.textureCoords.push_back(texCoordsIndices[i] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[i]] : Mxm::Vec2(0.0f));
-				result.textureCoords.push_back(texCoordsIndices[i + 1] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[i + 1]] : Mxm::Vec2(0.0f));
+			}
+			for (size_t i = 1; i + 1 < texCoordsIndices.size(); i++)
+			{
+				result.textureIndices.push_back(texCoordsIndices[0]);
+				result.textureIndices.push_back(texCoordsIndices[i]);
+				result.textureIndices.push_back(texCoordsIndices[i + 1]);
 			}
 		}
 	}
 	file.close();
 
 	result.calculateNormals();
-	result.data.loadData(result.vertices, result.indices, result.normals, result.textureCoords);
+	result.data.loadData(result.vertices, result.indices, result.normals, result.textureCoords, result.textureIndices);
 
 	_meshes[name] = std::make_shared<MeshData>(std::move(result));
 	Logger::getInstance().log(LogType::Message, "Model " + name + " (" + path + ") has been loaded successfully");

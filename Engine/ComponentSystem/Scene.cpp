@@ -28,39 +28,49 @@ void Scene::updateCollisions() {
     for (size_t i = 0; i < _cachedObjects.size(); ++i) {
         auto& obj1 = _cachedObjects[i];
 
+        auto gameObject1 = obj1.gameObject.lock();
+        auto collider1 = obj1.collider.lock();
+        auto rigidbody1 = obj1.rigidBody.lock();
+
+        if (!gameObject1 || !collider1 || !gameObject1->getActive()) continue;
+
         for (size_t j = i + 1; j < _cachedObjects.size(); ++j) {
             auto& obj2 = _cachedObjects[j];
 
-            if (!obj1.rigidBody && !obj2.rigidBody) continue;
+            auto gameObject2 = obj2.gameObject.lock();
+            auto collider2 = obj2.collider.lock();
+            auto rigidbody2 = obj2.rigidBody.lock();
 
-            bool obj1IsTrigger = obj1.collider->isTrigger();
-            bool obj2IsTrigger = obj2.collider->isTrigger();
+            if (!rigidbody1 && !rigidbody2) continue;
+
+            bool obj1IsTrigger = collider1->isTrigger();
+            bool obj2IsTrigger = collider2->isTrigger();
 
             if (obj1IsTrigger && obj2IsTrigger) continue;
 
-            if (!Collider::checkAABB(*obj1.collider, *obj2.collider)) continue;
+            if (!Collider::checkAABB(*collider1, *collider2)) continue;
 
-            auto collision = PhysicsSystem::getInstance().gjkCollision(obj1.collider, obj2.collider);
+            auto collision = PhysicsSystem::getInstance().gjkCollision(collider1, collider2);
             if (!collision.first) continue;
 
             if (!obj1IsTrigger && !obj2IsTrigger) {
-                CollisionResult result = PhysicsSystem::getInstance().epaAlgorithm(obj1.collider, obj2.collider, collision.second);
+                CollisionResult result = PhysicsSystem::getInstance().epaAlgorithm(collider1, collider2, collision.second);
 
-                if (obj1.rigidBody) {
-                    RigidBody::resolveCollision(obj1.rigidBody, _gameObjects[j], result);
-                    obj1.collider->collisionOnCallback(obj2.gameObject, result);
+                if (rigidbody1) {
+                    RigidBody::resolveCollision(rigidbody1, gameObject2, result);
+                    collider1->collisionOnCallback(gameObject2, result);
                 }
-                if (obj2.rigidBody) {
+                if (rigidbody2) {
                     CollisionResult invertedResult = result;
                     invertedResult.normal = -result.normal;
 
-                    RigidBody::resolveCollision(obj2.rigidBody, _gameObjects[i], invertedResult);
-                    obj2.collider->collisionOnCallback(obj1.gameObject, result);
+                    RigidBody::resolveCollision(rigidbody2, gameObject1, invertedResult);
+                    collider2->collisionOnCallback(gameObject1, result);
                 }
             }
 
-            if (obj1IsTrigger) _currentTriggerObjects[obj1.collider].insert(obj2.gameObject);
-            if (obj2IsTrigger) _currentTriggerObjects[obj2.collider].insert(obj1.gameObject);
+            if (obj1IsTrigger) _currentTriggerObjects[collider1].insert(gameObject2);
+            if (obj2IsTrigger) _currentTriggerObjects[collider2].insert(gameObject1);
         }
     }
 
@@ -120,6 +130,30 @@ std::unordered_set<std::shared_ptr<GameObject>> Scene::getObjectsWithTag(const s
 std::shared_ptr<GameObject> Scene::getFirstObjectWithTag(const std::string& tag) const {
     auto objects = getObjectsWithTag(tag);
     return objects.empty() ? nullptr : *objects.begin();
+}
+
+const std::vector<std::shared_ptr<PointLight>>& Scene::getPointLights() const {
+    if (!_cacheValid) updateLightCache();
+    return _pointLightsCache;
+}
+const std::shared_ptr<DirectionLight>& Scene::getDirectionLight() const {
+    if (!_cacheValid) updateLightCache();
+    return _dirLightCache;
+}
+void Scene::updateLightCache() const {
+    _pointLightsCache.clear();
+    _dirLightCache.reset();
+
+    for (const auto& obj : _gameObjects) {
+        if (auto light = obj->getComponent<PointLight>()) {
+            _pointLightsCache.push_back(light);
+        }
+        if (auto dirLight = obj->getComponent<DirectionLight>()) {
+            _dirLightCache = dirLight;
+        }
+    }
+
+    _cacheValid = true;
 }
 
 void Scene::removeObject(const std::shared_ptr<GameObject>& obj) {
@@ -182,7 +216,10 @@ const std::vector<std::shared_ptr<GameObject>>& Scene::getGameObjects() const no
 	return _gameObjects;
 }
 void Scene::clear() {
-	_gameObjects.clear();
+    _gameObjects.clear();
+    _cachedObjects.clear();
+    _currentTriggerObjects.clear();
+    _mainCamera.reset();
 }
 
 void Scene::setMainCamera(const std::shared_ptr<GameObject>& camera) {

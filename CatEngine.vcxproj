@@ -165,6 +165,7 @@
     <ClCompile Include="Engine\UI\UIRenderer.cpp" />
     <ClCompile Include="Engine\UI\UISystem.cpp" />
     <ClCompile Include="Engine\UI\UIText.cpp" />
+    <ClCompile Include="Engine\Utility\Random.cpp" />
     <ClCompile Include="glad\src\glad.c" />
     <ClCompile Include="main.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
@@ -183,6 +184,7 @@
     <ClInclude Include="Engine\ComponentSystem\Components\Collider.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\MeshComponent.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\RigidBody.h" />
+    <ClInclude Include="Engine\ComponentSystem\Components\PointLight.h" />
     <ClInclude Include="Engine\ComponentSystem\Object\GameObject.h" />
     <ClInclude Include="Engine\ComponentSystem\Object\Transform.h" />
     <ClInclude Include="Engine\ComponentSystem\SceneManager.h" />
@@ -227,6 +229,7 @@
     <ClInclude Include="Engine\UI\UIScreen.h" />
     <ClInclude Include="Engine\UI\UISystem.h" />
     <ClInclude Include="Engine\UI\UIText.h" />
+    <ClInclude Include="Engine\Utility\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Mxm\src\Easing.inl" />

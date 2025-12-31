@@ -2,6 +2,7 @@
 
 #include "Engine/ComponentSystem/Components/Camera.h"
 #include "Engine/ComponentSystem/Components/MeshComponent.h"
+#include "Engine/ComponentSystem/Components/PointLight.h"
 #include "Engine/ComponentSystem/Components/RigidBody.h"
 #include "Engine/ComponentSystem/Components/Collider.h"
 #include "Engine/Mxm/Vec3.h"
@@ -16,6 +17,8 @@
 #include "Engine/Animation/Animations/SetColorAnim.h"
 #include "Engine/Animation/Animations/WaitAnim.h"
 
+#include "Engine/Utility/Random.h"
+
 #include "Engine/UI/UISystem.h"
 #include "Engine/UI/UIButton.h"
 
@@ -25,9 +28,6 @@
 class Game final : public Application
 {
 private:
-	std::mt19937 _rng;
-	std::normal_distribution<float> _normalDist;
-
 	std::shared_ptr<GameObject> _mainCamera;
 	std::shared_ptr<GameObject> _object;
 	std::shared_ptr<GameObject> _gun;
@@ -109,6 +109,25 @@ private:
 		obj->addComponent<Collider>()->generateFromMesh();
 
 		createTrigger(Mxm::Vec3(10.0f, 3.0f, -25.0f));
+
+		auto obj2 = _activeScene->createObject("name", "map");
+		obj2->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 255, 255));
+		obj2->addComponent<PointLight>()->setLightColor(Color(255, 255, 255));
+		obj2->getComponent<PointLight>()->setIntensity(1.0f);
+
+		obj2->getComponent<PointLight>()->setLinearFading(0.09f);
+		obj2->getComponent<PointLight>()->setQuadraticFading(0.032f);
+
+		obj2->transform().setPosition(Mxm::Vec3(0.0f, 3.0f, 0.0f));
+		obj2->transform().setScale(Mxm::Vec3(0.1f, 0.1f, 0.1f));
+
+		auto obj1 = _activeScene->createObject("dirLight", "map");
+		obj1->addComponent<DirectionLight>()->setLightColor(Color(255, 255, 255));
+		obj1->getComponent<DirectionLight>()->setIntensity(0.5f);
+
+		obj1->transform().rotate(Mxm::Vec3(Mxm::Consts::HALF_PI, Mxm::Consts::HALF_PI, 0.0f));
+
+		obj1->setActive(true);
 	}
 
 	void prepareGame() {
@@ -164,11 +183,6 @@ private:
 	}
 
 	void start() override {
-		_normalDist = std::normal_distribution<float>(0.0f, 1.0f);
-
-		std::random_device rd;
-		_rng.seed(rd());
-
 		prepareGame();
 		setBackgroundColor(Color(100, 120, 100, 255));
 
@@ -226,8 +240,8 @@ private:
 	float fps = 0.0f;
 
 	Mxm::Vec3 getSpreadDirection(const Mxm::Vec3& baseDirection, float spread) {
-		float randomAngle = (_normalDist(_rng)) * Mxm::Consts::TWO_PI;
-		float randomDistance = (_normalDist(_rng)) * spread;
+		float randomAngle = (Random::value()) * Mxm::Consts::TWO_PI;
+		float randomDistance = (Random::value()) * spread;
 
 		Mxm::Vec3 randomOffset = Mxm::Vec3(
 			cosf(randomAngle) * randomDistance,

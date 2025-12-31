@@ -11,7 +11,8 @@ GPUData::~GPUData() {
 
 }
 
-void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector<unsigned int>& indices, const std::vector<Mxm::Vec3>& normals, const std::vector<Mxm::Vec2>& texCoords) {
+void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector<unsigned int>& indices, const std::vector<Mxm::Vec3>& normals, 
+	const std::vector<Mxm::Vec2>& texCoords, const std::vector<unsigned int>& textureIndices) {
     std::vector<float> vertexData;
     vertexData.reserve(indices.size());
 
@@ -26,8 +27,15 @@ void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector
 		vertexData.push_back(normals[i / 3].y);
 		vertexData.push_back(normals[i / 3].z);
 
-		vertexData.push_back(texCoords[i].x);
-		vertexData.push_back(texCoords[i].y);
+		if (texCoords.size() > 0) {
+			vertexData.push_back(texCoords[textureIndices[i]].x);
+			vertexData.push_back(texCoords[textureIndices[i]].y);
+		}
+		else
+		{
+			vertexData.push_back(0.0f);
+			vertexData.push_back(0.0f);
+		}
     }
 
 	_vao->bind();

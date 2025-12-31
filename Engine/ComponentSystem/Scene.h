@@ -5,6 +5,9 @@
 #include "Components/MeshComponent.h"
 #include "../Animation/Animator.h"
 
+#include "Components/PointLight.h"
+#include "Components/DirectionLight.h"
+
 #include <unordered_set>
 #include <unordered_map>
 
@@ -19,13 +22,17 @@ private:
 	Animator _animator;
 
 	struct CachedObject {
-		std::shared_ptr<GameObject> gameObject;
-		std::shared_ptr<Collider> collider;
-		std::shared_ptr<RigidBody> rigidBody;
+		std::weak_ptr<GameObject> gameObject;
+		std::weak_ptr<Collider> collider;
+		std::weak_ptr<RigidBody> rigidBody;
 	};
 	std::vector<CachedObject> _cachedObjects;
 
 	std::unordered_map<std::shared_ptr<Collider>, std::unordered_set<std::shared_ptr<GameObject>>> _currentTriggerObjects;
+
+	mutable std::vector<std::shared_ptr<PointLight>> _pointLightsCache;
+	mutable std::shared_ptr<DirectionLight> _dirLightCache;
+	mutable bool _cacheValid = false;
 
 	void updateRecursive(Transform* transform);
 public:
@@ -39,6 +46,10 @@ public:
 
 	std::unordered_set<std::shared_ptr<GameObject>> getObjectsWithTag(const std::string& tag) const;
 	std::shared_ptr<GameObject> getFirstObjectWithTag(const std::string& tag) const;
+
+	const std::vector<std::shared_ptr<PointLight>>& getPointLights() const;
+	const std::shared_ptr<DirectionLight>& getDirectionLight() const;
+	void updateLightCache() const;
 
 	void removeObject(const std::shared_ptr<GameObject>& obj);
 	void removeObjectsWithTag(const std::string& tag);

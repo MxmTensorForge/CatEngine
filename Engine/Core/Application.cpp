@@ -42,12 +42,13 @@ void Application::run() {
 		if (sceneManager.hasPendingScene()) {
 			sceneManager.processPendingScene();
 		}
+		auto activeScene = sceneManager.getActiveScene();
 
 		Time::begin("collisions");
 		physAccumulator += Time::deltaTime();
 		while (physAccumulator >= Time::fixedDeltaTime()) {
-			sceneManager.getActiveScene()->updatePhysics();
-			sceneManager.getActiveScene()->updateCollisions();
+			activeScene->updatePhysics();
+			activeScene->updateCollisions();
 			fixedUpdate();
 
 			physAccumulator -= Time::fixedDeltaTime();
@@ -56,23 +57,23 @@ void Application::run() {
 
 		Time::begin("game update");
 		update();
-		sceneManager.getActiveScene()->update();
+		activeScene->update();
 		Time::end("game update");
 
 		Time::begin("animations");
-		sceneManager.getActiveScene()->updateAnimator();
+		activeScene->updateAnimator();
 		Time::end("animations");
 
-		auto camera = sceneManager.getActiveScene()->getMainCamera();
+		auto camera = activeScene->getMainCamera();
 		if (camera) {
-			_renderer.update(sceneManager.getActiveScene()->getMainCamera()->getComponent<Camera>());
+			_renderer.update(activeScene->getMainCamera()->getComponent<Camera>(), activeScene->getPointLights(), activeScene->getDirectionLight());
 		}
 		_renderer.clear(Mxm::Vec4(_backgroundColor.rf(), _backgroundColor.gf(), _backgroundColor.bf(), _backgroundColor.af()));
 		
 		Time::begin("projection");
 
 		_transparentMeshes.clear();
-		for (const auto& obj : sceneManager.getActiveScene()->getGameObjects()) {
+		for (const auto& obj : activeScene->getGameObjects()) {
 			if (!obj->getActive()) continue;
 
 			auto mesh_ptr = obj->getComponent<MeshComponent>();
