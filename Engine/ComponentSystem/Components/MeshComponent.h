@@ -30,6 +30,7 @@ public:
 	MeshComponent() = delete;	
 
 	inline const std::vector<Mxm::Vec3>& getVertices() const noexcept { return _mesh->vertices; }
+	inline const std::vector<unsigned int>& getIndices() const noexcept { return _mesh->indices; }
 	inline const std::string& getTextureName() const noexcept { return _textureName; }
 
 	inline Color& getColor() noexcept { return _color; }

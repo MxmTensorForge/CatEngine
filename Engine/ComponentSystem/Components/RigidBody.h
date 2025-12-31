@@ -13,8 +13,6 @@
 class RigidBody final : public Component
 {
 private:
-	using Callback = std::function<void(const std::shared_ptr<GameObject>&, const CollisionResult&)>;
-
 	Mxm::Vec3 _gravity{0.0f, -9.81f, 0.0f};
 	Mxm::Vec3 _velocity{};
 
@@ -28,7 +26,6 @@ private:
 	float _angularDamping{};
 
 	bool _isCollision{};
-	Callback _collisionCallback;
 public:
 	static void resolveCollision(const std::shared_ptr<RigidBody>& object, const std::shared_ptr<GameObject>& other, const CollisionResult& result);
 
@@ -60,8 +57,6 @@ public:
 	float getAngularDamping() const noexcept;
 
 	bool isCollision() const noexcept { return _isCollision; }
-
-	void setCollisionCallback(const Callback& func);
 
 	void updatePhysics();
 

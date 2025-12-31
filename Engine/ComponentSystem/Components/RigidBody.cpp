@@ -25,10 +25,8 @@ void RigidBody::resolveCollision(const std::shared_ptr<RigidBody>& object, const
 
 	projectVelocity(object);
 
-	if (object->_collisionCallback) object->_collisionCallback(other, result);
-
-	if (result.depth > 0.5f) {
-		Logger::getInstance().log(LogType::Message, "COLLISION PENEPRATION > 0.5");
+	if (result.depth > 0.3f) {
+		Logger::getInstance().log(LogType::Message, "COLLISION PENEPRATION > 0.3");
 	}
 }
 
@@ -45,10 +43,6 @@ void RigidBody::updatePhysics() {
 	getObject()->transform().rotate(_angularVelocity * Time::fixedDeltaTime());
 
 	_isCollision = false;
-}
-
-void RigidBody::setCollisionCallback(const Callback& func) {
-	_collisionCallback = func;
 }
 
 

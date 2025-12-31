@@ -8,6 +8,7 @@
 
 struct MeshData {
 	std::vector<Mxm::Vec3> vertices;
+	std::vector<unsigned int> indices;
 	std::vector<Mxm::Vec3> normals;
 	std::vector<Mxm::Vec2> textureCoords;
 	GPUData data;

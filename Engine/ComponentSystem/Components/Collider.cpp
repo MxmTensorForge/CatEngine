@@ -59,7 +59,7 @@ void Collider::generateLocalAABB() noexcept {
 	auto mesh = getObject()->getComponent<MeshComponent>();
 	if (!mesh) return;
 
-	_localAABB = calculateAABB(mesh->getVertices(), 0.01f);
+	_localAABB = calculateAABB(mesh->getVertices(), 0.05f);
 	_needsRecalc = false;
 }
 

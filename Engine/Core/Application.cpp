@@ -1,6 +1,5 @@
 #include "Application.h"
 
-#include "../ComponentSystem/Components/MeshComponent.h"
 #include "../ComponentSystem/Object/Transform.h"
 #include "../ComponentSystem/Components/Camera.h"
 #include "../Animation/Animator.h"
@@ -22,6 +21,7 @@ void Application::run() {
 	auto& sceneManager = SceneManager::getInstance();
 
 	_renderer.init();
+	_renderer.viewport(_width, _height);
 	_uiRenderer.init(_width, _height);
 
 	start();
@@ -71,15 +71,29 @@ void Application::run() {
 		
 		Time::begin("projection");
 
+		_transparentMeshes.clear();
 		for (const auto& obj : sceneManager.getActiveScene()->getGameObjects()) {
 			if (!obj->getActive()) continue;
 
 			auto mesh_ptr = obj->getComponent<MeshComponent>();
 			if (!mesh_ptr) continue;
 
+			if (mesh_ptr->getColor().a() < 255) {
+				_transparentMeshes.push_back(mesh_ptr);
+				continue;
+			}
+
 			auto& transform = obj->transform();
 
 			_renderer.drawMesh(transform.getWorldMatrix(), mesh_ptr);
+		}
+
+		for (const auto& mesh : _transparentMeshes) {
+			auto obj = mesh->getObject();
+			if (!obj->getActive()) continue;
+
+			auto& transform = obj->transform();
+			_renderer.drawMesh(transform.getWorldMatrix(), mesh);
 		}
 		Time::end("projection");
 

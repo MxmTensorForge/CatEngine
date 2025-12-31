@@ -14,12 +14,11 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 	std::ifstream file;
 	file.open(path, std::ios::binary);
 	if (!file.is_open()) {
-		Logger::getInstance().log(LogType::Fatal, "Model file not opened (" + path + ").");
+		Logger::getInstance().log(LogType::Fatal, "Model file not opened (" + path + ")");
 		return;
 	}
 
 	MeshData result;
-	std::vector<Mxm::Vec3> verticesBuffer;
 	std::vector<Mxm::Vec2> texCoordsBuffer;
 
 	std::string line;
@@ -37,7 +36,7 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 			float x, y, z;
 			ss >> x >> y >> z;
 
-			verticesBuffer.emplace_back(x, y, z);
+			result.vertices.emplace_back(x, y, z);
 		}
 		else if (type == "vt") {
 			float s, t;
@@ -71,28 +70,28 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 
 			for (size_t i = 1; i + 1 < faceIndices.size(); i++)
 			{
-				result.vertices.push_back(verticesBuffer[faceIndices[0]]);
-				result.vertices.push_back(verticesBuffer[faceIndices[i]]);
-				result.vertices.push_back(verticesBuffer[faceIndices[i + 1]]);
+				result.indices.push_back(faceIndices[0]);
+				result.indices.push_back(faceIndices[i]);
+				result.indices.push_back(faceIndices[i + 1]);
 
 				result.textureCoords.push_back(texCoordsIndices[0] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[0]] : Mxm::Vec2(0.0f));
-				result.textureCoords.push_back(texCoordsIndices[0] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[i]] : Mxm::Vec2(0.0f));
-				result.textureCoords.push_back(texCoordsIndices[0] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[i + 1]] : Mxm::Vec2(0.0f));
+				result.textureCoords.push_back(texCoordsIndices[i] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[i]] : Mxm::Vec2(0.0f));
+				result.textureCoords.push_back(texCoordsIndices[i + 1] < texCoordsBuffer.size() ? texCoordsBuffer[texCoordsIndices[i + 1]] : Mxm::Vec2(0.0f));
 			}
 		}
 	}
 	file.close();
 
 	result.calculateNormals();
-	result.data.loadData(result.vertices, result.normals, result.textureCoords);
+	result.data.loadData(result.vertices, result.indices, result.normals, result.textureCoords);
 
 	_meshes[name] = std::make_shared<MeshData>(std::move(result));
-	Logger::getInstance().log(LogType::Message, "Model " + name + " (" + path + ") has been loaded successfully.");
+	Logger::getInstance().log(LogType::Message, "Model " + name + " (" + path + ") has been loaded successfully");
 }
 const std::shared_ptr<MeshData>& ResourceManager::getModel(const std::string& name) const {
 	auto it = _meshes.find(name);
 	if (it == _meshes.end()) {
-		Logger::getInstance().log(LogType::Fatal, "Model not found (" + name + ").");
+		Logger::getInstance().log(LogType::Fatal, "Model not found (" + name + ")");
 		return nullptr;
 	}
 

@@ -1,4 +1,5 @@
 #include "UIRenderer.h"
+#include "../Core/Logger.h"
 
 #include <iostream>
 #include <fstream>
@@ -45,6 +46,8 @@ void UIRenderer::init(int width, int height) {
 	_ortho = Mxm::Mat4::ortho((float)width, 0.0f, 0.0f, (float)height, -1.0f, 1.0f);
 
 	loadFont("font/myfont.fnt", "font/myfont_0.png");
+
+	Logger::getInstance().log(LogType::Message, "UIRenderer has been successfully initialized");
 }
 void UIRenderer::loadFont(const std::string& fntPath, const std::string& texturePath) {
 	_textTexture = std::make_unique<Texture>(texturePath, true);

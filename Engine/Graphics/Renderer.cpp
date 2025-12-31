@@ -6,6 +6,7 @@
 #include "../ComponentSystem/Object/GameObject.h"
 
 #include "../Core/TextureManager.h"
+#include "../Core/Logger.h"
 
 Renderer::Renderer() : _shader(nullptr) {}
 Renderer::~Renderer() {}
@@ -20,15 +21,20 @@ void Renderer::init() {
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
+
+	Logger::getInstance().log(LogType::Message, "Renderer has been successfully initialized");
 }
 void Renderer::update(const std::shared_ptr<Camera>& camera) {
 	_shader->use();
 	_shader->setUniform("uProjection", camera->getProjectionMatrix().data(), true);
 	_shader->setUniform("uView", camera->getViewMatrix().data(), true);
+
+	Mxm::Vec3 camPos = camera->getObject()->transform().getWorldPosition();
+	_shader->setUniform("uCameraPos", camPos.x, camPos.y, camPos.z);
 }
 
 void Renderer::clear(const Mxm::Vec4& color) const noexcept {
@@ -47,6 +53,9 @@ void Renderer::drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshCompon
 
 	Color color = mesh->getColor();
 	_shader->setUniform("uColor", color.rf(), color.gf(), color.bf(), color.af());
+	if (color.a() < 255) {
+		glDepthMask(GL_FALSE);
+	}
 
 	std::string texName = mesh->getTextureName();
 	if (texName.empty()) {
@@ -59,4 +68,5 @@ void Renderer::drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshCompon
 	}
 
 	mesh->getData()->data.draw();
+	glDepthMask(GL_TRUE);
 }

@@ -11,6 +11,8 @@ TextureManager& TextureManager::getInstance() {
 void TextureManager::loadTexture(const std::string& name, const std::string& path) {
 	std::unique_ptr<Texture> tex = std::make_unique<Texture>(path, false);
 	_textures[name] = std::move(tex);
+
+	Logger::getInstance().log(LogType::Message, "Texture loaded successfully: " + name);
 }
 const std::unique_ptr<Texture>& TextureManager::getTexture(const std::string& name) const {
 	auto it = _textures.find(name);

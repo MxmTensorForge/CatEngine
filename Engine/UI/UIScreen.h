@@ -29,6 +29,9 @@ public:
 	void render(UIRenderer& renderer) noexcept {
 		for (const auto& e : _elements) e->render(renderer);
 	}
+	void clear() noexcept {
+		_elements.clear();
+	}
 };
 
 #endif // !UISCREEN_H

@@ -18,7 +18,7 @@ Texture::~Texture() {
 }
 
 void Texture::load(const std::string& path, bool isText) noexcept {
-	stbi_set_flip_vertically_on_load(false);
+	stbi_set_flip_vertically_on_load(!isText);
 	int width, height, channels;
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 

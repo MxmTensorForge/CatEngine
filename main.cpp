@@ -20,10 +20,14 @@
 #include "Engine/UI/UIButton.h"
 
 #include <iostream>
+#include <random>
 
 class Game final : public Application
 {
 private:
+	std::mt19937 _rng;
+	std::normal_distribution<float> _normalDist;
+
 	std::shared_ptr<GameObject> _mainCamera;
 	std::shared_ptr<GameObject> _object;
 	std::shared_ptr<GameObject> _gun;
@@ -40,13 +44,12 @@ private:
 	float _gunShootSpeed = 1.0f;
 	float _gunTimer = _gunShootSpeed;
 
-	float _gunRecoil = 5.0f;
+	float _gunRecoil = 10.0f;
 
 	float _groundSpeed = 70.0f;
 	float _airSpeed = 5.0f;
 
 	bool _menu = true;
-	bool _prevMenu = false;
 
 	void createObject(const std::string& name, const std::string& modelName, const Mxm::Vec3& pos, const Mxm::Vec3& scale, const Mxm::Vec3& rotation, Color color) {
 		auto obj = _activeScene->createObject(name, "map");
@@ -56,6 +59,20 @@ private:
 		obj->transform().setRotation(rotation * Mxm::Consts::DEG2RAD);
 
 		obj->addComponent<Collider>()->generateFromMesh();
+	}
+	void createTrigger(const Mxm::Vec3& position) {
+		auto trigger = _activeScene->createObject("trig");
+		trigger->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 200, 70, 100));
+		trigger->transform().setScale(Mxm::Vec3(3.0f, 3.0f, 3.0f));
+		trigger->transform().setPosition(position);
+
+		trigger->addComponent<Collider>()->setTrigger(true);
+		trigger->getComponent<Collider>()->generateFromMesh();
+
+		auto rb = _object->getComponent<RigidBody>();
+		trigger->getComponent<Collider>()->setTriggerStayCallback([this, rb](const std::shared_ptr<GameObject>& obj) {
+			if (obj->getName() == "body") rb->addImpulse(Mxm::Vec3(0.0f, 0.7f, 0.0f));
+			});
 	}
 
 	void createMap() {
@@ -85,14 +102,17 @@ private:
 
 
 		auto obj = _activeScene->createObject("ground", "map");
-		obj->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("plane"), "texture");
-		obj->transform().setPosition(Mxm::Vec3(0.0f, 0.0f, 0.0f));
-		obj->transform().setScale(Mxm::Vec3(30.0f, 1.0f, 30.0f));
+		obj->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 255, 255, 255));
+		obj->transform().setPosition(Mxm::Vec3(0.0f, -10.0f, 0.0f));
+		obj->transform().setScale(Mxm::Vec3(30.0f, 10.0f, 30.0f));
 
 		obj->addComponent<Collider>()->generateFromMesh();
+
+		createTrigger(Mxm::Vec3(10.0f, 3.0f, -25.0f));
 	}
 
 	void prepareGame() {
+		Time::begin("loading");
 		ResourceManager::getInstance().loadModelFromFile("cube", "models/cube.obj");
 		ResourceManager::getInstance().loadModelFromFile("textureCube", "models/textureCube.obj");
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
@@ -107,6 +127,9 @@ private:
 		AudioManager::getInstance().setVolume("shoot", 0.5f);
 
 		TextureManager::getInstance().loadTexture("texture", "textures/grass.jpg");
+		Time::end("loading");
+
+		std::cout << Time::get("loading") / 1000.0f << '\n';
 
 		_activeScene = SceneManager::getInstance().createScene();
 
@@ -115,14 +138,12 @@ private:
 		_mainCamera->transform().translate(_cameraOffset);
 
 		_activeScene->setMainCamera(_mainCamera);
-		createMap();
 
 		//player body
 		_object = _activeScene->createObject("body");
 		_object->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 200, 70, 255));
 		_object->transform().setScale(Mxm::Vec3(0.7f, 2.0f, 0.7f));
-		_object->transform().setPosition(Mxm::Vec3(0.0f, 15.0f, 0.0f));
-		_object->transform().translate(Mxm::Vec3(0.0f, 8.0f, 0.0f));
+		_object->transform().setPosition(Mxm::Vec3(0.0f, 20.0f, 0.0f));
 
 		_object->addComponent<RigidBody>();
 		_object->getComponent<RigidBody>()->setGravity(Mxm::Vec3(0.0f, -15.0f, 0.0f));
@@ -134,14 +155,20 @@ private:
 		_gun = _activeScene->createObject("gun1");
 		_gun->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("gun1"), Color(50, 50, 50));
 		_gun->transform().setScale(Mxm::Vec3(0.3f, 0.3f, 0.3f));
-		//_gun->transform().translate(_gunOffset);
 
 		_gun->transform().rotate(Mxm::Vec3(0.0f, 0.0f, 0.0f));
 
 		_gun->transform().setParent(&_mainCamera->transform());
+
+		createMap();
 	}
 
 	void start() override {
+		_normalDist = std::normal_distribution<float>(0.0f, 1.0f);
+
+		std::random_device rd;
+		_rng.seed(rd());
+
 		prepareGame();
 		setBackgroundColor(Color(100, 120, 100, 255));
 
@@ -149,7 +176,7 @@ private:
 		SceneManager::getInstance().setActiveScene(menuScene);
 
 		UISystem& ui = UISystem::getInstance();
-		auto* screen = ui.addScreen("game"); 
+		auto* screen = ui.addScreen("game");
 		auto* gameScreen = ui.addScreen("gameScreen");
 		ui.setCurrentScreen("game");
 
@@ -157,13 +184,13 @@ private:
 		_text = gameScreen->add<UIText>(Mxm::Vec2i(50, 50), "", 1.0f, Color(255, 255, 255, 255));
 
 
-		auto* button = screen->add<UIButton>(Mxm::Vec2i(100, 50), Mxm::Vec2i(300, 40), "Start demo", Mxm::Vec2i(10, 5), 1.0f,
+		auto* button = screen->add<UIButton>(Mxm::Vec2i(100, 50), Mxm::Vec2i(1000, 90), "Start demo", Mxm::Vec2i(10, 5), 1.0f,
 			Color(255, 255, 255), Color(100, 200, 50), Color(0, 0, 0), Color(50, 50, 50));
-		button->setOnPress([this]() { 
+		button->setOnPress([this]() {
 			SceneManager::getInstance().setActiveScene(_activeScene);
 			UISystem::getInstance().setCurrentScreen("gameScreen");
 			AudioManager::getInstance().playSound("background");
-			setBackgroundColor(Color(100, 90, 240, 255));
+			setBackgroundColor(Color(40, 30, 110, 255));
 			_menu = false;
 			});
 		button->setOnHover([this]() { AudioManager::getInstance().playSound("click"); });
@@ -179,8 +206,9 @@ private:
 		trace->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 255, 255, 255));
 
 		trace->transform().setPosition(middle);
-		trace->transform().setScale(Mxm::Vec3(0.03f, 0.03f, length * 0.5f));
+		trace->transform().setScale(Mxm::Vec3(0.02f, 0.02f, length * 0.5f));
 		trace->transform().setLookRotation(direction);
+		trace->transform().rotate(Mxm::Vec3(0.0f, 0.0f, Mxm::Consts::QUARTER_PI));
 
 		static int traceCounter = 0;
 		_activeScene->getAnimator().add<SetColorAnim>("trace_" + std::to_string(traceCounter++), trace->getComponent<MeshComponent>(), Color(100, 100, 100, 0),
@@ -194,12 +222,34 @@ private:
 	bool is_gun_animating = false;
 
 	float yaw{}, pitch{};
+	float fps_timer = 0.0f;
+	float fps = 0.0f;
+
+	Mxm::Vec3 getSpreadDirection(const Mxm::Vec3& baseDirection, float spread) {
+		float randomAngle = (_normalDist(_rng)) * Mxm::Consts::TWO_PI;
+		float randomDistance = (_normalDist(_rng)) * spread;
+
+		Mxm::Vec3 randomOffset = Mxm::Vec3(
+			cosf(randomAngle) * randomDistance,
+			sinf(randomAngle) * randomDistance,
+			0.0f
+		);
+
+		Mxm::Vec3 right = _mainCamera->transform().getRight();
+		Mxm::Vec3 up = _mainCamera->transform().getUp();
+
+		Mxm::Vec3 finalDirection = baseDirection
+			+ right * randomOffset.x
+			+ up * randomOffset.y;
+
+		return finalDirection.normalized();
+	}
 
 	void update() override {
 		if (Input::isKeyPressed(Key::F1)) setDrawFrame(false);
 		if (Input::isKeyPressed(Key::F2)) setDrawFrame(true);
 
-		if (_menu) { _prevMenu = true; return; }
+		if (_menu) { return; }
 		Input::setMouseLockState(true);
 
 		Mxm::Vec2 mouseDelta = Input::getMouseDelta() * 0.0025f;
@@ -214,9 +264,16 @@ private:
 
 		auto obj_rigid = _object->getComponent<RigidBody>();
 
-		_text->setText("X: " + std::to_string(obj_transform.getWorldPosition().x) + 
-					   "\nY: " + std::to_string(obj_transform.getWorldPosition().y) +
-					   "\nZ: " + std::to_string(obj_transform.getWorldPosition().z));
+		fps_timer += Time::deltaTime();
+		if (fps_timer >= 0.3f) {
+			fps = 1.0f / Time::deltaTime();
+			fps_timer = 0.0f;
+		}
+
+		_text->setText("X: " + std::to_string(obj_transform.getWorldPosition().x) +
+			"\nY: " + std::to_string(obj_transform.getWorldPosition().y) +
+			"\nZ: " + std::to_string(obj_transform.getWorldPosition().z) +
+			"\nFPS: " + std::to_string((int)std::round(fps)));
 
 		transform.setRotation(Mxm::Vec3(pitch, 0.0f, 0.0f));
 		_object->transform().setRotation(Mxm::Vec3(0.0f, yaw, 0.0f));
@@ -268,7 +325,7 @@ private:
 		}
 
 		if (Input::isKeyPressed(Key::Space) && obj_rigid->isCollision()) {
-			obj_rigid->addImpulse(obj_transform.getUp() * 9.0f);
+			obj_rigid->addImpulse(obj_transform.getUp() * 10.0f);
 		}
 
 		if (Input::isKeyPressed(Key::R)) {
@@ -277,7 +334,7 @@ private:
 		}
 
 		_gunTimer += Time::deltaTime();
-		if (Input::isMouseButtonPressed(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed && !_prevMenu) {
+		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed) {
 			AudioManager::getInstance().playSound("shoot");
 
 			obj_rigid->addImpulse(-transform.getForward() * _gunRecoil);
@@ -289,26 +346,30 @@ private:
 				+ gun_transform.getUp() * _gunBulletOffset.y
 				+ gun_transform.getRight() * _gunBulletOffset.x;
 
-			IntersectionInfo info;
-			if (SceneManager::getInstance().getActiveScene()->rayCast(transform.getPosition(), transform.getForward(), info, { "map" })) {
-				createFireTrace(bulletStartPos, info.point, (info.point - bulletStartPos).length());
+			for (int i = 0; i < 5; i++) {
+				Mxm::Vec3 dir = getSpreadDirection(transform.getForward(), 0.07f);
 
-				std::shared_ptr<GameObject> bulletDot = _activeScene->createObject("bullet_dot");
-				bulletDot->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(0, 0, 0));
-				bulletDot->transform().setScale(Mxm::Vec3(0.08f));
-				bulletDot->transform().setPosition(info.point);
+				IntersectionInfo info;
+				if (SceneManager::getInstance().getActiveScene()->rayCast(transform.getPosition(), dir, info, { "map" })) {
+					createFireTrace(bulletStartPos, info.point, (info.point - bulletStartPos).length());
 
-				static int anim_id = 0;
-				_activeScene->getAnimator().add<WaitAnim>("wait_to_delete" + std::to_string(anim_id++), 5.0f, Animation::InterpolationType::LINEAR,
-					[bulletDot, this]() { _activeScene->removeObject(bulletDot); });
-			}
-			else {
-				Mxm::Vec3 bulletEndPos = bulletStartPos + gunForward * 100.0f;
-				createFireTrace(bulletStartPos, bulletEndPos, 100.0f);
+					std::shared_ptr<GameObject> bulletDot = _activeScene->createObject("bullet_dot");
+					bulletDot->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(0, 0, 0));
+					bulletDot->transform().setScale(Mxm::Vec3(0.08f));
+					bulletDot->transform().setPosition(info.point);
+
+					static int anim_id = 0;
+					_activeScene->getAnimator().add<WaitAnim>("wait_to_delete" + std::to_string(anim_id++), 9.0f, Animation::InterpolationType::LINEAR,
+						[bulletDot, this]() { _activeScene->removeObject(bulletDot); });
+				}
+				else {
+					Mxm::Vec3 bulletEndPos = bulletStartPos + dir * 100.0f;
+					createFireTrace(bulletStartPos, bulletEndPos, 100.0f);
+				}
 			}
 
 			_activeScene->getAnimator().add<RotateByAnim>("gun_rotate", _gun, Mxm::Vec3(-Mxm::Consts::PI * 2.0f, 0.0f, 0.0f),
-			_gunShootSpeed, Animation::InterpolationType::EASY_OUT);
+				_gunShootSpeed, Animation::InterpolationType::EASY_OUT);
 
 			_gunTimer = 0.0f;
 		}
@@ -316,8 +377,6 @@ private:
 		if (obj_transform.getPosition().y < -30.0f) {
 			obj_transform.setPosition(Mxm::Vec3(0.0f, 5.0f, 0.0f));
 		}
-
-		_prevMenu = false;
 	}
 public:
 	Game() : Application() {}

@@ -5,7 +5,8 @@
 #include "Components/MeshComponent.h"
 #include "../Animation/Animator.h"
 
-#include <set>
+#include <unordered_set>
+#include <unordered_map>
 
 class Collider;
 class RigidBody;
@@ -24,6 +25,8 @@ private:
 	};
 	std::vector<CachedObject> _cachedObjects;
 
+	std::unordered_map<std::shared_ptr<Collider>, std::unordered_set<std::shared_ptr<GameObject>>> _currentTriggerObjects;
+
 	void updateRecursive(Transform* transform);
 public:
 	Scene() = default;
@@ -31,10 +34,10 @@ public:
 
 	std::shared_ptr<GameObject> createObject(const std::string& name, const std::string& tag = "default");
 
-	std::set<std::shared_ptr<GameObject>> getObjectsWithName(const std::string& name) const;
+	std::unordered_set<std::shared_ptr<GameObject>> getObjectsWithName(const std::string& name) const;
 	std::shared_ptr<GameObject> getFirstObjectWithName(const std::string& name) const;
 
-	std::set<std::shared_ptr<GameObject>> getObjectsWithTag(const std::string& tag) const;
+	std::unordered_set<std::shared_ptr<GameObject>> getObjectsWithTag(const std::string& tag) const;
 	std::shared_ptr<GameObject> getFirstObjectWithTag(const std::string& tag) const;
 
 	void removeObject(const std::shared_ptr<GameObject>& obj);
@@ -55,7 +58,7 @@ public:
 	void setMainCamera(const std::shared_ptr<GameObject>& camera);
 	std::shared_ptr<GameObject> getMainCamera() const;
 
-	bool rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out, const std::set<std::string>& tags) const;
+	bool rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out, const std::unordered_set<std::string>& tags) const;
 };
 
 #endif // !SCENE_H

@@ -11,7 +11,9 @@
 
 Mxm::Vec3 PhysicsSystem::furthestPoint(const std::shared_ptr<Collider>& collider, const Mxm::Vec3& dir) {
 	auto& transform = collider->getObject()->transform();
-	Mxm::Vec3 localDir = (transform.getWorldMatrix().transposed() * Mxm::Vec4(dir, 0.0f)).toVec3(); //UPD: We need to ignore the offset, keep the scale and invert the rotation
+
+	const auto& worldMatrix = transform.getWorldMatrix();
+	Mxm::Vec3 localDir = (worldMatrix.transposed() * Mxm::Vec4(dir, 0.0f)).toVec3(); //UPD: We need to ignore the offset, keep the scale and invert the rotation
 
 	float greatestDot = -std::numeric_limits<float>::max();
 	Mxm::Vec3 furthestPoint{};
@@ -59,7 +61,9 @@ bool PhysicsSystem::handleSimplex(std::deque<Mxm::Vec3>& simplex, Mxm::Vec3& dir
 			direction = acPerp;
 
 			return true;
-		} else if (abc.dot(ao) < 0.0f) {
+		}
+		
+		if (abc.dot(ao) < 0.0f) {
 			abc = -abc;
 			simplex = { a, c, b };
 		}
@@ -100,7 +104,7 @@ bool PhysicsSystem::handleSimplex(std::deque<Mxm::Vec3>& simplex, Mxm::Vec3& dir
 		return false;
 	}
 
-	return true;
+	return false;
 }
 
 std::pair<Triangle, float> PhysicsSystem::findClosestFace(const std::vector<Triangle>& polytope) {
@@ -153,7 +157,7 @@ void PhysicsSystem::expandPolytope(std::vector<Triangle>& polytope, const Mxm::V
 	}
 }
 std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2) {
-	Mxm::Vec3 direction = direction = Mxm::Vec3(1.0f, 0.0f, 0.0f);
+	Mxm::Vec3 direction = Mxm::Vec3(1.0f, 1.0f, 1.0f);
 
 	Mxm::Vec3 support = minkowskiDifference(collider1, collider2, direction);
 
@@ -176,6 +180,13 @@ std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const std::sh
 		}
 
 		iters++;
+
+		if (iters > 1000) {
+			Logger::getInstance().log(LogType::Error, "Direction: X: " + std::to_string(direction.x) + " Y : " + std::to_string(direction.y) + " Z : " + std::to_string(direction.z));
+			for (int i = 0; i < _simplex.size(); i++) {
+				Logger::getInstance().log(LogType::Error, "Simplex[" + std::to_string(i) + "] " + "X: " + std::to_string(direction.x) + " Y : " + std::to_string(direction.y) + " Z : " + std::to_string(direction.z));
+			}
+		}
 	}
 	return { false, _simplex };
 }

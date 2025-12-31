@@ -20,15 +20,20 @@ MeshComponent::MeshComponent(const std::shared_ptr<MeshData>& mesh) : _mesh{mesh
 
 bool MeshComponent::intersection(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out) {
 	const auto& vertices = getVertices();
+	const auto& indices = getIndices();
 
 	Mxm::Vec3 intersection_point;
 	float dist{};
 
 	float closest_distance = std::numeric_limits<float>::max();
 	bool hit = false;
-	for (size_t i = 0; i < vertices.size(); i += 3)
+	for (size_t i = 0; i < indices.size(); i += 3)
 	{
-		Triangle tri = Triangle(vertices[i], vertices[i + 1], vertices[i + 2]);
+		Mxm::Vec3 v0 = vertices[indices[i]];
+		Mxm::Vec3 v1 = vertices[indices[i + 1]];
+		Mxm::Vec3 v2 = vertices[indices[i + 2]];
+
+		Triangle tri = Triangle(v0, v1, v2);
 		//if ((origin - Vector3D(tri[0])).dot(tri.normal()) < 0.0f) continue;
 
 		if (tri.intersection(origin, dir, intersection_point, dist)) {

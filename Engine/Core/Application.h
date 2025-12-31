@@ -6,6 +6,7 @@
 #include "../UI/UIRenderer.h"
 
 #include "../ComponentSystem/SceneManager.h"
+#include "../ComponentSystem/Components/MeshComponent.h"
 
 class Application
 {
@@ -17,6 +18,7 @@ private:
 	int _width, _height;
 
 	Color _backgroundColor = Color(255, 255, 255, 255);
+	std::vector<std::shared_ptr<MeshComponent>> _transparentMeshes;
 protected:
 	virtual void start() {}
 	virtual void update() {}
