@@ -1,11 +1,11 @@
-#ifndef AUDIOMANAGER_H
-#define AUDIOMANAGER_H
+#ifndef AUDIOSYSTEM_H
+#define AUDIOSYSTEM_H
 
 #include "../miniaudio/miniaudio.h"
 #include <unordered_map>
 #include <string>
 
-class AudioManager final
+class AudioSystem final
 {
 private:
 	struct AudioData
@@ -17,16 +17,16 @@ private:
 	ma_engine _engine;
 	std::unordered_map<std::string, AudioData> _sounds;
 
-	AudioManager();
-	~AudioManager();
+	AudioSystem();
+	~AudioSystem();
 public:
-	AudioManager(const AudioManager&) = delete;
-	AudioManager& operator=(const AudioManager&) = delete;
-	AudioManager(AudioManager&&) = delete;
-	AudioManager& operator=(AudioManager&&) = delete;
+	AudioSystem(const AudioSystem&) = delete;
+	AudioSystem& operator=(const AudioSystem&) = delete;
+	AudioSystem(AudioSystem&&) = delete;
+	AudioSystem& operator=(AudioSystem&&) = delete;
 
-	static AudioManager& getInstance() noexcept {
-		static AudioManager manager;
+	static AudioSystem& getInstance() noexcept {
+		static AudioSystem manager;
 		return manager;
 	}
 

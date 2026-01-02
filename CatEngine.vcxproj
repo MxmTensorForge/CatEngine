@@ -141,7 +141,7 @@
     <ClCompile Include="Engine\ComponentSystem\SceneManager.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Scene.cpp" />
     <ClCompile Include="Engine\Core\Application.cpp" />
-    <ClCompile Include="Engine\Core\AudioManager.cpp" />
+    <ClCompile Include="Engine\Core\AudioSystem.cpp" />
     <ClCompile Include="Engine\Core\Input.cpp" />
     <ClCompile Include="Engine\Core\Logger.cpp" />
     <ClCompile Include="Engine\Core\ResourceManager.cpp" />
@@ -190,7 +190,7 @@
     <ClInclude Include="Engine\ComponentSystem\SceneManager.h" />
     <ClInclude Include="Engine\ComponentSystem\Scene.h" />
     <ClInclude Include="Engine\Core\Application.h" />
-    <ClInclude Include="Engine\Core\AudioManager.h" />
+    <ClInclude Include="Engine\Core\AudioSystem.h" />
     <ClInclude Include="Engine\Core\EngineConsts.h" />
     <ClInclude Include="Engine\Core\Input.h" />
     <ClInclude Include="Engine\Core\Logger.h" />

@@ -10,8 +10,9 @@
 #include "Engine/Core/Input.h"
 #include "Engine/Core/Time.h"
 #include "Engine/Core/ResourceManager.h"
-#include "Engine/Core/AudioManager.h"
+#include "Engine/Core/AudioSystem.h"
 #include "Engine/Core/TextureManager.h"
+
 #include "Engine/Animation/Animator.h"
 #include "Engine/Animation/Animations/TransformAnim.h"
 #include "Engine/Animation/Animations/SetColorAnim.h"
@@ -23,7 +24,6 @@
 #include "Engine/UI/UIButton.h"
 
 #include <iostream>
-#include <random>
 
 class Game final : public Application
 {
@@ -123,7 +123,7 @@ private:
 
 		auto obj1 = _activeScene->createObject("dirLight", "map");
 		obj1->addComponent<DirectionLight>()->setLightColor(Color(255, 255, 255));
-		obj1->getComponent<DirectionLight>()->setIntensity(0.5f);
+		obj1->getComponent<DirectionLight>()->setIntensity(0.6f);
 
 		obj1->transform().rotate(Mxm::Vec3(Mxm::Consts::HALF_PI, Mxm::Consts::HALF_PI, 0.0f));
 
@@ -131,7 +131,6 @@ private:
 	}
 
 	void prepareGame() {
-		Time::begin("loading");
 		ResourceManager::getInstance().loadModelFromFile("cube", "models/cube.obj");
 		ResourceManager::getInstance().loadModelFromFile("textureCube", "models/textureCube.obj");
 		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
@@ -139,16 +138,13 @@ private:
 		ResourceManager::getInstance().loadModelFromFile("gun1", "models/glock.obj");
 		ResourceManager::getInstance().loadModelFromFile("gener", "models/gener.obj");
 
-		AudioManager::getInstance().loadSound("shoot", "sounds/shoot.mp3", false);
-		AudioManager::getInstance().loadSound("click", "sounds/click.mp3", false);
-		AudioManager::getInstance().loadSound("background", "sounds/background.mp3", true);
+		AudioSystem::getInstance().loadSound("shoot", "sounds/shoot.mp3", false);
+		AudioSystem::getInstance().loadSound("click", "sounds/click.mp3", false);
+		AudioSystem::getInstance().loadSound("background", "sounds/background.mp3", true);
 
-		AudioManager::getInstance().setVolume("shoot", 0.5f);
+		AudioSystem::getInstance().setVolume("shoot", 0.5f);
 
 		TextureManager::getInstance().loadTexture("texture", "textures/grass.jpg");
-		Time::end("loading");
-
-		std::cout << Time::get("loading") / 1000.0f << '\n';
 
 		_activeScene = SceneManager::getInstance().createScene();
 
@@ -203,11 +199,11 @@ private:
 		button->setOnPress([this]() {
 			SceneManager::getInstance().setActiveScene(_activeScene);
 			UISystem::getInstance().setCurrentScreen("gameScreen");
-			AudioManager::getInstance().playSound("background");
+			AudioSystem::getInstance().playSound("background");
 			setBackgroundColor(Color(40, 30, 110, 255));
 			_menu = false;
 			});
-		button->setOnHover([this]() { AudioManager::getInstance().playSound("click"); });
+		button->setOnHover([this]() { AudioSystem::getInstance().playSound("click"); });
 
 		screen->add<UIText>(Mxm::Vec2i(1200, 50), "This engine was created by TensorForge.\nIt features GJK/EPA, raycasting,\nUI, and much more.", 1.0f, Color(255, 255, 255, 255));
 	}
@@ -349,7 +345,7 @@ private:
 
 		_gunTimer += Time::deltaTime();
 		if (Input::isMouseButtonDown(MouseButton::MOUSE0) && _gunTimer > _gunShootSpeed) {
-			AudioManager::getInstance().playSound("shoot");
+			AudioSystem::getInstance().playSound("shoot");
 
 			obj_rigid->addImpulse(-transform.getForward() * _gunRecoil);
 

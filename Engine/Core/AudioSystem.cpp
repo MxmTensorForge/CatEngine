@@ -1,19 +1,19 @@
-#include "AudioManager.h"
+#include "AudioSystem.h"
 #include "Logger.h"
 
-AudioManager::AudioManager() {
+AudioSystem::AudioSystem() {
 	ma_result result = ma_engine_init(nullptr, &_engine);
 	if (result != MA_SUCCESS) {
 		Logger::getInstance().log(LogType::Fatal, "Audio engine failed");
 	}
 }
-AudioManager::~AudioManager() {
+AudioSystem::~AudioSystem() {
 	for (auto& [name, data] : _sounds)
 		ma_sound_uninit(&data.sound);
 	ma_engine_uninit(&_engine);
 }
 
-bool AudioManager::loadSound(const std::string& name, const std::string& path, bool repeat) {
+bool AudioSystem::loadSound(const std::string& name, const std::string& path, bool repeat) {
 	auto [it, inserted] = _sounds.try_emplace(name);
 	if (!inserted) {
 		return false;
@@ -34,27 +34,27 @@ bool AudioManager::loadSound(const std::string& name, const std::string& path, b
 	Logger::getInstance().log(LogType::Message, "Sound loaded successfully: " + name);
 	return true;
 }
-void AudioManager::playSound(const std::string& name) {
+void AudioSystem::playSound(const std::string& name) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_seek_to_pcm_frame(&it->second.sound, 0);
 		ma_sound_start(&it->second.sound);
 	}
 }
-void AudioManager::stopSound(const std::string& name) {
+void AudioSystem::stopSound(const std::string& name) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_stop(&it->second.sound);
 	}
 }
 
-void AudioManager::setVolume(const std::string& name, float volume) {
+void AudioSystem::setVolume(const std::string& name, float volume) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_set_volume(&it->second.sound, volume);
 	}
 }
-void AudioManager::setRepeat(const std::string& name, bool repeat) {
+void AudioSystem::setRepeat(const std::string& name, bool repeat) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_set_looping(&it->second.sound, repeat);

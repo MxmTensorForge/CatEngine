@@ -111,7 +111,7 @@
     <ClCompile Include="Engine\ComponentSystem\Components\Collider.cpp">
       <Filter>Engine\ComponentSystem\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\AudioManager.cpp">
+    <ClCompile Include="Engine\Core\AudioSystem.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
     <ClCompile Include="Engine\miniaudio\miniaudio.c">
@@ -278,7 +278,7 @@
     <ClInclude Include="Engine\Animation\Animations\WaitAnim.h">
       <Filter>Engine\Animation\Animations</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\AudioManager.h">
+    <ClInclude Include="Engine\Core\AudioSystem.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine\miniaudio\miniaudio.h">

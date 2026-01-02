@@ -16,6 +16,8 @@ private:
 	UIRenderer _uiRenderer;
 
 	int _width, _height;
+	float _physAccumulator;
+	float _stateAccumulator;
 
 	Color _backgroundColor = Color(255, 255, 255, 255);
 	std::vector<std::shared_ptr<MeshComponent>> _transparentMeshes;
@@ -27,6 +29,21 @@ protected:
 
 	void setDrawFrame(bool state) noexcept;
 	void setBackgroundColor(Color color) noexcept;
+
+	void initialize();
+	void updatePhysics();
+	void updateGame();
+
+	void renderOpaque();
+	void renderTransparent();
+
+	void renderFrame();
+	void renderUI();
+
+	void applySceneChanges();
+
+	bool processFrame();
+	void swapBuffers();
 public:
 	Application();
 	virtual ~Application() = default;
