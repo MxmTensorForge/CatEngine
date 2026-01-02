@@ -144,7 +144,7 @@
     <ClCompile Include="Engine\Core\AudioSystem.cpp" />
     <ClCompile Include="Engine\Core\Input.cpp" />
     <ClCompile Include="Engine\Core\Logger.cpp" />
-    <ClCompile Include="Engine\Core\ResourceManager.cpp" />
+    <ClCompile Include="Engine\Core\MeshManager.cpp" />
     <ClCompile Include="Engine\Core\Screen.cpp" />
     <ClCompile Include="Engine\Core\TextureManager.cpp" />
     <ClCompile Include="Engine\Core\Time.cpp" />
@@ -194,7 +194,7 @@
     <ClInclude Include="Engine\Core\EngineConsts.h" />
     <ClInclude Include="Engine\Core\Input.h" />
     <ClInclude Include="Engine\Core\Logger.h" />
-    <ClInclude Include="Engine\Core\ResourceManager.h" />
+    <ClInclude Include="Engine\Core\MeshManager.h" />
     <ClInclude Include="Engine\Core\Screen.h" />
     <ClInclude Include="Engine\Core\TextureManager.h" />
     <ClInclude Include="Engine\Core\Time.h" />

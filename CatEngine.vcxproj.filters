@@ -99,7 +99,7 @@
     <ClCompile Include="Engine\ComponentSystem\Components\RigidBody.cpp">
       <Filter>Engine\ComponentSystem\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\ResourceManager.cpp">
+    <ClCompile Include="Engine\Core\MeshManager.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ComponentSystem\Object\Transform.cpp">
@@ -254,7 +254,7 @@
     <ClInclude Include="Engine\Mxm\Vec4.h">
       <Filter>Engine\Mxm</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\ResourceManager.h">
+    <ClInclude Include="Engine\Core\MeshManager.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Geometry\MeshData.h">

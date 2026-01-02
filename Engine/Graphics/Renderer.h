@@ -7,8 +7,6 @@
 #include "Buffer.h"
 #include "VertexArray.h"
 
-#include "../ComponentSystem/Components/PointLight.h"
-#include "../ComponentSystem/Components/DirectionLight.h"
 #include "../Mxm/Mat4.h"
 #include "GPUData.h"
 
@@ -16,6 +14,9 @@
 
 class Camera;
 class MeshComponent;
+
+class PointLight;
+class DirectionLight;
 
 class Renderer final
 {

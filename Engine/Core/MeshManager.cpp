@@ -1,16 +1,17 @@
-#include "ResourceManager.h"
+#include "MeshManager.h"
+#include "../Geometry/MeshData.h"
 
 #include "Logger.h"
 
 #include <fstream>
 #include <sstream>
 
-ResourceManager& ResourceManager::getInstance() {
-	static ResourceManager manager;
+MeshManager& MeshManager::getInstance() {
+	static MeshManager manager;
 	return manager;
 }
 
-void ResourceManager::loadModelFromFile(const std::string& name, const std::string& path) {
+void MeshManager::loadModelFromFile(const std::string& name, const std::string& path) {
 	std::ifstream file;
 	file.open(path, std::ios::binary);
 	if (!file.is_open()) {
@@ -89,7 +90,7 @@ void ResourceManager::loadModelFromFile(const std::string& name, const std::stri
 	_meshes[name] = std::make_shared<MeshData>(std::move(result));
 	Logger::getInstance().log(LogType::Message, "Model " + name + " (" + path + ") has been loaded successfully");
 }
-const std::shared_ptr<MeshData>& ResourceManager::getModel(const std::string& name) const {
+const std::shared_ptr<MeshData>& MeshManager::getModel(const std::string& name) const {
 	auto it = _meshes.find(name);
 	if (it == _meshes.end()) {
 		Logger::getInstance().log(LogType::Fatal, "Model not found (" + name + ")");
@@ -99,12 +100,12 @@ const std::shared_ptr<MeshData>& ResourceManager::getModel(const std::string& na
 	return it->second;
 }
 
-void ResourceManager::removeModel(const std::string& name) {
+void MeshManager::removeModel(const std::string& name) {
 	auto it = _meshes.find(name);
 	if (it == _meshes.end()) return;
 
 	_meshes.erase(it);
 }
-void ResourceManager::clearModels(const std::string& name) {
+void MeshManager::clearModels(const std::string& name) {
 	_meshes.clear();
 }

@@ -9,7 +9,7 @@
 
 #include "Engine/Core/Input.h"
 #include "Engine/Core/Time.h"
-#include "Engine/Core/ResourceManager.h"
+#include "Engine/Core/MeshManager.h"
 #include "Engine/Core/AudioSystem.h"
 #include "Engine/Core/TextureManager.h"
 
@@ -22,6 +22,7 @@
 
 #include "Engine/UI/UISystem.h"
 #include "Engine/UI/UIButton.h"
+#include "Engine/ComponentSystem/SceneManager.h"
 
 #include <iostream>
 
@@ -53,7 +54,7 @@ private:
 
 	void createObject(const std::string& name, const std::string& modelName, const Mxm::Vec3& pos, const Mxm::Vec3& scale, const Mxm::Vec3& rotation, Color color) {
 		auto obj = _activeScene->createObject(name, "map");
-		obj->addComponent<MeshComponent>(ResourceManager::getInstance().getModel(modelName), color);
+		obj->addComponent<MeshComponent>(MeshManager::getInstance().getModel(modelName), color);
 		obj->transform().setPosition(pos);
 		obj->transform().setScale(scale);
 		obj->transform().setRotation(rotation * Mxm::Consts::DEG2RAD);
@@ -62,7 +63,7 @@ private:
 	}
 	void createTrigger(const Mxm::Vec3& position) {
 		auto trigger = _activeScene->createObject("trig");
-		trigger->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 200, 70, 100));
+		trigger->addComponent<MeshComponent>(MeshManager::getInstance().getModel("cube"), Color(255, 200, 70, 100));
 		trigger->transform().setScale(Mxm::Vec3(3.0f, 3.0f, 3.0f));
 		trigger->transform().setPosition(position);
 
@@ -102,7 +103,7 @@ private:
 
 
 		auto obj = _activeScene->createObject("ground", "map");
-		obj->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 255, 255, 255));
+		obj->addComponent<MeshComponent>(MeshManager::getInstance().getModel("cube"), Color(255, 255, 255, 255));
 		obj->transform().setPosition(Mxm::Vec3(0.0f, -10.0f, 0.0f));
 		obj->transform().setScale(Mxm::Vec3(30.0f, 10.0f, 30.0f));
 
@@ -111,7 +112,7 @@ private:
 		createTrigger(Mxm::Vec3(10.0f, 3.0f, -25.0f));
 
 		auto obj2 = _activeScene->createObject("name", "map");
-		obj2->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 255, 255));
+		obj2->addComponent<MeshComponent>(MeshManager::getInstance().getModel("cube"), Color(255, 255, 255));
 		obj2->addComponent<PointLight>()->setLightColor(Color(255, 255, 255));
 		obj2->getComponent<PointLight>()->setIntensity(1.0f);
 
@@ -131,12 +132,12 @@ private:
 	}
 
 	void prepareGame() {
-		ResourceManager::getInstance().loadModelFromFile("cube", "models/cube.obj");
-		ResourceManager::getInstance().loadModelFromFile("textureCube", "models/textureCube.obj");
-		ResourceManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
-		ResourceManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
-		ResourceManager::getInstance().loadModelFromFile("gun1", "models/glock.obj");
-		ResourceManager::getInstance().loadModelFromFile("gener", "models/gener.obj");
+		MeshManager::getInstance().loadModelFromFile("cube", "models/cube.obj");
+		MeshManager::getInstance().loadModelFromFile("textureCube", "models/textureCube.obj");
+		MeshManager::getInstance().loadModelFromFile("plane", "models/plane.obj");
+		MeshManager::getInstance().loadModelFromFile("frustum", "models/frustum.obj");
+		MeshManager::getInstance().loadModelFromFile("gun1", "models/glock.obj");
+		MeshManager::getInstance().loadModelFromFile("gener", "models/gener.obj");
 
 		AudioSystem::getInstance().loadSound("shoot", "sounds/shoot.mp3", false);
 		AudioSystem::getInstance().loadSound("click", "sounds/click.mp3", false);
@@ -156,7 +157,7 @@ private:
 
 		//player body
 		_object = _activeScene->createObject("body");
-		_object->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 200, 70, 255));
+		_object->addComponent<MeshComponent>(MeshManager::getInstance().getModel("cube"), Color(255, 200, 70, 255));
 		_object->transform().setScale(Mxm::Vec3(0.7f, 2.0f, 0.7f));
 		_object->transform().setPosition(Mxm::Vec3(0.0f, 20.0f, 0.0f));
 
@@ -168,7 +169,7 @@ private:
 		_object->addComponent<Collider>()->generateSimpleFromMesh();
 
 		_gun = _activeScene->createObject("gun1");
-		_gun->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("gun1"), Color(50, 50, 50));
+		_gun->addComponent<MeshComponent>(MeshManager::getInstance().getModel("gun1"), Color(50, 50, 50));
 		_gun->transform().setScale(Mxm::Vec3(0.3f, 0.3f, 0.3f));
 
 		_gun->transform().rotate(Mxm::Vec3(0.0f, 0.0f, 0.0f));
@@ -213,7 +214,7 @@ private:
 		Mxm::Vec3 direction = (to - from).normalized();
 
 		auto trace = _activeScene->createObject("trace");
-		trace->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(255, 255, 255, 255));
+		trace->addComponent<MeshComponent>(MeshManager::getInstance().getModel("cube"), Color(255, 255, 255, 255));
 
 		trace->transform().setPosition(middle);
 		trace->transform().setScale(Mxm::Vec3(0.02f, 0.02f, length * 0.5f));
@@ -364,7 +365,7 @@ private:
 					createFireTrace(bulletStartPos, info.point, (info.point - bulletStartPos).length());
 
 					std::shared_ptr<GameObject> bulletDot = _activeScene->createObject("bullet_dot");
-					bulletDot->addComponent<MeshComponent>(ResourceManager::getInstance().getModel("cube"), Color(0, 0, 0));
+					bulletDot->addComponent<MeshComponent>(MeshManager::getInstance().getModel("cube"), Color(0, 0, 0));
 					bulletDot->transform().setScale(Mxm::Vec3(0.08f));
 					bulletDot->transform().setPosition(info.point);
 

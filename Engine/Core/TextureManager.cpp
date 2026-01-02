@@ -1,4 +1,5 @@
 #include "TextureManager.h"
+#include "../Graphics/Texture.h"
 
 #include "Logger.h"
 #include <utility>

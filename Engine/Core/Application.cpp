@@ -4,6 +4,8 @@
 #include "../ComponentSystem/Components/Camera.h"
 #include "../Animation/Animator.h"
 
+#include "../ComponentSystem/SceneManager.h"
+
 #include "../UI/UISystem.h"
 
 #include "Logger.h"

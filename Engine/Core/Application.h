@@ -5,8 +5,7 @@
 #include "../Graphics/Renderer.h"
 #include "../UI/UIRenderer.h"
 
-#include "../ComponentSystem/SceneManager.h"
-#include "../ComponentSystem/Components/MeshComponent.h"
+class MeshComponent;
 
 class Application
 {

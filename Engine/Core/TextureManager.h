@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 
-#include "../Graphics/Texture.h"
+class Texture;
 
 class TextureManager final
 {

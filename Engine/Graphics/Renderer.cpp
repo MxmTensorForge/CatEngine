@@ -3,10 +3,15 @@
 #include "../ComponentSystem/Components/MeshComponent.h"
 #include "../ComponentSystem/Components/Camera.h"
 
+#include "../ComponentSystem/Components/PointLight.h"
+#include "../ComponentSystem/Components/DirectionLight.h"
+
 #include "../ComponentSystem/Object/GameObject.h"
 
 #include "../Core/TextureManager.h"
 #include "../Core/Logger.h"
+
+#include "../Graphics/Texture.h"
 
 Renderer::Renderer() : _shader(nullptr) {}
 Renderer::~Renderer() {}
