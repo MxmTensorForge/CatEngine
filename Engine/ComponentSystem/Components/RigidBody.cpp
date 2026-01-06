@@ -11,7 +11,7 @@
 #include <vector>
 #include <array>
 
-void RigidBody::resolveCollision(RigidBody* object, const std::shared_ptr<GameObject>& other, const CollisionResult& result) {
+void RigidBody::resolveCollision(RigidBody* object, const GameObject* other, const CollisionResult& result) {
 	auto move = result.normal * result.depth;
 	object->getObject()->transform().translate(-move);
 

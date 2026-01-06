@@ -3,6 +3,8 @@
 
 #include "Scene.h"
 
+#include <memory>
+
 class SceneManager final
 {
 private:

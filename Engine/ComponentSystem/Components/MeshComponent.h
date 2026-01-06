@@ -14,7 +14,7 @@ struct IntersectionInfo
 {
 	float distance = 0.0f;
 	Mxm::Vec3 point;
-	std::shared_ptr<GameObject> gameObject;
+	GameObject* gameObject;
 	std::string tag;
 };
 

@@ -17,18 +17,18 @@ class RigidBody;
 class Scene final
 {
 private:
-	std::vector<std::shared_ptr<GameObject>> _gameObjects;
-	std::weak_ptr<GameObject> _mainCamera;
+	std::vector<std::unique_ptr<GameObject>> _gameObjects;
+	GameObject* _mainCamera;
 	Animator _animator;
 
 	struct CachedObject {
-		std::weak_ptr<GameObject> gameObject;
+		GameObject* gameObject;
 		Collider* collider;
 		RigidBody* rigidBody;
 	};
 	std::vector<CachedObject> _cachedObjects;
 
-	std::unordered_map<Collider*, std::unordered_set<std::shared_ptr<GameObject>>> _currentTriggerObjects;
+	std::unordered_map<Collider*, std::unordered_set<GameObject*>> _currentTriggerObjects;
 
 	mutable std::vector<PointLight*> _pointLightsCache;
 	mutable DirectionLight* _dirLightCache;
@@ -39,19 +39,19 @@ public:
 	Scene() = default;
 	~Scene() = default;
 
-	std::shared_ptr<GameObject> createObject(const std::string& name, const std::string& tag = "default");
+	GameObject* createObject(const std::string& name, const std::string& tag = "default");
 
-	std::unordered_set<std::shared_ptr<GameObject>> getObjectsWithName(const std::string& name) const;
-	std::shared_ptr<GameObject> getFirstObjectWithName(const std::string& name) const;
+	std::unordered_set<GameObject*> getObjectsWithName(const std::string& name) const;
+	GameObject* getFirstObjectWithName(const std::string& name) const;
 
-	std::unordered_set<std::shared_ptr<GameObject>> getObjectsWithTag(const std::string& tag) const;
-	std::shared_ptr<GameObject> getFirstObjectWithTag(const std::string& tag) const;
+	std::unordered_set<GameObject*> getObjectsWithTag(const std::string& tag) const;
+	GameObject* getFirstObjectWithTag(const std::string& tag) const;
 
 	const std::vector<PointLight*>& getPointLights() const;
 	const DirectionLight* getDirectionLight() const;
 	void updateLightCache() const;
 
-	void removeObject(const std::shared_ptr<GameObject>& obj);
+	void removeObject(const GameObject* obj);
 	void removeObjectsWithTag(const std::string& tag);
 	void removeObjectsWithName(const std::string& name);
 
@@ -63,11 +63,11 @@ public:
 
 	inline Animator& getAnimator() noexcept { return _animator; }
 
-	const std::vector<std::shared_ptr<GameObject>>& getGameObjects() const noexcept;
+	std::vector<GameObject*> getGameObjects() const noexcept;
 	void clear();
 
-	void setMainCamera(const std::shared_ptr<GameObject>& camera);
-	std::shared_ptr<GameObject> getMainCamera() const;
+	void setMainCamera(GameObject* camera);
+	GameObject* getMainCamera() const;
 
 	bool rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out, const std::unordered_set<std::string>& tags) const;
 };

@@ -23,12 +23,12 @@ private:
 	bool _needsRecalc = true;
 	bool _isTrigger = false;
 
-	using TriggerCallback = std::function<void(const std::shared_ptr<GameObject>&)>;
+	using TriggerCallback = std::function<void(GameObject*)>;
 	TriggerCallback _triggerOnCallback;
 	TriggerCallback _triggerExitCallback;
 	TriggerCallback _triggerStayCallback;
 
-	using CollisionCallback = std::function<void(const std::shared_ptr<GameObject>&, const CollisionResult&)>;
+	using CollisionCallback = std::function<void(GameObject*, const CollisionResult&)>;
 	CollisionCallback _collisionOnCallback;
 public:
 	void start() override;
@@ -46,16 +46,16 @@ public:
 	const std::vector<Mxm::Vec3>& getVertices() const noexcept;
 
 	void setTriggerOnCallback(const TriggerCallback& c) noexcept { _triggerOnCallback = c; }
-	void triggerOnCallback(const std::shared_ptr<GameObject>& obj) noexcept { if (_triggerOnCallback) _triggerOnCallback(obj); }
+	void triggerOnCallback(GameObject* obj) noexcept { if (_triggerOnCallback) _triggerOnCallback(obj); }
 
 	void setTriggerExitCallback(const TriggerCallback& c) noexcept { _triggerExitCallback = c; }
-	void triggerExitCallback(const std::shared_ptr<GameObject>& obj) noexcept { if (_triggerExitCallback) _triggerExitCallback(obj); }
+	void triggerExitCallback(GameObject* obj) noexcept { if (_triggerExitCallback) _triggerExitCallback(obj); }
 
 	void setTriggerStayCallback(const TriggerCallback& c) noexcept { _triggerStayCallback = c; }
-	void triggerStayCallback(const std::shared_ptr<GameObject>& obj) noexcept { if (_triggerStayCallback) _triggerStayCallback(obj); }
+	void triggerStayCallback(GameObject* obj) noexcept { if (_triggerStayCallback) _triggerStayCallback(obj); }
 
 	void setCollisionOnCallback(const CollisionCallback& c) noexcept { _collisionOnCallback = c; }
-	void collisionOnCallback(const std::shared_ptr<GameObject>& obj, const CollisionResult& result) noexcept { if (_collisionOnCallback) _collisionOnCallback(obj, result); }
+	void collisionOnCallback(GameObject* obj, const CollisionResult& result) noexcept { if (_collisionOnCallback) _collisionOnCallback(obj, result); }
 
 	bool isTrigger() const noexcept { return _isTrigger; }
 	void setTrigger(bool state) noexcept { _isTrigger = state; }

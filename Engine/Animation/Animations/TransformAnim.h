@@ -9,17 +9,16 @@
 class TranslateByAnim final : public Animation
 {
 private:
-	std::weak_ptr<GameObject> _object;
+	GameObject* _object;
 	Mxm::Vec3 _value;
 
 	void update() override {
-		auto obj = _object.lock();
-		if (!obj) { stop(); return; }
-		obj->transform().translate(_value * deltaProgress());
+		if (!_object) { stop(); return; }
+		_object->transform().translate(_value * deltaProgress());
 	}
 public:
 	template <typename... Args>
-	TranslateByAnim(const std::shared_ptr<GameObject>& object, const Mxm::Vec3& value, Args&&... args)
+	TranslateByAnim(GameObject* object, const Mxm::Vec3& value, Args&&... args)
 		: Animation(std::forward<Args>(args)...), _object(object), _value(value) {
 	}
 };
@@ -27,26 +26,25 @@ public:
 class TranslateToAnim final : public Animation
 {
 private:
-	std::weak_ptr<GameObject> _object;
+	GameObject* _object;
 
 	bool _initialized = false;
 	Mxm::Vec3 _start;
 	Mxm::Vec3 _end;
 
 	void update() override {
-		auto obj = _object.lock();
-		if (!obj) { stop(); return; }
+		if (!_object) { stop(); return; }
 
 		if (!_initialized) {
-			_start = obj->transform().getPosition();
+			_start = _object->transform().getPosition();
 			_initialized = true;
 		}
 
-		obj->transform().setPosition(_start + (_end - _start) * progress());
+		_object->transform().setPosition(_start + (_end - _start) * progress());
 	}
 public:
 	template <typename... Args>
-	TranslateToAnim(const std::shared_ptr<GameObject>& object, const Mxm::Vec3& value, Args&&... args)
+	TranslateToAnim(GameObject* object, const Mxm::Vec3& value, Args&&... args)
 		: Animation(std::forward<Args>(args)...), _object(object), _end(value) {
 	}
 };
@@ -54,18 +52,17 @@ public:
 class RotateByAnim final : public Animation
 {
 private:
-	std::weak_ptr<GameObject> _object;
+	GameObject* _object;
 	Mxm::Vec3 _value;
 
 	void update() override {
-		auto obj = _object.lock();
-		if (!obj) { stop(); return; }
+		if (!_object) { stop(); return; }
 
-		obj->transform().rotate(_value * deltaProgress());
+		_object->transform().rotate(_value * deltaProgress());
 	}
 public:
 	template <typename... Args>
-	RotateByAnim(const std::shared_ptr<GameObject>& object, const Mxm::Vec3& value, Args&&... args)
+	RotateByAnim(GameObject* object, const Mxm::Vec3& value, Args&&... args)
 		: Animation(std::forward<Args>(args)...), _object(object), _value(value) {
 	}
 };
@@ -73,26 +70,25 @@ public:
 class RotateToAnim final : public Animation
 {
 private:
-	std::weak_ptr<GameObject> _object;
+	GameObject* _object;
 
 	bool _initialized = false;
 	Mxm::Vec3 _start;
 	Mxm::Vec3 _end;
 
 	void update() override {
-		auto obj = _object.lock();
-		if (!obj) { stop(); return; }
+		if (!_object) { stop(); return; }
 
 		if (!_initialized) {
-			_start = obj->transform().getRotation();
+			_start = _object->transform().getRotation();
 			_initialized = true;
 		}
 
-		obj->transform().setRotation(_start + (_end - _start) * progress());
+		_object->transform().setRotation(_start + (_end - _start) * progress());
 	}
 public:
 	template <typename... Args>
-	RotateToAnim(const std::shared_ptr<GameObject>& object, const Mxm::Vec3& value, Args&&... args)
+	RotateToAnim(GameObject* object, const Mxm::Vec3& value, Args&&... args)
 		: Animation(std::forward<Args>(args)...), _object(object), _end(value) {
 	}
 };
@@ -100,26 +96,25 @@ public:
 class ScaleToAnim final : public Animation
 {
 private:
-	std::weak_ptr<GameObject> _object;
+	GameObject* _object;
 
 	bool _initialized = false;
 	Mxm::Vec3 _start;
 	Mxm::Vec3 _end;
 
 	void update() override {
-		auto obj = _object.lock();
-		if (!obj) { stop(); return; }
+		if (!_object) { stop(); return; }
 
 		if (!_initialized) {
-			_start = obj->transform().getScale();
+			_start = _object->transform().getScale();
 			_initialized = true;
 		}
 
-		obj->transform().setScale(_start + (_end - _start) * progress());
+		_object->transform().setScale(_start + (_end - _start) * progress());
 	}
 public:
 	template <typename... Args>
-	ScaleToAnim(const std::shared_ptr<GameObject>& object, const Mxm::Vec3& value, Args&&... args)
+	ScaleToAnim(GameObject* object, const Mxm::Vec3& value, Args&&... args)
 		: Animation(std::forward<Args>(args)...), _object(object), _end(value) {
 	}
 };

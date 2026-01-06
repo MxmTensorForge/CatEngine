@@ -7,8 +7,6 @@
 #include "../Physics/PhysicsSystem.h"
 #include "../Core/Logger.h"
 
-#include <iostream>
-
 void Scene::updateCollisions() {
     _cachedObjects.clear();
 
@@ -19,7 +17,7 @@ void Scene::updateCollisions() {
         if (!collider) continue;
 
         auto rigidBody = obj->getComponent<RigidBody>();
-        _cachedObjects.push_back({ obj, collider, rigidBody});
+        _cachedObjects.push_back({ obj.get(), collider, rigidBody});
     }
 
     auto prevsTriggerObjects = _currentTriggerObjects;
@@ -28,7 +26,7 @@ void Scene::updateCollisions() {
     for (size_t i = 0; i < _cachedObjects.size(); ++i) {
         auto& obj1 = _cachedObjects[i];
 
-        auto gameObject1 = obj1.gameObject.lock();
+        auto gameObject1 = obj1.gameObject;
         auto collider1 = obj1.collider;
         auto rigidbody1 = obj1.rigidBody;
 
@@ -37,7 +35,7 @@ void Scene::updateCollisions() {
         for (size_t j = i + 1; j < _cachedObjects.size(); ++j) {
             auto& obj2 = _cachedObjects[j];
 
-            auto gameObject2 = obj2.gameObject.lock();
+            auto gameObject2 = obj2.gameObject;
             auto collider2 = obj2.collider;
             auto rigidbody2 = obj2.rigidBody;
 
@@ -94,40 +92,39 @@ void Scene::updateCollisions() {
     }
 }
 
-std::shared_ptr<GameObject> Scene::createObject(const std::string& name, const std::string& tag) {
-	auto obj = std::make_shared<GameObject>(name, tag);
-	_gameObjects.push_back(obj);
-	return obj;
+GameObject* Scene::createObject(const std::string& name, const std::string& tag) {
+    _gameObjects.push_back(std::make_unique<GameObject>(name, tag));
+    return _gameObjects.back().get();
 }
 
-std::unordered_set<std::shared_ptr<GameObject>> Scene::getObjectsWithName(const std::string& name) const {
-    std::unordered_set<std::shared_ptr<GameObject>> result;
+std::unordered_set<GameObject*> Scene::getObjectsWithName(const std::string& name) const {
+    std::unordered_set<GameObject*> result;
 
     for (const auto& obj : _gameObjects) {
         if (obj->getName() == name) {
-            result.insert(obj);
+            result.insert(obj.get());
         }
     }
 
     return result;
 }
-std::shared_ptr<GameObject> Scene::getFirstObjectWithName(const std::string& name) const {
+GameObject* Scene::getFirstObjectWithName(const std::string& name) const {
     auto objects = getObjectsWithName(name);
     return objects.empty() ? nullptr : *objects.begin();
 }
 
-std::unordered_set<std::shared_ptr<GameObject>> Scene::getObjectsWithTag(const std::string& tag) const {
-    std::unordered_set<std::shared_ptr<GameObject>> result;
+std::unordered_set<GameObject*> Scene::getObjectsWithTag(const std::string& tag) const {
+    std::unordered_set<GameObject*> result;
 
     for (const auto& obj : _gameObjects) {
         if (obj->getTag() == tag) {
-            result.insert(obj);
+            result.insert(obj.get());
         }
     }
 
     return result;
 }
-std::shared_ptr<GameObject> Scene::getFirstObjectWithTag(const std::string& tag) const {
+GameObject* Scene::getFirstObjectWithTag(const std::string& tag) const {
     auto objects = getObjectsWithTag(tag);
     return objects.empty() ? nullptr : *objects.begin();
 }
@@ -156,22 +153,22 @@ void Scene::updateLightCache() const {
     _cacheValid = true;
 }
 
-void Scene::removeObject(const std::shared_ptr<GameObject>& obj) {
+void Scene::removeObject(const GameObject* obj) {
     _gameObjects.erase(
         std::remove_if(_gameObjects.begin(), _gameObjects.end(),
-            [&obj](const std::shared_ptr<GameObject>& item) {
-                return item == obj;
+            [&obj](const std::unique_ptr<GameObject>& item) {
+                return item.get() == obj;
             }),
         _gameObjects.end()
     );
 }
 void Scene::removeObjectsWithTag(const std::string& tag) {
-    _gameObjects.erase(std::remove_if(_gameObjects.begin(), _gameObjects.end(), [&tag](const std::shared_ptr<GameObject>& obj) {
+    _gameObjects.erase(std::remove_if(_gameObjects.begin(), _gameObjects.end(), [&tag](const std::unique_ptr<GameObject>& obj) {
         return obj->getTag() == tag;
         }), _gameObjects.end());
 }
 void Scene::removeObjectsWithName(const std::string& name) {
-    _gameObjects.erase(std::remove_if(_gameObjects.begin(), _gameObjects.end(), [&name](const std::shared_ptr<GameObject>& obj) {
+    _gameObjects.erase(std::remove_if(_gameObjects.begin(), _gameObjects.end(), [&name](const std::unique_ptr<GameObject>& obj) {
         return obj->getName() == name;
         }), _gameObjects.end());
 }
@@ -211,21 +208,25 @@ void Scene::updatePhysics() {
     }
 }
 
-const std::vector<std::shared_ptr<GameObject>>& Scene::getGameObjects() const noexcept {
-	return _gameObjects;
+std::vector<GameObject*> Scene::getGameObjects() const noexcept {
+    std::vector<GameObject*> result;
+    for (const auto& obj : _gameObjects) {
+        result.push_back(obj.get());
+    }
+    return result;
 }
 void Scene::clear() {
     _gameObjects.clear();
     _cachedObjects.clear();
     _currentTriggerObjects.clear();
-    _mainCamera.reset();
+    _mainCamera = nullptr;
 }
 
-void Scene::setMainCamera(const std::shared_ptr<GameObject>& camera) {
+void Scene::setMainCamera(GameObject* camera) {
 	if (camera->hasComponent<Camera>()) _mainCamera = camera;
 }
-std::shared_ptr<GameObject> Scene::getMainCamera() const {
-    return _mainCamera.lock();
+GameObject* Scene::getMainCamera() const {
+    return _mainCamera;
 }
 
 bool Scene::rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out, const std::unordered_set<std::string>& tags) const {

@@ -9,7 +9,7 @@
 #include "../Component.h"
 #include "Transform.h"
 
-class GameObject final : public std::enable_shared_from_this<GameObject>
+class GameObject final
 {
 private:
 	std::vector<std::unique_ptr<Component>> _components;
@@ -73,7 +73,7 @@ public:
         );
 
         T* raw = static_cast<T*>(_components.back().get());
-        raw->setObject(shared_from_this());
+        raw->setObject(this);
 
         return raw;
     }
