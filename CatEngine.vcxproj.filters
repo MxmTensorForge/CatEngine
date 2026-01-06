@@ -46,9 +46,6 @@
     <Filter Include="glad">
       <UniqueIdentifier>{74fe19f5-1dc6-457e-9935-d658e7717b7e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="main">
-      <UniqueIdentifier>{69a8d439-7970-4083-803d-3d51802002a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\stb_image">
       <UniqueIdentifier>{9226c50b-ac2b-4cea-8a23-b5b67b79f08a}</UniqueIdentifier>
     </Filter>
@@ -144,9 +141,6 @@
     <ClCompile Include="glad\src\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>main</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Geometry\MeshData.cpp">
       <Filter>Engine\Geometry</Filter>
     </ClCompile>
@@ -224,7 +218,7 @@
     <ClInclude Include="Engine\ComponentSystem\Components\RigidBody.h">
       <Filter>Engine\ComponentSystem\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Animation\Animations\SetColorAnim.h">
+    <ClInclude Include="Engine\Animation\Animations\ColorAnim.h">
       <Filter>Engine\Animation\Animations</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Animation\Animations\FloatAnim.h">

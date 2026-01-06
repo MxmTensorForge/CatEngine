@@ -23,15 +23,15 @@ private:
 
 	struct CachedObject {
 		std::weak_ptr<GameObject> gameObject;
-		std::weak_ptr<Collider> collider;
-		std::weak_ptr<RigidBody> rigidBody;
+		Collider* collider;
+		RigidBody* rigidBody;
 	};
 	std::vector<CachedObject> _cachedObjects;
 
-	std::unordered_map<std::shared_ptr<Collider>, std::unordered_set<std::shared_ptr<GameObject>>> _currentTriggerObjects;
+	std::unordered_map<Collider*, std::unordered_set<std::shared_ptr<GameObject>>> _currentTriggerObjects;
 
-	mutable std::vector<std::shared_ptr<PointLight>> _pointLightsCache;
-	mutable std::shared_ptr<DirectionLight> _dirLightCache;
+	mutable std::vector<PointLight*> _pointLightsCache;
+	mutable DirectionLight* _dirLightCache;
 	mutable bool _cacheValid = false;
 
 	void updateRecursive(Transform* transform);
@@ -47,8 +47,8 @@ public:
 	std::unordered_set<std::shared_ptr<GameObject>> getObjectsWithTag(const std::string& tag) const;
 	std::shared_ptr<GameObject> getFirstObjectWithTag(const std::string& tag) const;
 
-	const std::vector<std::shared_ptr<PointLight>>& getPointLights() const;
-	const std::shared_ptr<DirectionLight>& getDirectionLight() const;
+	const std::vector<PointLight*>& getPointLights() const;
+	const DirectionLight* getDirectionLight() const;
 	void updateLightCache() const;
 
 	void removeObject(const std::shared_ptr<GameObject>& obj);

@@ -33,8 +33,9 @@ void Renderer::init() {
 
 	Logger::getInstance().log(LogType::Message, "Renderer has been successfully initialized");
 }
-void Renderer::update(const std::shared_ptr<Camera>& camera, 
-					  const std::vector<std::shared_ptr<PointLight>>& lights, const std::shared_ptr<DirectionLight>& directionLight) {
+void Renderer::update(const Camera* camera,
+	const std::vector<PointLight*>& pointLights, const DirectionLight* directionLight) {
+
 	_shader->use();
 	_shader->setUniform("uProjection", camera->getProjectionMatrix().data(), true);
 	_shader->setUniform("uView", camera->getViewMatrix().data(), true);
@@ -42,12 +43,12 @@ void Renderer::update(const std::shared_ptr<Camera>& camera,
 	Mxm::Vec3 camPos = camera->getObject()->transform().getWorldPosition();
 	_shader->setUniform("uCameraPos", camPos.x, camPos.y, camPos.z);
 
-	int lightCount = lights.size();
+	int lightCount = pointLights.size();
 	_shader->setUniform("pointLightsCount", lightCount);
 	for (int i = 0; i < lightCount; i++) {
 		if (i > 8) break;
 
-		auto light = lights[i];
+		auto light = pointLights[i];
 		if (!light || !light->getObject()->getActive()) continue;
 
 		std::string name = "pointLights[" + std::to_string(i) + "].";
@@ -85,7 +86,7 @@ void Renderer::setDrawFrame(bool state) const noexcept {
 	glPolygonMode(GL_FRONT_AND_BACK, state ? GL_LINE : GL_FILL);
 }
 
-void Renderer::drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshComponent>& mesh) {
+void Renderer::drawMesh(const Mxm::Mat4& model, const MeshComponent* mesh) {
 	_shader->setUniform("uModel", model.data(), true);
 
 	Color color = mesh->getColor();

@@ -27,14 +27,14 @@ public:
 	~Renderer();
 
 	void init();
-	void update(const std::shared_ptr<Camera>& camera, 
-		const std::vector<std::shared_ptr<PointLight>>& pointLights, const std::shared_ptr<DirectionLight>& directionLight);
+	void update(const Camera* camera, 
+		const std::vector<PointLight*>& pointLights, const DirectionLight* directionLight);
 
 	void clear(const Mxm::Vec4& color) const noexcept;
 	void viewport(GLsizei width, GLsizei height) const noexcept;
 	void setDrawFrame(bool state) const noexcept;
 
-	void drawMesh(const Mxm::Mat4& model, const std::shared_ptr<MeshComponent>& mesh);
+	void drawMesh(const Mxm::Mat4& model, const MeshComponent* mesh);
 };
 
 #endif // !RENDERER_H

@@ -8,6 +8,8 @@
 #include <string>
 #include <memory>
 
+struct MeshData;
+
 struct IntersectionInfo
 {
 	float distance = 0.0f;
@@ -22,11 +24,10 @@ private:
 	std::shared_ptr<MeshData> _mesh;
 	std::string _textureName;
 	Color _color;
-
 public:
-	MeshComponent(const std::shared_ptr<MeshData>& mesh, Color color);
-	MeshComponent(const std::shared_ptr<MeshData>& mesh, const std::string& textureName);
-	MeshComponent(const std::shared_ptr<MeshData>& mesh);
+	MeshComponent(const std::string& meshName, Color color);
+	MeshComponent(const std::string& meshName, const std::string& textureName);
+	MeshComponent(const std::string& meshName);
 	MeshComponent() = delete;	
 
 	inline const std::vector<Mxm::Vec3>& getVertices() const noexcept { return _mesh->vertices; }

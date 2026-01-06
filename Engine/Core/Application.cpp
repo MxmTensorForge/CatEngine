@@ -53,8 +53,8 @@ void Application::updateGame() {
 	auto activeScene = sceneManager.getActiveScene();
 
 	update();
-	activeScene->update();
 	activeScene->updateAnimator();
+	activeScene->update();
 
 	Time::end("updateGame");
 }
@@ -181,4 +181,4 @@ void Application::setBackgroundColor(Color color) noexcept {
 	_backgroundColor = color;
 }
 
-Application::Application() : _width(EngineConsts::STANDART_WIDTH), _height(EngineConsts::STANDART_HEIGHT), _screen(), _uiRenderer() {}
+Application::Application() : _width(EngineConsts::STANDART_WIDTH), _height(EngineConsts::STANDART_HEIGHT), _screen() {}

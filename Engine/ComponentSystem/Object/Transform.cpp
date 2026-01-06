@@ -36,7 +36,7 @@ void Transform::setLookRotation(const Mxm::Vec3& direction) noexcept {
 	markDirty();
 }
 void Transform::setLookAt(const Mxm::Vec3& target) noexcept {
-	Mxm::Vec3 direction = (target - _position).normalized();
+	Mxm::Vec3 direction = target - _position;
 	setLookRotation(direction);
 }
 

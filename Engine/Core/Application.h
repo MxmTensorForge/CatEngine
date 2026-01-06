@@ -15,11 +15,11 @@ private:
 	UIRenderer _uiRenderer;
 
 	int _width, _height;
-	float _physAccumulator;
-	float _stateAccumulator;
+	float _physAccumulator = 0.0f;
+	float _stateAccumulator = 0.0f;
 
 	Color _backgroundColor = Color(255, 255, 255, 255);
-	std::vector<std::shared_ptr<MeshComponent>> _transparentMeshes;
+	std::vector<MeshComponent*> _transparentMeshes;
 protected:
 	virtual void start() {}
 	virtual void update() {}

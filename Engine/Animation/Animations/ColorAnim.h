@@ -1,26 +1,25 @@
-#ifndef SETCOLORANIM_H
-#define SETCOLORANIM_H
+#ifndef COLORANIM_H
+#define COLORANIM_H
 
 #include "Animation.h"
 #include "../../ComponentSystem/Components/MeshComponent.h"
 
 #include <memory>
 
-class SetColorAnim final : public Animation
+class ColorAnim final : public Animation
 {
 private:
-	std::weak_ptr<MeshComponent> _object;
+	MeshComponent* _object;
 
 	bool _initialized = false;
 	Color _start;
 	Color _end;
 
 	void update() override {
-		auto obj = _object.lock();
-		if (!obj) { stop(); return; }
+		if (!_object) { stop(); return; }
 
 		if (!_initialized) {
-			_start = obj->getColor();
+			_start = _object->getColor();
 			_initialized = true;
 		}
 
@@ -31,11 +30,11 @@ private:
 			static_cast<uint8_t>(_start.b() * (1 - t) + _end.b() * t),
 			static_cast<uint8_t>(_start.a() * (1 - t) + _end.a() * t)
 		);
-		obj->getColor() = current;;
+		_object->getColor() = current;
 	}
 public:
 	template <typename... Args>
-	SetColorAnim(const std::shared_ptr<MeshComponent>& mesh, Color value, Args&&... args)
+	ColorAnim(MeshComponent* mesh, Color value, Args&&... args)
 		: Animation(std::forward<Args>(args)...), _object(mesh), _end(value) {
 	}
 };

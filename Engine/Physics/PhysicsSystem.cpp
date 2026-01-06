@@ -9,7 +9,7 @@
 
 #include <array>
 
-Mxm::Vec3 PhysicsSystem::furthestPoint(const std::shared_ptr<Collider>& collider, const Mxm::Vec3& dir) {
+Mxm::Vec3 PhysicsSystem::furthestPoint(const Collider* collider, const Mxm::Vec3& dir) {
 	auto& transform = collider->getObject()->transform();
 
 	const auto& worldMatrix = transform.getWorldMatrix();
@@ -27,7 +27,7 @@ Mxm::Vec3 PhysicsSystem::furthestPoint(const std::shared_ptr<Collider>& collider
 	}
 	return (transform.getWorldMatrix() * Mxm::Vec4(furthestPoint, 1.0f)).toVec3();
 }
-Mxm::Vec3 PhysicsSystem::minkowskiDifference(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2, const Mxm::Vec3& dir) {
+Mxm::Vec3 PhysicsSystem::minkowskiDifference(const Collider* collider1, const Collider* collider2, const Mxm::Vec3& dir) {
 	return furthestPoint(collider1, dir) - furthestPoint(collider2, -dir);
 }
 
@@ -156,7 +156,7 @@ void PhysicsSystem::expandPolytope(std::vector<Triangle>& polytope, const Mxm::V
 		_polytope.emplace_back(e.a, e.b, newPoint);
 	}
 }
-std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2) {
+std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const Collider* collider1, const Collider* collider2) {
 	Mxm::Vec3 direction = Mxm::Vec3(1.0f, 1.0f, 1.0f);
 
 	Mxm::Vec3 support = minkowskiDifference(collider1, collider2, direction);
@@ -190,7 +190,7 @@ std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const std::sh
 	}
 	return { false, _simplex };
 }
-CollisionResult PhysicsSystem::epaAlgorithm(const std::shared_ptr<Collider>& collider1, const std::shared_ptr<Collider>& collider2, const std::deque<Mxm::Vec3>& simplex) {
+CollisionResult PhysicsSystem::epaAlgorithm(const Collider* collider1, const Collider* collider2, const std::deque<Mxm::Vec3>& simplex) {
 	_polytope.clear();
 	_polytope.reserve(16);
 

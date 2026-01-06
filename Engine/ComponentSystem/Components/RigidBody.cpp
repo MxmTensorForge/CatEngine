@@ -11,11 +11,11 @@
 #include <vector>
 #include <array>
 
-void RigidBody::resolveCollision(const std::shared_ptr<RigidBody>& object, const std::shared_ptr<GameObject>& other, const CollisionResult& result) {
+void RigidBody::resolveCollision(RigidBody* object, const std::shared_ptr<GameObject>& other, const CollisionResult& result) {
 	auto move = result.normal * result.depth;
 	object->getObject()->transform().translate(-move);
 
-	auto projectVelocity = [&](const std::shared_ptr<RigidBody>& obj) {
+	auto projectVelocity = [&](RigidBody* obj) {
 		Mxm::Vec3 vel = obj->getVelocity();
 		Mxm::Vec3 normalVel = result.normal * result.normal.dot(vel);
 

@@ -1,6 +1,8 @@
 #include "MeshComponent.h"
 #include "../../Geometry/Triangle.h"
+
 #include "../../Core/Logger.h"
+#include "../../Core/MeshManager.h"
 
 #include "../../ComponentSystem/Object/GameObject.h"
 
@@ -8,15 +10,9 @@
 #include <string>
 #include <sstream>
 
-MeshComponent::MeshComponent(const std::shared_ptr<MeshData>& mesh, Color color) : _mesh{mesh}, _color(color)
-{
-}
-MeshComponent::MeshComponent(const std::shared_ptr<MeshData>& mesh, const std::string& textureName) : _mesh{ mesh }, _textureName(textureName)
-{
-}
-MeshComponent::MeshComponent(const std::shared_ptr<MeshData>& mesh) : _mesh{mesh}, _color(Color(255, 255, 255, 255))
-{
-}
+MeshComponent::MeshComponent(const std::string& meshName, Color color) : _mesh{ MeshManager::getInstance().getModel(meshName) }, _color(color) {}
+MeshComponent::MeshComponent(const std::string& meshName, const std::string& textureName) : _mesh{ MeshManager::getInstance().getModel(meshName) }, _textureName(textureName) {}
+MeshComponent::MeshComponent(const std::string& meshName) : _mesh{ MeshManager::getInstance().getModel(meshName) }, _color(Color(255, 255, 255, 255)) {}
 
 bool MeshComponent::intersection(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out) {
 	const auto& vertices = getVertices();

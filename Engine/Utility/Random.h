@@ -5,6 +5,7 @@
 
 namespace Random {
 	void init(uint32_t seed);
+	void init();
 
 	float range(float min, float max);
 	float value();

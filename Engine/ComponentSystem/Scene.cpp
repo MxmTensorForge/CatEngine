@@ -19,7 +19,7 @@ void Scene::updateCollisions() {
         if (!collider) continue;
 
         auto rigidBody = obj->getComponent<RigidBody>();
-        _cachedObjects.push_back({ obj, collider, rigidBody });
+        _cachedObjects.push_back({ obj, collider, rigidBody});
     }
 
     auto prevsTriggerObjects = _currentTriggerObjects;
@@ -29,8 +29,8 @@ void Scene::updateCollisions() {
         auto& obj1 = _cachedObjects[i];
 
         auto gameObject1 = obj1.gameObject.lock();
-        auto collider1 = obj1.collider.lock();
-        auto rigidbody1 = obj1.rigidBody.lock();
+        auto collider1 = obj1.collider;
+        auto rigidbody1 = obj1.rigidBody;
 
         if (!gameObject1 || !collider1 || !gameObject1->getActive()) continue;
 
@@ -38,8 +38,8 @@ void Scene::updateCollisions() {
             auto& obj2 = _cachedObjects[j];
 
             auto gameObject2 = obj2.gameObject.lock();
-            auto collider2 = obj2.collider.lock();
-            auto rigidbody2 = obj2.rigidBody.lock();
+            auto collider2 = obj2.collider;
+            auto rigidbody2 = obj2.rigidBody;
 
             if (!rigidbody1 && !rigidbody2) continue;
 
@@ -132,17 +132,17 @@ std::shared_ptr<GameObject> Scene::getFirstObjectWithTag(const std::string& tag)
     return objects.empty() ? nullptr : *objects.begin();
 }
 
-const std::vector<std::shared_ptr<PointLight>>& Scene::getPointLights() const {
+const std::vector<PointLight*>& Scene::getPointLights() const {
     if (!_cacheValid) updateLightCache();
     return _pointLightsCache;
 }
-const std::shared_ptr<DirectionLight>& Scene::getDirectionLight() const {
+const DirectionLight* Scene::getDirectionLight() const {
     if (!_cacheValid) updateLightCache();
     return _dirLightCache;
 }
 void Scene::updateLightCache() const {
     _pointLightsCache.clear();
-    _dirLightCache.reset();
+    _dirLightCache = nullptr;
 
     for (const auto& obj : _gameObjects) {
         if (auto light = obj->getComponent<PointLight>()) {
@@ -197,7 +197,6 @@ void Scene::update() {
         if (!obj->getActive() || obj->transform().getParent()) continue;
         updateRecursive(&obj->transform());
 	}
-    _animator.update();
 }
 void Scene::updateAnimator() {
     _animator.update();
