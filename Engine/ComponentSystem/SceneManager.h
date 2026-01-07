@@ -8,8 +8,8 @@
 class SceneManager final
 {
 private:
-	std::vector<std::shared_ptr<Scene>> _scenes;
-	std::shared_ptr<Scene> _pendingActiveScene = nullptr;
+	std::vector<std::unique_ptr<Scene>> _scenes;
+	Scene* _pendingActiveScene = nullptr;
 	size_t _indexActiveScene = 0;
 
 	SceneManager() = default;
@@ -29,12 +29,11 @@ public:
 		return manager;
 	}
 
-	std::shared_ptr<Scene> createScene();
+	Scene* createScene();
+	Scene* getActiveScene() const;
 
-	std::shared_ptr<Scene> getActiveScene() const;
-	void setActiveScene(const std::shared_ptr<Scene>& scene);
-
-	void removeScene(const std::shared_ptr<Scene>& scene);
+	void setActiveScene(Scene* scene);
+	void removeScene(Scene* scene);
 };
 
 #endif // !SCENEMANAGER_H

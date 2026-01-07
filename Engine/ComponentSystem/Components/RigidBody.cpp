@@ -11,25 +11,6 @@
 #include <vector>
 #include <array>
 
-void RigidBody::resolveCollision(RigidBody* object, const GameObject* other, const CollisionResult& result) {
-	auto move = result.normal * result.depth;
-	object->getObject()->transform().translate(-move);
-
-	auto projectVelocity = [&](RigidBody* obj) {
-		Mxm::Vec3 vel = obj->getVelocity();
-		Mxm::Vec3 normalVel = result.normal * result.normal.dot(vel);
-
-		obj->setVelocity(vel - normalVel);
-		obj->_isCollision = true;
-		};
-
-	projectVelocity(object);
-
-	if (result.depth > 0.3f) {
-		Logger::getInstance().log(LogType::Message, "COLLISION PENEPRATION > 0.3");
-	}
-}
-
 void RigidBody::updatePhysics() {
 	float damping = _isCollision ? _linearDamping : _airDamping;
 
@@ -61,7 +42,7 @@ const Mxm::Vec3& RigidBody::getAngularVelocity() const noexcept { return _angula
 void RigidBody::setMomentOfInertia(const Mxm::Vec3& vec) noexcept { _momentOfInertia = vec; }
 const Mxm::Vec3& RigidBody::getMomentOfInertia() const noexcept { return _momentOfInertia; }
 
-void RigidBody::setMass(float value) noexcept { _mass = value; }
+void RigidBody::setMass(float value) noexcept { _mass = fmaxf(value, 0.001f); }
 float RigidBody::getMass() const noexcept { return _mass; }
 
 void RigidBody::setLinearDamping(float value) noexcept { _linearDamping = value; }

@@ -27,8 +27,6 @@ private:
 
 	bool _isCollision{};
 public:
-	static void resolveCollision(RigidBody* object, const GameObject* other, const CollisionResult& result);
-
 	void addImpulse(const Mxm::Vec3& vec) noexcept;
 	void addAngularImpulse(const Mxm::Vec3& vec) noexcept;
 
@@ -57,6 +55,7 @@ public:
 	float getAngularDamping() const noexcept;
 
 	bool isCollision() const noexcept { return _isCollision; }
+	void setIsCollision(bool state) noexcept { _isCollision = state; }
 
 	void updatePhysics();
 

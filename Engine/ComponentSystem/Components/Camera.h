@@ -22,10 +22,16 @@ private:
 
 	void start() override;
 	void update() override;
+
+	void recalcProjection() noexcept;
 public:
 	const Mxm::Mat4& getViewMatrix() const { return _viewMatrix; }
 	const Mxm::Mat4& getProjectionMatrix() const { return _projectionMatrix; }
 	Mxm::Mat4 getViewProjection() const { return _projectionMatrix * _viewMatrix; }
+
+	void setFov(float fov) noexcept;
+	void setNear(float near) noexcept;
+	void setFar(float far) noexcept;
 };
 
 #endif

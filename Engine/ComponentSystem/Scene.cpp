@@ -3,6 +3,7 @@
 #include "Components/Camera.h"
 #include "Components/Collider.h"
 #include "Components/MeshComponent.h"
+#include "Components/RigidBody.h"
 
 #include "../Physics/PhysicsSystem.h"
 #include "../Core/Logger.h"
@@ -54,15 +55,21 @@ void Scene::updateCollisions() {
             if (!obj1IsTrigger && !obj2IsTrigger) {
                 CollisionResult result = PhysicsSystem::getInstance().epaAlgorithm(collider1, collider2, collision.second);
 
-                if (rigidbody1) {
-                    RigidBody::resolveCollision(rigidbody1, gameObject2, result);
+                if (rigidbody1 && !rigidbody2) {
+                    PhysicsSystem::getInstance().resolveCollisionStatic(rigidbody1, result);
                     collider1->collisionOnCallback(gameObject2, result);
                 }
-                if (rigidbody2) {
-                    CollisionResult invertedResult = result;
-                    invertedResult.normal = -result.normal;
+                else if (rigidbody2 && !rigidbody1) {
+                    result.normal = -result.normal;
 
-                    RigidBody::resolveCollision(rigidbody2, gameObject1, invertedResult);
+                    PhysicsSystem::getInstance().resolveCollisionStatic(rigidbody2, result);
+                    collider2->collisionOnCallback(gameObject1, result);
+                }
+                else if (rigidbody1 && rigidbody2) {
+                    PhysicsSystem::getInstance().resolveCollisionDynamic(rigidbody1, rigidbody2, result);
+
+                    collider1->collisionOnCallback(gameObject2, result);
+                    result.normal = -result.normal;
                     collider2->collisionOnCallback(gameObject1, result);
                 }
             }

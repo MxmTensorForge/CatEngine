@@ -2,6 +2,8 @@
 
 #include "../ComponentSystem/Components/MeshComponent.h"
 #include "../ComponentSystem/Object/GameObject.h"
+#include "../ComponentSystem/Components/Collider.h"
+#include "../ComponentSystem/Components/RigidBody.h"
 
 #include "../Core/Logger.h"
 #include "../Core/Time.h"
@@ -216,4 +218,83 @@ CollisionResult PhysicsSystem::epaAlgorithm(const Collider* collider1, const Col
 		expandPolytope(_polytope, newPoint);
 	}
 	return CollisionResult{ Mxm::Vec3(1.0f, 0.0f, 0.0f), 0.1f };
+}
+
+void PhysicsSystem::resolveCollisionStatic(RigidBody* rb, const CollisionResult& result) {
+	Mxm::Vec3 move = result.normal * result.depth;
+	rb->getObject()->transform().translate(-move);
+
+	Mxm::Vec3 vel = rb->getVelocity();
+	Mxm::Vec3 normalVel = result.normal * result.normal.dot(vel);
+
+	rb->setVelocity(vel - normalVel);
+	rb->setIsCollision(true);
+
+	if (result.depth > 0.3f) {
+		Logger::getInstance().log(LogType::Message, "COLLISION PENEPRATION > 0.3");
+	}
+}
+void PhysicsSystem::resolveCollisionDynamic(RigidBody* rb1, RigidBody* rb2, const CollisionResult& result) {
+	Mxm::Vec3 move = result.normal * result.depth;
+
+	float mass1 = rb1->getMass();
+	float mass2 = rb2->getMass();
+	float totalMass = mass1 + mass2;
+
+	if (totalMass < Mxm::Consts::EPS) return;
+
+	float moveRation1 = mass2 / totalMass;
+	Mxm::Vec3 move1 = -move * moveRation1;
+
+	float moveRation2 = mass1 / totalMass;
+	Mxm::Vec3 move2 = move * moveRation2;
+
+	rb1->getObject()->transform().translate(move1);
+	rb2->getObject()->transform().translate(move2);
+
+
+	Mxm::Vec3 v1 = rb1->getVelocity();
+	Mxm::Vec3 v2 = rb2->getVelocity();
+
+	Mxm::Vec3 v1_n = result.normal * v1.dot(result.normal);
+	Mxm::Vec3 v2_n = result.normal * v2.dot(result.normal);
+	Mxm::Vec3 v1_t = v1 - v1_n;
+	Mxm::Vec3 v2_t = v2 - v2_n;
+
+	Mxm::Vec3 u1 = (v2_n * mass2 * 2.0f + v1_n * (mass1 - mass2)) / totalMass;
+	Mxm::Vec3 u2 = (v1_n * mass1 * 2.0f + v2_n * (mass2 - mass1)) / totalMass;
+
+	rb1->setVelocity(v1_t + u1);
+	rb2->setVelocity(v2_t + u2);
+
+	rb1->setIsCollision(true);
+	rb2->setIsCollision(true);
+
+
+	/*
+
+
+	m1 * v1 + m2 * v2 = m1 * u1 + m2 * u2
+	m1*v1^2 + m2*v2^2 = m1*u1^2 + m2*u2^2
+
+	m1*v1^2 - m1*u1^2 = m2*u2^2 - m2*v2^2
+
+	m1((v1 + u1)*(v1 - u1)) = m2((v2 + u2)*(v2 - u2))
+	m1 * v1 - m1 * u1 = m2 * u2 - m2 * v2
+
+	m1(v1 - u1) = m2(u2 - v2)
+	u1 = v2 + u2 - v1
+
+	m1(v1 - (v2 + u2 - v1)) = m2(u2 - v2)
+
+	m1(-v2 - u2 + 2*v1) = m2(u2 - v2)
+	-m1*v2 - m1*u2 + m1*2*v1 = m2*u2 - m2*v2
+
+	-m1*u2 - m2*u2 = -m2*v2 + m1*v2 - m1*2*v1
+
+	-m1*u2 - m2*u2 = -m2*v2 + m1*v2 - m1*2*v1
+	-u2(m1 + m2) = v2(-m2 + m1) - m1*2*v1
+
+	u2 = (2*m1*v1 + v2(m2 - m1)) / (m1 + m2)
+	*/
 }

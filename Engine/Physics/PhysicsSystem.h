@@ -1,14 +1,15 @@
 #ifndef PHYSICSSYSTEM_H
 #define PHYSICSSYSTEM_H
 
-#include "../ComponentSystem/Components/Collider.h"
-#include "../ComponentSystem/Components/RigidBody.h"
 #include "../Geometry/Triangle.h"
-
 #include "CollisionResult.h"
 
 #include <utility>
 #include <deque>
+#include <vector>
+
+class Collider;
+class RigidBody;
 
 class PhysicsSystem final
 {
@@ -50,6 +51,9 @@ public:
 
 	std::pair<bool, std::deque<Mxm::Vec3>> gjkCollision(const Collider* collider1, const Collider* collider2);
 	CollisionResult epaAlgorithm(const Collider* collider1, const Collider* collider2, const std::deque<Mxm::Vec3>& simplex);
+
+	void resolveCollisionStatic(RigidBody* rb, const CollisionResult& result);
+	void resolveCollisionDynamic(RigidBody* rb1, RigidBody* rb2, const CollisionResult& result);
 };
 
 #endif // !PHYSICSSYSTEM_H
