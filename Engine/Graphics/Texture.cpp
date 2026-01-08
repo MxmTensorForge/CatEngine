@@ -1,9 +1,7 @@
 #include "Texture.h"
 #include "../Core/Logger.h"
 
-#define _CRT_SECURE_NO_WARNINGS
-#define STB_IMAGE_IMPLEMENTATION
-#include "../stb_image/stb_image.h"
+#include <stb_image.h>
 
 #include <vector>
 

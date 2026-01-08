@@ -23,7 +23,7 @@ private:
 			return (a == other.a && b == other.b);
 		}
 	};
-	// *** Optimization ***
+
 	std::vector<Edge> _uniqueEdges;
 	std::vector<Triangle> _polytope;
 	std::deque<Mxm::Vec3> _simplex;

@@ -37,20 +37,23 @@
     <Filter Include="Engine\Physics">
       <UniqueIdentifier>{dc2290d5-bc44-4d0e-aa5f-1e37b2ff3b60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\miniaudio">
-      <UniqueIdentifier>{78b8afcb-9fc0-4f27-97cc-67295c140ab6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\UI">
       <UniqueIdentifier>{c9dd3a7d-b391-4af3-a312-e5094c7f39a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="glad">
-      <UniqueIdentifier>{74fe19f5-1dc6-457e-9935-d658e7717b7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\stb_image">
-      <UniqueIdentifier>{9226c50b-ac2b-4cea-8a23-b5b67b79f08a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Utility">
       <UniqueIdentifier>{7c710c6f-38ee-4dad-a0c9-edf317495e1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{9fd4b3a6-887b-46a2-a696-9855f41f200d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\glad">
+      <UniqueIdentifier>{ad00b314-633b-4a56-b9df-e34a91c14a9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\miniaudio">
+      <UniqueIdentifier>{9b296987-8438-4d93-b913-9b8581a1b101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\stb_image">
+      <UniqueIdentifier>{cfe1a266-9ec2-4f14-8420-422c9dd21c96}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,9 +114,6 @@
     <ClCompile Include="Engine\Core\AudioSystem.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\miniaudio\miniaudio.c">
-      <Filter>Engine\miniaudio</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\UI\UIButton.cpp">
       <Filter>Engine\UI</Filter>
     </ClCompile>
@@ -138,9 +138,6 @@
     <ClCompile Include="Engine\Graphics\GPUData.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="glad\src\glad.c">
-      <Filter>glad</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Geometry\MeshData.cpp">
       <Filter>Engine\Geometry</Filter>
     </ClCompile>
@@ -161,6 +158,15 @@
     </ClCompile>
     <ClCompile Include="Engine\Utility\Random.cpp">
       <Filter>Engine\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\glad\src\glad.c">
+      <Filter>libs\glad</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\miniaudio\miniaudio.c">
+      <Filter>libs\miniaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\stb_image\stb_image.c">
+      <Filter>libs\stb_image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,9 +281,6 @@
     <ClInclude Include="Engine\Core\AudioSystem.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\miniaudio\miniaudio.h">
-      <Filter>Engine\miniaudio</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\UI\UIScreen.h">
       <Filter>Engine\UI</Filter>
     </ClInclude>
@@ -317,9 +320,6 @@
     <ClInclude Include="Engine\Core\TextureManager.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\stb_image\stb_image.h">
-      <Filter>Engine\stb_image</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Graphics\Renderer.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
@@ -334,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Utility\Random.h">
       <Filter>Engine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\miniaudio\miniaudio.h">
+      <Filter>libs\miniaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\stb_image\stb_image.h">
+      <Filter>libs\stb_image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

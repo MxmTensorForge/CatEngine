@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\SDL3-3.2.20\include;$(ProjectDir)\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\projects\CatEngine\SDL3-3.2.20\include;E:\projects\CatEngine\libs\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\SDL3-3.2.20\include;$(ProjectDir)\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\projects\CatEngine\libs\SDL3-3.2.20\include;E:\projects\CatEngine\libs\glad\include;E:\projects\CatEngine\libs\stb_image;E:\projects\CatEngine\libs\miniaudio;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -143,7 +143,7 @@
     </Link>
     <Lib>
       <AdditionalDependencies>SDL3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)\SDL3-3.2.20\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\libs\SDL3-3.2.20\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -174,7 +174,6 @@
     <ClCompile Include="Engine\Graphics\Shader.cpp" />
     <ClCompile Include="Engine\Graphics\Texture.cpp" />
     <ClCompile Include="Engine\Graphics\VertexArray.cpp" />
-    <ClCompile Include="Engine\miniaudio\miniaudio.c" />
     <ClCompile Include="Engine\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Engine\UI\UIButton.cpp" />
     <ClCompile Include="Engine\UI\UIRect.cpp" />
@@ -182,7 +181,9 @@
     <ClCompile Include="Engine\UI\UISystem.cpp" />
     <ClCompile Include="Engine\UI\UIText.cpp" />
     <ClCompile Include="Engine\Utility\Random.cpp" />
-    <ClCompile Include="glad\src\glad.c" />
+    <ClCompile Include="libs\glad\src\glad.c" />
+    <ClCompile Include="libs\miniaudio\miniaudio.c" />
+    <ClCompile Include="libs\stb_image\stb_image.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Animation\Animations\Animation.h" />
@@ -221,7 +222,6 @@
     <ClInclude Include="Engine\Graphics\Shader.h" />
     <ClInclude Include="Engine\Graphics\Texture.h" />
     <ClInclude Include="Engine\Graphics\VertexArray.h" />
-    <ClInclude Include="Engine\miniaudio\miniaudio.h" />
     <ClInclude Include="Engine\Mxm\Consts.h" />
     <ClInclude Include="Engine\Mxm\Easing.h" />
     <ClInclude Include="Engine\Mxm\Mat2.h" />
@@ -233,7 +233,6 @@
     <ClInclude Include="Engine\Mxm\Vec4.h" />
     <ClInclude Include="Engine\Physics\CollisionResult.h" />
     <ClInclude Include="Engine\Physics\PhysicsSystem.h" />
-    <ClInclude Include="Engine\stb_image\stb_image.h" />
     <ClInclude Include="Engine\UI\UIButton.h" />
     <ClInclude Include="Engine\UI\UIElement.h" />
     <ClInclude Include="Engine\UI\UIRect.h" />
@@ -242,6 +241,8 @@
     <ClInclude Include="Engine\UI\UISystem.h" />
     <ClInclude Include="Engine\UI\UIText.h" />
     <ClInclude Include="Engine\Utility\Random.h" />
+    <ClInclude Include="libs\miniaudio\miniaudio.h" />
+    <ClInclude Include="libs\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Mxm\src\Easing.inl" />
