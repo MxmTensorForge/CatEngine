@@ -88,15 +88,6 @@ namespace Mxm
 				_m[i][j] *= s;
 	}
 
-	inline float Mat2::minor(size_t i, size_t j) const noexcept {
-		if (i > 1 || j > 1) return 0.0f;
-		return _m[1 - i][1 - j];
-	}
-	inline float Mat2::cofactor(size_t i, size_t j) const noexcept {
-		float mij = minor(i, j);
-		return ((i + j) % 2 == 0) ? mij : -mij;
-	}
-
 	inline float Mat2::det() const noexcept {
 		float determinant = _m[0][0] * _m[1][1] - _m[0][1] * _m[1][0];
 		return determinant;

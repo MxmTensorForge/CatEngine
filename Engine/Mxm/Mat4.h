@@ -41,12 +41,8 @@ namespace Mxm
         Mat4& operator-=(float s) noexcept;
         Mat4& operator*=(float s) noexcept;
 
-        float minor(size_t i, size_t j) const noexcept;
-        float cofactor(size_t i, size_t j) const noexcept;
-
         float det() const noexcept;
         Mat4 transposed() const noexcept;
-        Mat4 inversed() const noexcept;
         Mat4 abs() const noexcept;
 
         static Mat4 identity() noexcept;

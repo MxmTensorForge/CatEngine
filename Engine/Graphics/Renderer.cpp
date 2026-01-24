@@ -30,6 +30,7 @@ void Renderer::init() {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
+	_shader->use();
 
 	Logger::getInstance().log(LogType::Message, "Renderer has been successfully initialized");
 }
@@ -75,8 +76,8 @@ void Renderer::update(const Camera* camera,
 	}
 }
 
-void Renderer::clear(const Mxm::Vec4& color) const noexcept {
-	glClearColor(color.x, color.y, color.z, color.w);
+void Renderer::clear(Color color) const noexcept {
+	glClearColor(color.rf(), color.gf(), color.bf(), 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 void Renderer::viewport(GLsizei width, GLsizei height) const noexcept {
@@ -85,13 +86,18 @@ void Renderer::viewport(GLsizei width, GLsizei height) const noexcept {
 void Renderer::setDrawFrame(bool state) const noexcept {
 	glPolygonMode(GL_FRONT_AND_BACK, state ? GL_LINE : GL_FILL);
 }
+void Renderer::setAmbientColor(Color color) const noexcept {
+	_shader->setUniform("uAmbient", color.rf(), color.gf(), color.bf());
+}
 
 void Renderer::drawMesh(const Mxm::Mat4& model, const MeshComponent* mesh) {
 	_shader->setUniform("uModel", model.data(), true);
 
 	Color color = mesh->getColor();
 	_shader->setUniform("uColor", color.rf(), color.gf(), color.bf(), color.af());
-	if (color.a() < 255) {
+	glDepthMask(GL_TRUE);
+	glEnable(GL_DEPTH_TEST);
+	if (color.a() < 240) {
 		glDepthMask(GL_FALSE);
 	}
 

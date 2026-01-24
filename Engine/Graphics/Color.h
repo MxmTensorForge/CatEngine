@@ -8,11 +8,11 @@ class Color final
 {
 private:
 	uint32_t _argb; // 0xAARRGGBB
-
+public:
     static constexpr uint8_t clamp(int value) noexcept {
         return static_cast<uint8_t>(value < 0 ? 0 : (value > 255 ? 255 : value));
     }
-public:
+
 	constexpr Color() : _argb(0xFF000000) {}
 	constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255)
 		: _argb((a << 24) | (r << 16) | (g << 8) | b) {}

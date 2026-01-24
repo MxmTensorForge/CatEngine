@@ -38,11 +38,6 @@ namespace Mxm
 		Mat2& operator-=(float s) noexcept;
 		Mat2& operator*=(float s) noexcept;
 
-		Mat2& operator*=(const Vec2& vec) noexcept;
-
-		float minor(size_t i, size_t j) const noexcept;
-		float cofactor(size_t i, size_t j) const noexcept;
-
 		float det() const noexcept;
 		Mat2 transposed() const noexcept;
 		Mat2 inversed() const noexcept;

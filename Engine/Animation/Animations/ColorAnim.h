@@ -25,12 +25,12 @@ private:
 
 		float t = progress();
 		Color current(
-			static_cast<uint8_t>(_start.r() * (1 - t) + _end.r() * t),
-			static_cast<uint8_t>(_start.g() * (1 - t) + _end.g() * t),
-			static_cast<uint8_t>(_start.b() * (1 - t) + _end.b() * t),
-			static_cast<uint8_t>(_start.a() * (1 - t) + _end.a() * t)
+			Color::clamp(static_cast<uint8_t>(_start.r() * (1.0f - t) + _end.r() * t)),
+			Color::clamp(static_cast<uint8_t>(_start.g() * (1.0f - t) + _end.g() * t)),
+			Color::clamp(static_cast<uint8_t>(_start.b() * (1.0f - t) + _end.b() * t)),
+			Color::clamp(static_cast<uint8_t>(_start.a() * (1.0f - t) + _end.a() * t))
 		);
-		_object->getColor() = current;
+		_object->setColor(current);
 	}
 public:
 	template <typename... Args>

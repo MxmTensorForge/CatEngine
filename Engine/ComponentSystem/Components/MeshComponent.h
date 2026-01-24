@@ -34,7 +34,7 @@ public:
 	inline const std::vector<unsigned int>& getIndices() const noexcept { return _mesh->indices; }
 	inline const std::string& getTextureName() const noexcept { return _textureName; }
 
-	inline Color& getColor() noexcept { return _color; }
+	inline void setColor(Color color) noexcept { _color = color; }
 	inline const Color& getColor() const noexcept { return _color; }
 
 	inline const std::shared_ptr<MeshData>& getData() const noexcept { return _mesh; }

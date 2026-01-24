@@ -40,9 +40,6 @@ namespace Mxm
         Mat3& operator-=(float s) noexcept;
         Mat3& operator*=(float s) noexcept;
 
-        float minor(size_t i, size_t j) const noexcept;
-        float cofactor(size_t i, size_t j) const noexcept;
-
         float det() const noexcept;
         Mat3 transposed() const noexcept;
         Mat3 inversed() const noexcept;

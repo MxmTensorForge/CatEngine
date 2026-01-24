@@ -122,15 +122,6 @@ namespace Mxm
         return *this;
     }
 
-    inline float Mat4::minor(size_t i, size_t j) const noexcept {
-        if (i > 3 || j > 3) return 0.0f;
-        return _m[3 - i][3 - j];
-    }
-    inline float Mat4::cofactor(size_t i, size_t j) const noexcept {
-        float mij = minor(i, j);
-        return ((i + j) % 2 == 0) ? mij : -mij;
-    }
-
     inline float Mat4::det() const noexcept {
         float det00 = _m[1][1] * (_m[2][2] * _m[3][3] - _m[2][3] * _m[3][2]) -
             _m[1][2] * (_m[2][1] * _m[3][3] - _m[2][3] * _m[3][1]) +
@@ -156,83 +147,6 @@ namespace Mxm
             for (size_t j = 0; j < 4; j++)
                 result._m[i][j] = _m[j][i];
         return result;
-    }
-    inline Mat4 Mat4::inversed() const noexcept {
-        float determinant = det();
-        if (fabsf(determinant) < Consts::EPS) return Mat4();
-
-        float invDet = 1.0f / determinant;
-
-        float cofactor00 = _m[1][1] * (_m[2][2] * _m[3][3] - _m[2][3] * _m[3][2]) -
-            _m[1][2] * (_m[2][1] * _m[3][3] - _m[2][3] * _m[3][1]) +
-            _m[1][3] * (_m[2][1] * _m[3][2] - _m[2][2] * _m[3][1]);
-
-        float cofactor01 = -(_m[1][0] * (_m[2][2] * _m[3][3] - _m[2][3] * _m[3][2]) -
-            _m[1][2] * (_m[2][0] * _m[3][3] - _m[2][3] * _m[3][0]) +
-            _m[1][3] * (_m[2][0] * _m[3][2] - _m[2][2] * _m[3][0]));
-
-        float cofactor02 = _m[1][0] * (_m[2][1] * _m[3][3] - _m[2][3] * _m[3][1]) -
-            _m[1][1] * (_m[2][0] * _m[3][3] - _m[2][3] * _m[3][0]) +
-            _m[1][3] * (_m[2][0] * _m[3][1] - _m[2][1] * _m[3][0]);
-
-        float cofactor03 = -(_m[1][0] * (_m[2][1] * _m[3][2] - _m[2][2] * _m[3][1]) -
-            _m[1][1] * (_m[2][0] * _m[3][2] - _m[2][2] * _m[3][0]) +
-            _m[1][2] * (_m[2][0] * _m[3][1] - _m[2][1] * _m[3][0]));
-
-        float cofactor10 = -(_m[0][1] * (_m[2][2] * _m[3][3] - _m[2][3] * _m[3][2]) -
-            _m[0][2] * (_m[2][1] * _m[3][3] - _m[2][3] * _m[3][1]) +
-            _m[0][3] * (_m[2][1] * _m[3][2] - _m[2][2] * _m[3][1]));
-
-        float cofactor11 = _m[0][0] * (_m[2][2] * _m[3][3] - _m[2][3] * _m[3][2]) -
-            _m[0][2] * (_m[2][0] * _m[3][3] - _m[2][3] * _m[3][0]) +
-            _m[0][3] * (_m[2][0] * _m[3][2] - _m[2][2] * _m[3][0]);
-
-        float cofactor12 = -(_m[0][0] * (_m[2][1] * _m[3][3] - _m[2][3] * _m[3][1]) -
-            _m[0][1] * (_m[2][0] * _m[3][3] - _m[2][3] * _m[3][0]) +
-            _m[0][3] * (_m[2][0] * _m[3][1] - _m[2][1] * _m[3][0]));
-
-        float cofactor13 = _m[0][0] * (_m[2][1] * _m[3][2] - _m[2][2] * _m[3][1]) -
-            _m[0][1] * (_m[2][0] * _m[3][2] - _m[2][2] * _m[3][0]) +
-            _m[0][2] * (_m[2][0] * _m[3][1] - _m[2][1] * _m[3][0]);
-
-        float cofactor20 = _m[0][1] * (_m[1][2] * _m[3][3] - _m[1][3] * _m[3][2]) -
-            _m[0][2] * (_m[1][1] * _m[3][3] - _m[1][3] * _m[3][1]) +
-            _m[0][3] * (_m[1][1] * _m[3][2] - _m[1][2] * _m[3][1]);
-
-        float cofactor21 = -(_m[0][0] * (_m[1][2] * _m[3][3] - _m[1][3] * _m[3][2]) -
-            _m[0][2] * (_m[1][0] * _m[3][3] - _m[1][3] * _m[3][0]) +
-            _m[0][3] * (_m[1][0] * _m[3][2] - _m[1][2] * _m[3][0]));
-
-        float cofactor22 = _m[0][0] * (_m[1][1] * _m[3][3] - _m[1][3] * _m[3][1]) -
-            _m[0][1] * (_m[1][0] * _m[3][3] - _m[1][3] * _m[3][0]) +
-            _m[0][3] * (_m[1][0] * _m[3][1] - _m[1][1] * _m[3][0]);
-
-        float cofactor23 = -(_m[0][0] * (_m[1][1] * _m[3][2] - _m[1][2] * _m[3][1]) -
-            _m[0][1] * (_m[1][0] * _m[3][2] - _m[1][2] * _m[3][0]) +
-            _m[0][2] * (_m[1][0] * _m[3][1] - _m[1][1] * _m[3][0]));
-
-        float cofactor30 = -(_m[0][1] * (_m[1][2] * _m[2][3] - _m[1][3] * _m[2][2]) -
-            _m[0][2] * (_m[1][1] * _m[2][3] - _m[1][3] * _m[2][1]) +
-            _m[0][3] * (_m[1][1] * _m[2][2] - _m[1][2] * _m[2][1]));
-
-        float cofactor31 = _m[0][0] * (_m[1][2] * _m[2][3] - _m[1][3] * _m[2][2]) -
-            _m[0][2] * (_m[1][0] * _m[2][3] - _m[1][3] * _m[2][0]) +
-            _m[0][3] * (_m[1][0] * _m[2][2] - _m[1][2] * _m[2][0]);
-
-        float cofactor32 = -(_m[0][0] * (_m[1][1] * _m[2][3] - _m[1][3] * _m[2][1]) -
-            _m[0][1] * (_m[1][0] * _m[2][3] - _m[1][3] * _m[2][0]) +
-            _m[0][3] * (_m[1][0] * _m[2][1] - _m[1][1] * _m[2][0]));
-
-        float cofactor33 = _m[0][0] * (_m[1][1] * _m[2][2] - _m[1][2] * _m[2][1]) -
-            _m[0][1] * (_m[1][0] * _m[2][2] - _m[1][2] * _m[2][0]) +
-            _m[0][2] * (_m[1][0] * _m[2][1] - _m[1][1] * _m[2][0]);
-
-        return Mat4(
-            cofactor00 * invDet, cofactor10 * invDet, cofactor20 * invDet, cofactor30 * invDet,
-            cofactor01 * invDet, cofactor11 * invDet, cofactor21 * invDet, cofactor31 * invDet,
-            cofactor02 * invDet, cofactor12 * invDet, cofactor22 * invDet, cofactor32 * invDet,
-            cofactor03 * invDet, cofactor13 * invDet, cofactor23 * invDet, cofactor33 * invDet
-        );
     }
     inline Mat4 Mat4::abs() const noexcept {
         Mat4 result;

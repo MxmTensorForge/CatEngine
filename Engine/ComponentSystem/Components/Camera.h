@@ -16,6 +16,9 @@ private:
 	float _aspect{};
 	float _zNear{}, _zFar{};
 	float _fov{};
+	float _scale{};
+
+	bool _isOrtho = false;
 
 	Mxm::Mat4 _projectionMatrix{};
 	Mxm::Mat4 _viewMatrix{};
@@ -32,6 +35,10 @@ public:
 	void setFov(float fov) noexcept;
 	void setNear(float near) noexcept;
 	void setFar(float far) noexcept;
+	void setScale(float scale) noexcept;
+
+	void setPerspective() noexcept;
+	void setOrthographic() noexcept;
 };
 
 #endif

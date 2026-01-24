@@ -84,8 +84,8 @@ public:
 
         _components.erase(
             std::remove_if(_components.begin(), _components.end(),
-                [](Component* comp) {
-                    return dynamic_cast<T*>(comp) != nullptr;
+                [](const std::unique_ptr<Component>& comp) {
+                    return dynamic_cast<T*>(comp.get()) != nullptr;
                 }), 
             _components.end()
         );

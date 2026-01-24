@@ -112,15 +112,6 @@ namespace Mxm
         return *this;
     }
 
-    inline float Mat3::minor(size_t i, size_t j) const noexcept {
-        if (i > 2 || j > 2) return 0.0f;
-        return _m[2 - i][2 - j];
-    }
-    inline float Mat3::cofactor(size_t i, size_t j) const noexcept {
-        float mij = minor(i, j);
-        return ((i + j) % 2 == 0) ? mij : -mij;
-    }
-
     inline float Mat3::det() const noexcept {
         return _m[0][0] * (_m[1][1] * _m[2][2] - _m[1][2] * _m[2][1])
              - _m[0][1] * (_m[1][0] * _m[2][2] - _m[1][2] * _m[2][0])

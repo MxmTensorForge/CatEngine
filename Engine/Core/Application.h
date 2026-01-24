@@ -28,6 +28,7 @@ protected:
 
 	void setDrawFrame(bool state) noexcept;
 	void setBackgroundColor(Color color) noexcept;
+	void setAmbientColor(Color color) const noexcept;
 
 	void initialize();
 	void updatePhysics();

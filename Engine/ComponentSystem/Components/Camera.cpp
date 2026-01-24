@@ -8,8 +8,10 @@
 #include <iostream>
 
 void Camera::recalcProjection() noexcept {
-	_projectionMatrix = Mxm::Mat4::perspective(_fov, _aspect, _zNear, _zFar);
-	//_projectionMatrix = Mxm::Mat4::ortho(10.0f, -10.0f, 10.0f, -10.0f, 0.01f, 300.0f);
+	float scale = _scale * 0.5f;
+
+	_projectionMatrix = _isOrtho ? Mxm::Mat4::ortho(scale * _aspect, -scale * _aspect, scale, -scale, _zNear, _zFar)
+		: Mxm::Mat4::perspective(_fov, _aspect, _zNear, _zFar);
 }
 
 void Camera::start() {
@@ -31,5 +33,18 @@ void Camera::setNear(float near) noexcept {
 }
 void Camera::setFar(float far) noexcept {
 	_zFar = far;
+	recalcProjection();
+}
+void Camera::setScale(float scale) noexcept {
+	_scale = scale;
+	recalcProjection();
+}
+
+void Camera::setPerspective() noexcept {
+	_isOrtho = false;
+	recalcProjection();
+}
+void Camera::setOrthographic() noexcept {
+	_isOrtho = true;
 	recalcProjection();
 }
