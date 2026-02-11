@@ -18,7 +18,7 @@ class Scene final
 {
 private:
 	std::vector<std::unique_ptr<GameObject>> _gameObjects;
-	GameObject* _mainCamera;
+	GameObject* _mainCamera = nullptr;
 	Animator _animator;
 
 	struct CachedObject {
@@ -31,7 +31,7 @@ private:
 	std::unordered_map<Collider*, std::unordered_set<GameObject*>> _currentTriggerObjects;
 
 	mutable std::vector<PointLight*> _pointLightsCache;
-	mutable DirectionLight* _dirLightCache;
+	mutable DirectionLight* _dirLightCache = nullptr;
 	mutable bool _cacheValid = false;
 
 	void updateRecursive(Transform* transform);

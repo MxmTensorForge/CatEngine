@@ -7,6 +7,9 @@
 
 #include <iostream>
 
+void Camera::dirtyProjection() noexcept {
+	_isNeedUpdateProjection = true;
+}
 void Camera::recalcProjection() noexcept {
 	float scale = _scale * 0.5f;
 
@@ -19,32 +22,34 @@ void Camera::start() {
 	recalcProjection();
 }
 void Camera::update() {
+	if (!_isNeedUpdateProjection) recalcProjection();
+
 	auto& camera_transform = getObject()->transform();
 	_viewMatrix = Mxm::Mat4::view(camera_transform.getRight(), camera_transform.getUp(), camera_transform.getForward(), camera_transform.getPosition());
 }
 
 void Camera::setFov(float fov) noexcept {
 	_fov = fov;
-	recalcProjection();
+	dirtyProjection();
 }
 void Camera::setNear(float near) noexcept {
 	_zNear = near;
-	recalcProjection();
+	dirtyProjection();
 }
 void Camera::setFar(float far) noexcept {
 	_zFar = far;
-	recalcProjection();
+	dirtyProjection();
 }
 void Camera::setScale(float scale) noexcept {
 	_scale = scale;
-	recalcProjection();
+	dirtyProjection();
 }
 
 void Camera::setPerspective() noexcept {
 	_isOrtho = false;
-	recalcProjection();
+	dirtyProjection();
 }
 void Camera::setOrthographic() noexcept {
 	_isOrtho = true;
-	recalcProjection();
+	dirtyProjection();
 }

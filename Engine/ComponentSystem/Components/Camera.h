@@ -18,6 +18,7 @@ private:
 	float _fov{};
 	float _scale{};
 
+	bool _isNeedUpdateProjection = true;
 	bool _isOrtho = false;
 
 	Mxm::Mat4 _projectionMatrix{};
@@ -26,6 +27,7 @@ private:
 	void start() override;
 	void update() override;
 
+	void dirtyProjection() noexcept;
 	void recalcProjection() noexcept;
 public:
 	const Mxm::Mat4& getViewMatrix() const { return _viewMatrix; }
