@@ -34,6 +34,9 @@ private:
 	mutable DirectionLight* _dirLightCache = nullptr;
 	mutable bool _cacheValid = false;
 
+	Color _backgroundColor = Color();
+	Color _ambientColor = Color();
+
 	void updateRecursive(Transform* transform);
 public:
 	Scene() = default;
@@ -50,6 +53,7 @@ public:
 	const std::vector<PointLight*>& getPointLights() const;
 	const DirectionLight* getDirectionLight() const;
 	void updateLightCache() const;
+	void invalidateLightCache() noexcept;
 
 	void removeObject(const GameObject* obj);
 	void removeObjectsWithTag(const std::string& tag);
@@ -70,6 +74,12 @@ public:
 	GameObject* getMainCamera() const;
 
 	bool rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out, const std::unordered_set<std::string>& tags) const;
+
+	void setAmbientColor(Color color) noexcept;
+	void setBackgroundColor(Color color) noexcept;
+
+	Color getAmbientColor() const noexcept;
+	Color getBackgroundColor() const noexcept;
 };
 
 #endif // !SCENE_H

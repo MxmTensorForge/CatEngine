@@ -99,7 +99,8 @@ void Application::renderFrame() {
 	if (camera) {
 		_renderer.update(camera->getComponent<Camera>(), activeScene->getPointLights(), activeScene->getDirectionLight());
 	}
-	_renderer.clear(_backgroundColor);
+	_renderer.setAmbientColor(activeScene->getAmbientColor());
+	_renderer.clear(activeScene->getBackgroundColor());
 
 	renderOpaque();
 	renderTransparent();
@@ -176,12 +177,6 @@ void Application::run() {
 
 void Application::setDrawFrame(bool state) noexcept {
 	_renderer.setDrawFrame(state);
-}
-void Application::setBackgroundColor(Color color) noexcept {
-	_backgroundColor = color;
-}
-void Application::setAmbientColor(Color color) const noexcept {
-	_renderer.setAmbientColor(color);
 }
 
 Application::Application() : _width(EngineConsts::STANDART_WIDTH), _height(EngineConsts::STANDART_HEIGHT), _screen() {}

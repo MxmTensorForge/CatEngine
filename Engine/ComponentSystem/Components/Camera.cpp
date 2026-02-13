@@ -15,6 +15,7 @@ void Camera::recalcProjection() noexcept {
 
 	_projectionMatrix = _isOrtho ? Mxm::Mat4::ortho(scale * _aspect, -scale * _aspect, scale, -scale, _zNear, _zFar)
 		: Mxm::Mat4::perspective(_fov, _aspect, _zNear, _zFar);
+	_isNeedUpdateProjection = false;
 }
 
 void Camera::start() {
@@ -22,7 +23,7 @@ void Camera::start() {
 	recalcProjection();
 }
 void Camera::update() {
-	if (!_isNeedUpdateProjection) recalcProjection();
+	if (_isNeedUpdateProjection) recalcProjection();
 
 	auto& camera_transform = getObject()->transform();
 	_viewMatrix = Mxm::Mat4::view(camera_transform.getRight(), camera_transform.getUp(), camera_transform.getForward(), camera_transform.getPosition());

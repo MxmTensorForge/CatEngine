@@ -18,7 +18,6 @@ private:
 	float _physAccumulator = 0.0f;
 	float _stateAccumulator = 0.0f;
 
-	Color _backgroundColor = Color(255, 255, 255, 255);
 	std::vector<MeshComponent*> _transparentMeshes;
 protected:
 	virtual void start() {}
@@ -27,8 +26,6 @@ protected:
 	virtual void shutdown() {}
 
 	void setDrawFrame(bool state) noexcept;
-	void setBackgroundColor(Color color) noexcept;
-	void setAmbientColor(Color color) const noexcept;
 
 	void initialize();
 	void updatePhysics();

@@ -9,6 +9,8 @@
 #include "../Component.h"
 #include "Transform.h"
 
+class Scene;
+
 class GameObject final
 {
 private:
@@ -74,6 +76,8 @@ public:
 
         T* raw = static_cast<T*>(_components.back().get());
         raw->setObject(this);
+
+        
 
         return raw;
     }

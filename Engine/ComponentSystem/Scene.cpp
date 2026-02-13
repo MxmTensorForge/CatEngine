@@ -159,6 +159,9 @@ void Scene::updateLightCache() const {
 
     _cacheValid = true;
 }
+void Scene::invalidateLightCache() noexcept {
+    _cacheValid = false;
+}
 
 void Scene::removeObject(const GameObject* obj) {
     _gameObjects.erase(
@@ -264,4 +267,18 @@ bool Scene::rayCast(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionI
     }
 
     return hit;
+}
+
+void Scene::setAmbientColor(Color color) noexcept {
+    _ambientColor = color;
+}
+void Scene::setBackgroundColor(Color color) noexcept {
+    _backgroundColor = color;
+}
+
+Color Scene::getAmbientColor() const noexcept {
+    return _ambientColor;
+}
+Color Scene::getBackgroundColor() const noexcept {
+    return _backgroundColor;
 }
