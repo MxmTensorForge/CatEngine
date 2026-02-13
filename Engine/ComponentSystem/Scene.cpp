@@ -7,79 +7,56 @@
 
 #include "../Physics/PhysicsSystem.h"
 #include "../Core/Logger.h"
+#include "../Core/EventSystem.h"
 
-void Scene::updateCollisions() {
-    _cachedObjects.clear();
+void Scene::processCollisionPair(const CachedObject& obj1, const CachedObject& obj2) {
+    auto gameObject1 = obj1.gameObject;
+    auto collider1 = obj1.collider;
+    auto rigidbody1 = obj1.rigidBody;
 
-    for (auto& obj : _gameObjects) {
-        if (!obj->getActive()) continue;
+    auto gameObject2 = obj2.gameObject;
+    auto collider2 = obj2.collider;
+    auto rigidbody2 = obj2.rigidBody;
 
-        auto collider = obj->getComponent<Collider>();
-        if (!collider) continue;
+    if (!gameObject1 || !collider1 || !gameObject1->getActive()) return;
+    if (!rigidbody1 && !rigidbody2) return;
 
-        auto rigidBody = obj->getComponent<RigidBody>();
-        _cachedObjects.push_back({ obj.get(), collider, rigidBody});
-    }
+    bool obj1IsTrigger = collider1->isTrigger();
+    bool obj2IsTrigger = collider2->isTrigger();
 
-    auto prevsTriggerObjects = _currentTriggerObjects;
-    _currentTriggerObjects.clear();
-    
-    for (size_t i = 0; i < _cachedObjects.size(); ++i) {
-        auto& obj1 = _cachedObjects[i];
+    if (obj1IsTrigger && obj2IsTrigger) return;
 
-        auto gameObject1 = obj1.gameObject;
-        auto collider1 = obj1.collider;
-        auto rigidbody1 = obj1.rigidBody;
+    if (!Collider::checkAABB(*collider1, *collider2)) return;
 
-        if (!gameObject1 || !collider1 || !gameObject1->getActive()) continue;
+    auto collision = PhysicsSystem::getInstance().gjkCollision(collider1, collider2);
+    if (!collision.first) return;
 
-        for (size_t j = i + 1; j < _cachedObjects.size(); ++j) {
-            auto& obj2 = _cachedObjects[j];
+    if (!obj1IsTrigger && !obj2IsTrigger) {
+        CollisionResult result = PhysicsSystem::getInstance().epaAlgorithm(collider1, collider2, collision.second);
 
-            auto gameObject2 = obj2.gameObject;
-            auto collider2 = obj2.collider;
-            auto rigidbody2 = obj2.rigidBody;
+        if (rigidbody1 && !rigidbody2) {
+            PhysicsSystem::getInstance().resolveCollisionStatic(rigidbody1, result);
+            collider1->collisionOnCallback(gameObject2, result);
+        }
+        else if (rigidbody2 && !rigidbody1) {
+            result.normal = -result.normal;
 
-            if (!rigidbody1 && !rigidbody2) continue;
+            PhysicsSystem::getInstance().resolveCollisionStatic(rigidbody2, result);
+            collider2->collisionOnCallback(gameObject1, result);
+        }
+        else if (rigidbody1 && rigidbody2) {
+            PhysicsSystem::getInstance().resolveCollisionDynamic(rigidbody1, rigidbody2, result);
 
-            bool obj1IsTrigger = collider1->isTrigger();
-            bool obj2IsTrigger = collider2->isTrigger();
-
-            if (obj1IsTrigger && obj2IsTrigger) continue;
-
-            if (!Collider::checkAABB(*collider1, *collider2)) continue;
-
-            auto collision = PhysicsSystem::getInstance().gjkCollision(collider1, collider2);
-            if (!collision.first) continue;
-
-            if (!obj1IsTrigger && !obj2IsTrigger) {
-                CollisionResult result = PhysicsSystem::getInstance().epaAlgorithm(collider1, collider2, collision.second);
-
-                if (rigidbody1 && !rigidbody2) {
-                    PhysicsSystem::getInstance().resolveCollisionStatic(rigidbody1, result);
-                    collider1->collisionOnCallback(gameObject2, result);
-                }
-                else if (rigidbody2 && !rigidbody1) {
-                    result.normal = -result.normal;
-
-                    PhysicsSystem::getInstance().resolveCollisionStatic(rigidbody2, result);
-                    collider2->collisionOnCallback(gameObject1, result);
-                }
-                else if (rigidbody1 && rigidbody2) {
-                    PhysicsSystem::getInstance().resolveCollisionDynamic(rigidbody1, rigidbody2, result);
-
-                    collider1->collisionOnCallback(gameObject2, result);
-                    result.normal = -result.normal;
-                    collider2->collisionOnCallback(gameObject1, result);
-                }
-            }
-
-            if (obj1IsTrigger) _currentTriggerObjects[collider1].insert(gameObject2);
-            if (obj2IsTrigger) _currentTriggerObjects[collider2].insert(gameObject1);
+            collider1->collisionOnCallback(gameObject2, result);
+            result.normal = -result.normal;
+            collider2->collisionOnCallback(gameObject1, result);
         }
     }
 
-
+    if (obj1IsTrigger) _currentTriggerObjects[collider1].insert(gameObject2);
+    if (obj2IsTrigger) _currentTriggerObjects[collider2].insert(gameObject1);
+}
+void Scene::processTriggers(const std::unordered_map<Collider*, std::unordered_set<GameObject*>>& prevsTriggerObjects) {
     for (auto& [collider, newObjs] : _currentTriggerObjects) {
         for (auto& obj : newObjs) {
             if (!prevsTriggerObjects.count(collider)) {
@@ -97,6 +74,31 @@ void Scene::updateCollisions() {
             }
         }
     }
+}
+
+void Scene::updateCollisions() {
+    _cachedObjects.clear();
+
+    for (auto& obj : _gameObjects) {
+        if (!obj->getActive()) continue;
+
+        auto collider = obj->getComponent<Collider>();
+        if (!collider) continue;
+
+        auto rigidBody = obj->getComponent<RigidBody>();
+        _cachedObjects.push_back({ obj.get(), collider, rigidBody});
+    }
+
+    auto prevsTriggerObjects = std::move(_currentTriggerObjects);
+    _currentTriggerObjects.clear();
+    
+    for (size_t i = 0; i < _cachedObjects.size(); ++i) {
+        for (size_t j = i + 1; j < _cachedObjects.size(); ++j) {
+            processCollisionPair(_cachedObjects[i], _cachedObjects[j]);
+        }
+    }
+
+    processTriggers(prevsTriggerObjects);
 }
 
 GameObject* Scene::createObject(const std::string& name, const std::string& tag) {
@@ -137,11 +139,9 @@ GameObject* Scene::getFirstObjectWithTag(const std::string& tag) const {
 }
 
 const std::vector<PointLight*>& Scene::getPointLights() const {
-    if (!_cacheValid) updateLightCache();
     return _pointLightsCache;
 }
 const DirectionLight* Scene::getDirectionLight() const {
-    if (!_cacheValid) updateLightCache();
     return _dirLightCache;
 }
 void Scene::updateLightCache() const {
@@ -156,11 +156,6 @@ void Scene::updateLightCache() const {
             _dirLightCache = dirLight;
         }
     }
-
-    _cacheValid = true;
-}
-void Scene::invalidateLightCache() noexcept {
-    _cacheValid = false;
 }
 
 void Scene::removeObject(const GameObject* obj) {
@@ -204,6 +199,7 @@ void Scene::update() {
         if (!obj->getActive() || obj->transform().getParent()) continue;
         updateRecursive(&obj->transform());
 	}
+    if (EventSystem::getInstance().poll("light_update")) updateLightCache();
 }
 void Scene::updateAnimator() {
     _animator.update();

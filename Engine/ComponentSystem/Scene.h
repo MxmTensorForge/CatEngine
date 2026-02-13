@@ -32,7 +32,6 @@ private:
 
 	mutable std::vector<PointLight*> _pointLightsCache;
 	mutable DirectionLight* _dirLightCache = nullptr;
-	mutable bool _cacheValid = false;
 
 	Color _backgroundColor = Color();
 	Color _ambientColor = Color();
@@ -53,11 +52,13 @@ public:
 	const std::vector<PointLight*>& getPointLights() const;
 	const DirectionLight* getDirectionLight() const;
 	void updateLightCache() const;
-	void invalidateLightCache() noexcept;
 
 	void removeObject(const GameObject* obj);
 	void removeObjectsWithTag(const std::string& tag);
 	void removeObjectsWithName(const std::string& name);
+
+	void processCollisionPair(const CachedObject& obj1, const CachedObject& obj2);
+	void processTriggers(const std::unordered_map<Collider*, std::unordered_set<GameObject*>>& prevsTriggerObjects);
 
 	void start();
 	void update();

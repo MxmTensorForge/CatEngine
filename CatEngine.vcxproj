@@ -158,6 +158,7 @@
     <ClCompile Include="Engine\ComponentSystem\Scene.cpp" />
     <ClCompile Include="Engine\Core\Application.cpp" />
     <ClCompile Include="Engine\Core\AudioSystem.cpp" />
+    <ClCompile Include="Engine\Core\EventSystem.cpp" />
     <ClCompile Include="Engine\Core\Input.cpp" />
     <ClCompile Include="Engine\Core\Logger.cpp" />
     <ClCompile Include="Engine\Core\MeshManager.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Engine\Core\Application.h" />
     <ClInclude Include="Engine\Core\AudioSystem.h" />
     <ClInclude Include="Engine\Core\EngineConsts.h" />
+    <ClInclude Include="Engine\Core\EventSystem.h" />
     <ClInclude Include="Engine\Core\Input.h" />
     <ClInclude Include="Engine\Core\Logger.h" />
     <ClInclude Include="Engine\Core\MeshManager.h" />

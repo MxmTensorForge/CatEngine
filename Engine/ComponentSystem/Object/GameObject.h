@@ -9,7 +9,11 @@
 #include "../Component.h"
 #include "Transform.h"
 
+#include "../../Core/EventSystem.h"
+
 class Scene;
+class DirectionLight;
+class PointLight;
 
 class GameObject final
 {
@@ -77,7 +81,9 @@ public:
         T* raw = static_cast<T*>(_components.back().get());
         raw->setObject(this);
 
-        
+        if (typeid(T) == typeid(PointLight) || typeid(T) == typeid(DirectionLight)) {
+            EventSystem::getInstance().broadcast("light_update");
+        }
 
         return raw;
     }
@@ -93,6 +99,10 @@ public:
                 }), 
             _components.end()
         );
+
+        if (typeid(T) == typeid(PointLight) || typeid(T) == typeid(DirectionLight)) {
+            EventSystem::getInstance().broadcast("light_update");
+        }
     }
 
     inline void startComponents() {

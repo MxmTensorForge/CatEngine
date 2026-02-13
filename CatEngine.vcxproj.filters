@@ -168,6 +168,9 @@
     <ClCompile Include="libs\stb_image\stb_image.c">
       <Filter>libs\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\EventSystem.cpp">
+      <Filter>Engine\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Application.h">
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="libs\stb_image\stb_image.h">
       <Filter>libs\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\EventSystem.h">
+      <Filter>Engine\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
