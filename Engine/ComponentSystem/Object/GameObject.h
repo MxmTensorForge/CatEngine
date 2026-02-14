@@ -105,12 +105,12 @@ public:
         }
     }
 
-    inline void startComponents() {
+    inline void startComponents() const {
         for (auto& c : _components) {
             c->start();
         }
     }
-    inline void updateComponents() {
+    inline void updateComponents() const {
         for (auto& c : _components) {
             c->update();
         }
