@@ -30,7 +30,7 @@ public:
 		return manager;
 	}
 
-	bool loadSound(const std::string& name, const std::string& path, bool repeat = false);
+	bool loadSoundFromFile(const std::string& name, const std::string& path, bool repeat = false);
 	void playSound(const std::string& name);
 	void stopSound(const std::string& name);
 

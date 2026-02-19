@@ -2,6 +2,7 @@
 
 #include "../ComponentSystem/Object/Transform.h"
 #include "../ComponentSystem/Components/Camera.h"
+#include "../ComponentSystem/Components/Material.h"
 #include "../Animation/Animator.h"
 
 #include "../ComponentSystem/SceneManager.h"
@@ -63,30 +64,30 @@ void Application::renderOpaque() {
 	auto& sceneManager = SceneManager::getInstance();
 	auto activeScene = sceneManager.getActiveScene();
 
-	_transparentMeshes.clear();
+	_transparentMaterials.clear();
 	for (const auto& obj : activeScene->getGameObjects()) {
 		if (!obj->getActive()) continue;
 
-		auto mesh_ptr = obj->getComponent<MeshComponent>();
-		if (!mesh_ptr) continue;
+		auto material_ptr = obj->getComponent<Material>();
+		if (!material_ptr) continue;
 
-		if (mesh_ptr->getColor().a() < 255) {
-			_transparentMeshes.push_back(mesh_ptr);
+		if (material_ptr->getColor().a() < 255) {
+			_transparentMaterials.push_back(material_ptr);
 			continue;
 		}
 
 		auto& transform = obj->transform();
 
-		_renderer.drawMesh(transform.getWorldMatrix(), mesh_ptr);
+		_renderer.drawMesh(transform.getWorldMatrix(), material_ptr);
 	}
 }
 void Application::renderTransparent() {
-	for (const auto& mesh : _transparentMeshes) {
-		auto obj = mesh->getObject();
+	for (const auto& material : _transparentMaterials) {
+		auto obj = material->getObject();
 		if (!obj->getActive()) continue;
 
 		auto& transform = obj->transform();
-		_renderer.drawMesh(transform.getWorldMatrix(), mesh);
+		_renderer.drawMesh(transform.getWorldMatrix(), material);
 	}
 }
 void Application::renderFrame() {

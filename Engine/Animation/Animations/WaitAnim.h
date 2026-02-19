@@ -5,16 +5,19 @@
 #include <functional>
 #include <memory>
 
-class WaitAnim final : public Animation
+namespace Animations
 {
-private:
-    void update() override {}
+    class WaitAnim final : public Animation
+    {
+    private:
+        void update() override {}
 
-public:
-    template <typename... Args>
-    WaitAnim(Args&&... args)
-        : Animation(std::forward<Args>(args)...) {
-    }
-};
+    public:
+        template <typename... Args>
+        WaitAnim(Args&&... args)
+            : Animation(std::forward<Args>(args)...) {
+        }
+    };
+}
 
 #endif

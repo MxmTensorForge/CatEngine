@@ -12,7 +12,7 @@ struct MeshData;
 
 struct IntersectionInfo
 {
-	float distance = 0.0f;
+	float distance;
 	Mxm::Vec3 point;
 	GameObject* gameObject;
 	std::string tag;
@@ -22,20 +22,11 @@ class MeshComponent final : public Component
 {
 private:
 	std::shared_ptr<MeshData> _mesh;
-	std::string _textureName;
-	Color _color;
 public:
-	MeshComponent(const std::string& meshName, Color color);
-	MeshComponent(const std::string& meshName, const std::string& textureName);
 	MeshComponent(const std::string& meshName);
-	MeshComponent() = delete;	
 
 	inline const std::vector<Mxm::Vec3>& getVertices() const noexcept { return _mesh->vertices; }
 	inline const std::vector<unsigned int>& getIndices() const noexcept { return _mesh->indices; }
-	inline const std::string& getTextureName() const noexcept { return _textureName; }
-
-	inline void setColor(Color color) noexcept { _color = color; }
-	inline const Color& getColor() const noexcept { return _color; }
 
 	inline const std::shared_ptr<MeshData>& getData() const noexcept { return _mesh; }
 

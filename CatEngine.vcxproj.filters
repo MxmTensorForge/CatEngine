@@ -171,6 +171,9 @@
     <ClCompile Include="Engine\Core\EventSystem.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ComponentSystem\Components\Material.cpp">
+      <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Application.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Core\EventSystem.h">
       <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Components\Material.h">
+      <Filter>Engine\ComponentSystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

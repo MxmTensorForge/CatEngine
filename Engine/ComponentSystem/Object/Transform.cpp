@@ -76,6 +76,10 @@ Mxm::Vec3 Transform::getWorldScale() const noexcept {
 	return Mxm::Vec3(scaleX, scaleY, scaleZ);
 }
 
+Mxm::Vec3 Transform::inBasisRotate(const Mxm::Vec3& vec) const noexcept {
+	return getRight() * vec.x + getUp() * vec.y + getForward() * vec.z;
+}
+
 bool Transform::isChildOf(Transform* potentialParent) const noexcept {
 	if (!potentialParent) return false;;
 

@@ -13,7 +13,7 @@ AudioSystem::~AudioSystem() {
 	ma_engine_uninit(&_engine);
 }
 
-bool AudioSystem::loadSound(const std::string& name, const std::string& path, bool repeat) {
+bool AudioSystem::loadSoundFromFile(const std::string& name, const std::string& path, bool repeat) {
 	auto [it, inserted] = _sounds.try_emplace(name);
 	if (!inserted) {
 		return false;

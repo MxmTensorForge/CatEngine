@@ -10,9 +10,7 @@
 #include <string>
 #include <sstream>
 
-MeshComponent::MeshComponent(const std::string& meshName, Color color) : _mesh{ MeshManager::getInstance().getModel(meshName) }, _color(color) {}
-MeshComponent::MeshComponent(const std::string& meshName, const std::string& textureName) : _mesh{ MeshManager::getInstance().getModel(meshName) }, _textureName(textureName) {}
-MeshComponent::MeshComponent(const std::string& meshName) : _mesh{ MeshManager::getInstance().getModel(meshName) }, _color(Color(255, 255, 255, 255)) {}
+MeshComponent::MeshComponent(const std::string& meshName) : _mesh{ MeshManager::getInstance().getModel(meshName) } {}
 
 bool MeshComponent::intersection(const Mxm::Vec3& origin, const Mxm::Vec3& dir, IntersectionInfo& out) {
 	const auto& vertices = getVertices();

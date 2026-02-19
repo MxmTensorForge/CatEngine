@@ -5,7 +5,7 @@
 #include "../Graphics/Renderer.h"
 #include "../UI/UIRenderer.h"
 
-class MeshComponent;
+class Material;
 
 class Application
 {
@@ -18,7 +18,7 @@ private:
 	float _physAccumulator = 0.0f;
 	float _stateAccumulator = 0.0f;
 
-	std::vector<MeshComponent*> _transparentMeshes;
+	std::vector<Material*> _transparentMaterials;
 protected:
 	virtual void start() {}
 	virtual void update() {}

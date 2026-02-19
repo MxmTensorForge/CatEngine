@@ -13,7 +13,7 @@
 #include <vector>
 
 class Camera;
-class MeshComponent;
+class Material;
 
 class PointLight;
 class DirectionLight;
@@ -36,7 +36,7 @@ public:
 	void setDrawFrame(bool state) const noexcept;
 	void setAmbientColor(Color color) const noexcept;
 
-	void drawMesh(const Mxm::Mat4& model, const MeshComponent* mesh);
+	void drawMesh(const Mxm::Mat4& model, const Material* material);
 };
 
 #endif // !RENDERER_H

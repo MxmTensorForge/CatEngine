@@ -27,7 +27,4 @@ void Animator::remove(AnimTag tag) {
     if (it != _animationList.end()) {
         _animationList.erase(it);
     }
-    else {
-        Logger::getInstance().log(LogType::Warning, "animation not found");
-    }
 }

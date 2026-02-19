@@ -46,13 +46,13 @@ public:
 	const std::vector<Mxm::Vec3>& getVertices() const noexcept;
 
 	void setTriggerOnCallback(const TriggerCallback& c) noexcept { _triggerOnCallback = c; }
-	void triggerOnCallback(GameObject* obj) noexcept { if (_triggerOnCallback) _triggerOnCallback(obj); }
+	void triggerOnCallback(GameObject* obj) noexcept { if (_triggerOnCallback && _isTrigger) _triggerOnCallback(obj); }
 
 	void setTriggerExitCallback(const TriggerCallback& c) noexcept { _triggerExitCallback = c; }
-	void triggerExitCallback(GameObject* obj) noexcept { if (_triggerExitCallback) _triggerExitCallback(obj); }
+	void triggerExitCallback(GameObject* obj) noexcept { if (_triggerExitCallback && _isTrigger) _triggerExitCallback(obj); }
 
 	void setTriggerStayCallback(const TriggerCallback& c) noexcept { _triggerStayCallback = c; }
-	void triggerStayCallback(GameObject* obj) noexcept { if (_triggerStayCallback) _triggerStayCallback(obj); }
+	void triggerStayCallback(GameObject* obj) noexcept { if (_triggerStayCallback && _isTrigger) _triggerStayCallback(obj); }
 
 	void setCollisionOnCallback(const CollisionCallback& c) noexcept { _collisionOnCallback = c; }
 	void collisionOnCallback(GameObject* obj, const CollisionResult& result) noexcept { if (_collisionOnCallback) _collisionOnCallback(obj, result); }

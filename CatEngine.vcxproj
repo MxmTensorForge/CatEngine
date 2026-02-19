@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\projects\CatEngine\SDL3-3.2.20\include;E:\projects\CatEngine\libs\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\projects\CatEngine\libs\stb_image;E:\projects\CatEngine\libs\miniaudio;E:\projects\CatEngine\libs\SDL3-3.2.20\include;E:\projects\CatEngine\libs\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\projects\CatEngine\libs\SDL3-3.2.20\include;E:\projects\CatEngine\libs\glad\include;E:\projects\CatEngine\libs\stb_image;E:\projects\CatEngine\libs\miniaudio;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\projects\CatEngine\libs\stb_image;E:\projects\CatEngine\libs\miniaudio;E:\projects\CatEngine\libs\SDL3-3.2.20\include;E:\projects\CatEngine\libs\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -151,6 +151,7 @@
     <ClCompile Include="Engine\Animation\Animator.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\Camera.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\Collider.cpp" />
+    <ClCompile Include="Engine\ComponentSystem\Components\Material.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\MeshComponent.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Components\RigidBody.cpp" />
     <ClCompile Include="Engine\ComponentSystem\Object\Transform.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Engine\ComponentSystem\Component.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\Camera.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\Collider.h" />
+    <ClInclude Include="Engine\ComponentSystem\Components\Material.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\MeshComponent.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\RigidBody.h" />
     <ClInclude Include="Engine\ComponentSystem\Components\PointLight.h" />

@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
 #include "../ComponentSystem/Components/MeshComponent.h"
+#include "../ComponentSystem/Components/Material.h"
 #include "../ComponentSystem/Components/Camera.h"
 
 #include "../ComponentSystem/Components/PointLight.h"
@@ -90,10 +91,13 @@ void Renderer::setAmbientColor(Color color) const noexcept {
 	_shader->setUniform("uAmbient", color.rf(), color.gf(), color.bf());
 }
 
-void Renderer::drawMesh(const Mxm::Mat4& model, const MeshComponent* mesh) {
+void Renderer::drawMesh(const Mxm::Mat4& model, const Material* material) {
+	auto* mesh = material->getObject()->getComponent<MeshComponent>();
+	if (!mesh) return;
+
 	_shader->setUniform("uModel", model.data(), true);
 
-	Color color = mesh->getColor();
+	Color color = material->getColor();
 	_shader->setUniform("uColor", color.rf(), color.gf(), color.bf(), color.af());
 	glDepthMask(GL_TRUE);
 	glEnable(GL_DEPTH_TEST);
@@ -101,7 +105,7 @@ void Renderer::drawMesh(const Mxm::Mat4& model, const MeshComponent* mesh) {
 		glDepthMask(GL_FALSE);
 	}
 
-	std::string texName = mesh->getTextureName();
+	std::string texName = material->getTextureName();
 	if (texName.empty()) {
 		_shader->setUniform("uUseTexture", 0);
 	}

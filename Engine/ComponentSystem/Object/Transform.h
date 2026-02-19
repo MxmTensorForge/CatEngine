@@ -50,6 +50,8 @@ public:
 	Mxm::Vec3 getWorldRotation() const noexcept;
 	Mxm::Vec3 getWorldScale() const noexcept;
 
+	Mxm::Vec3 inBasisRotate(const Mxm::Vec3& vec) const noexcept;
+
 	bool isChildOf(Transform* potentialParent) const noexcept;
 
 	void setParent(Transform* newParent) noexcept;

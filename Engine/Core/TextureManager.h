@@ -22,7 +22,7 @@ public:
 
 	static TextureManager& getInstance();
 
-	void loadTexture(const std::string& name, const std::string& path);
+	void loadTextureFromFile(const std::string& name, const std::string& path);
 	const std::unique_ptr<Texture>& getTexture(const std::string& name) const;
 
 	void removeTexture(const std::string& name);

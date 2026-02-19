@@ -5,24 +5,27 @@
 #include <functional>
 #include <memory>
 
-class FloatAnim final : public Animation
+namespace Animations
 {
-private:
-    std::function<void(float)> _setter;
-    float _start;
-    float _end;
+    class SetFloatAnim final : public Animation
+    {
+    private:
+        std::function<void(float)> _setter;
+        float _start;
+        float _end;
 
-    void update() override {
-        float t = progress();
-        float current = _start + (_end - _start) * t;
-        _setter(current);
-    }
+        void update() override {
+            float t = progress();
+            float current = _start + (_end - _start) * t;
+            _setter(current);
+        }
 
-public:
-    template <typename... Args>
-    FloatAnim(float startValue, float endValue, const std::function<void(float)>& setter, Args&&... args)
-        : Animation(std::forward<Args>(args)...), _start(startValue), _end(endValue), _setter(setter) {
-    }
-};
+    public:
+        template <typename... Args>
+        SetFloatAnim(float startValue, float endValue, const std::function<void(float)>& setter, Args&&... args)
+            : Animation(std::forward<Args>(args)...), _start(startValue), _end(endValue), _setter(setter) {
+        }
+    };
+}
 
 #endif
