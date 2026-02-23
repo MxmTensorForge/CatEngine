@@ -10,9 +10,9 @@ class Material;
 class Application
 {
 private:
-	Screen _screen;
-	Renderer _renderer;
-	UIRenderer _uiRenderer;
+	std::unique_ptr<Screen> _screen;
+	std::unique_ptr<Renderer> _renderer;
+	std::unique_ptr<UIRenderer> _uiRenderer;
 
 	int _width, _height;
 	float _physAccumulator = 0.0f;

@@ -4,7 +4,7 @@ void UISystem::newFrame() {
 	if (!_currentScreen) return;
 	_currentScreen->update();
 }
-void UISystem::render(UIRenderer& renderer) {
+void UISystem::render(UIRenderer* renderer) {
 	if (!_currentScreen) return;
 	_currentScreen->render(renderer);
 }

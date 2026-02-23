@@ -16,14 +16,18 @@
 #include "Input.h"
 
 void Application::initialize() {
+	_screen = std::make_unique<Screen>();
+	_renderer = std::make_unique<Renderer>();
+	_uiRenderer = std::make_unique<UIRenderer>();
+
 	Logger::getInstance().setLogFile("log.txt");
 
-	if (!_screen.open(_width, _height)) return;
+	if (!_screen->open(_width, _height)) return;
 	auto& sceneManager = SceneManager::getInstance();
 
-	_renderer.init();
-	_renderer.viewport(_width, _height);
-	_uiRenderer.init(_width, _height);
+	_renderer->init();
+	_renderer->viewport(_width, _height);
+	_uiRenderer->init(_width, _height);
 
 	start();
 	sceneManager.processPendingScene();
@@ -78,7 +82,7 @@ void Application::renderOpaque() {
 
 		auto& transform = obj->transform();
 
-		_renderer.drawMesh(transform.getWorldMatrix(), material_ptr);
+		_renderer->drawMesh(transform.getWorldMatrix(), material_ptr);
 	}
 }
 void Application::renderTransparent() {
@@ -87,7 +91,7 @@ void Application::renderTransparent() {
 		if (!obj->getActive()) continue;
 
 		auto& transform = obj->transform();
-		_renderer.drawMesh(transform.getWorldMatrix(), material);
+		_renderer->drawMesh(transform.getWorldMatrix(), material);
 	}
 }
 void Application::renderFrame() {
@@ -98,10 +102,10 @@ void Application::renderFrame() {
 
 	auto camera = activeScene->getMainCamera();
 	if (camera) {
-		_renderer.update(camera->getComponent<Camera>(), activeScene->getPointLights(), activeScene->getDirectionLight());
+		_renderer->update(camera->getComponent<Camera>(), activeScene->getPointLights(), activeScene->getDirectionLight());
 	}
-	_renderer.setAmbientColor(activeScene->getAmbientColor());
-	_renderer.clear(activeScene->getBackgroundColor());
+	_renderer->setAmbientColor(activeScene->getAmbientColor());
+	_renderer->clear(activeScene->getBackgroundColor());
 
 	renderOpaque();
 	renderTransparent();
@@ -111,8 +115,8 @@ void Application::renderFrame() {
 void Application::renderUI() {
 	Time::begin("renderUI");
 
-	UISystem::getInstance().render(_uiRenderer);
-	_uiRenderer.flush();
+	UISystem::getInstance().render(_uiRenderer.get());
+	_uiRenderer->flush();
 
 	Time::end("renderUI");
 }
@@ -127,7 +131,7 @@ void Application::applySceneChanges() {
 
 bool Application::processFrame() {
 	Input::update();
-	if (!_screen.pollEvents()) return false;
+	if (!_screen->pollEvents()) return false;
 
 	UISystem::getInstance().newFrame();
 
@@ -145,7 +149,7 @@ bool Application::processFrame() {
 	return true;
 }
 void Application::swapBuffers() {
-	_screen.swap();
+	_screen->swap();
 }
 
 void Application::run() {
@@ -173,11 +177,11 @@ void Application::run() {
 		}
 	}
 	shutdown();
-	_screen.close();
+	_screen->close();
 }
 
 void Application::setDrawFrame(bool state) noexcept {
-	_renderer.setDrawFrame(state);
+	_renderer->setDrawFrame(state);
 }
 
 Application::Application() : _width(EngineConsts::STANDART_WIDTH), _height(EngineConsts::STANDART_HEIGHT), _screen() {}

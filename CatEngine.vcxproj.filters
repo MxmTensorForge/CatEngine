@@ -353,6 +353,9 @@
     <ClInclude Include="Engine\ComponentSystem\Components\Material.h">
       <Filter>Engine\ComponentSystem\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Geometry\IntersectionInfo.h">
+      <Filter>Engine\Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Mxm\src\Easing.inl">

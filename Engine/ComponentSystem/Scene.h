@@ -4,6 +4,7 @@
 #include "Object/GameObject.h"
 #include "Components/MeshComponent.h"
 #include "../Animation/Animator.h"
+#include "../Geometry/IntersectionInfo.h"
 
 #include "Components/PointLight.h"
 #include "Components/DirectionLight.h"

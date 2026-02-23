@@ -14,7 +14,7 @@ private:
 	Color _color;
 public:
 	UIText(const Mxm::Vec2i& pos, const std::string& text, float scale, Color color);
-	void render(UIRenderer& renderer) const noexcept override;
+	void render(UIRenderer* renderer) const noexcept override;
 
 	void setColor(Color color) noexcept { _color = color; }
 	Color getColor() const noexcept { return _color; }

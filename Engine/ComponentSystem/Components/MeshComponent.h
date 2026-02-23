@@ -3,20 +3,13 @@
 
 #include "../Component.h"
 #include "../../Geometry/MeshData.h"
+#include "../../Geometry/IntersectionInfo.h"
 
 #include <vector>
 #include <string>
 #include <memory>
 
 struct MeshData;
-
-struct IntersectionInfo
-{
-	float distance;
-	Mxm::Vec3 point;
-	GameObject* gameObject;
-	std::string tag;
-};
 
 class MeshComponent final : public Component
 {

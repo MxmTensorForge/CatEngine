@@ -23,7 +23,7 @@ void UIButton::setSize(const Mxm::Vec2i& size) noexcept {
 	if (_text)       _text->setSize(size);
 }
 
-void UIButton::render(UIRenderer& renderer) const noexcept {
+void UIButton::render(UIRenderer* renderer) const noexcept {
 	_background->render(renderer);
 	_text->render(renderer);
 }

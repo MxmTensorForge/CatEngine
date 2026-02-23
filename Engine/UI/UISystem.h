@@ -28,7 +28,7 @@ public:
 	}
 
 	void newFrame();
-	void render(UIRenderer& renderer);
+	void render(UIRenderer* renderer);
 	UIScreen* addScreen(const std::string& name);
 
 	void setCurrentScreen(const std::string& name);

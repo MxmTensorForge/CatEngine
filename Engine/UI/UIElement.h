@@ -13,7 +13,7 @@ protected:
 	bool _visible = false;
 public:
 	virtual ~UIElement() = default;
-	virtual void render(UIRenderer& renderer) const noexcept = 0;
+	virtual void render(UIRenderer* renderer) const noexcept = 0;
 	virtual void update() noexcept {}
 
 	UIElement(const Mxm::Vec2i& pos, const Mxm::Vec2i& size)
