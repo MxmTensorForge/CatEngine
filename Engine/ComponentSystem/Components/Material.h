@@ -11,6 +11,8 @@ class Material final : public Component
 private:
 	std::string _textureName;
 	Color _color;
+
+	bool _isShaded;
 public:
 	Material(Color color);
 	Material(const std::string& textureName);
@@ -20,6 +22,9 @@ public:
 
 	inline void setColor(Color color) noexcept { _color = color; }
 	inline const Color& getColor() const noexcept { return _color; }
+
+	inline void setShaded(bool state) noexcept { _isShaded = state; }
+	inline bool isShaded() const noexcept { return _isShaded; }
 };
 
 #endif

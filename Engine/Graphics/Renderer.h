@@ -22,6 +22,7 @@ class Renderer final
 {
 private:
 	std::unique_ptr<Shader> _shader;
+	std::unique_ptr<Shader> _lightShader;
 public:
 	Renderer();
 	~Renderer();

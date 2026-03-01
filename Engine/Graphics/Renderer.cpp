@@ -114,6 +114,7 @@ void Renderer::drawMesh(const Mxm::Mat4& model, const Material* material) {
 		_shader->setUniform("uUseTexture", 1);
 		_shader->setUniform("uTexture", 0);
 	}
+	_shader->setUniform("uIsShaded", material->isShaded() ? 1 : 0);
 
 	mesh->getData()->data.draw();
 	glDepthMask(GL_TRUE);
