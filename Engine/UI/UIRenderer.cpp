@@ -92,16 +92,16 @@ void UIRenderer::loadFont(const std::string& fntPath, const std::string& texture
 }
 
 void UIRenderer::addVertex(float x, float y, float z, Color color) {
-    _rectData.push_back(x);
-    _rectData.push_back(y);
-    _rectData.push_back(z);
+	_rectData.push_back(x);
+	_rectData.push_back(y);
+	_rectData.push_back(z);
 
-    _rectData.push_back(color.rf());
-    _rectData.push_back(color.gf());
-    _rectData.push_back(color.bf());
-    _rectData.push_back(color.af());
+	_rectData.push_back(color.rf());
+	_rectData.push_back(color.gf());
+	_rectData.push_back(color.bf());
+	_rectData.push_back(color.af());
 
-    _numVerts++;
+	_numVerts++;
 }
 void UIRenderer::addTextVertex(float x, float y, float z, float u, float v, Color color) {
 	_textData.push_back(x);
@@ -119,13 +119,13 @@ void UIRenderer::addTextVertex(float x, float y, float z, float u, float v, Colo
 }
 
 void UIRenderer::pushRect(const RectCmd& r) {
-    addVertex(r.x, r.y, r.z, r.color);
-    addVertex(r.x + r.w, r.y, r.z, r.color);
-    addVertex(r.x, r.y + r.h, r.z, r.color);
+	addVertex(r.x, r.y, r.z, r.color);
+	addVertex(r.x + r.w, r.y, r.z, r.color);
+	addVertex(r.x, r.y + r.h, r.z, r.color);
 
-    addVertex(r.x + r.w, r.y, r.z, r.color);
+	addVertex(r.x + r.w, r.y, r.z, r.color);
 	addVertex(r.x + r.w, r.y + r.h, r.z, r.color);
-    addVertex(r.x, r.y + r.h, r.z, r.color);
+	addVertex(r.x, r.y + r.h, r.z, r.color);
 }
 void UIRenderer::pushText(const TextCmd& t) {
 	if (_fontData.empty()) {

@@ -193,6 +193,7 @@ void Scene::start() {
 	for (auto& obj : _gameObjects) {
 		obj->startComponents();
 	}
+    updateLightCache();
 }
 void Scene::update() {
 	for (auto& obj : _gameObjects) {

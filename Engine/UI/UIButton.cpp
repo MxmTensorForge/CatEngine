@@ -2,13 +2,13 @@
 #include "../Core/Input.h"
 
 UIButton::UIButton(const Mxm::Vec2i& pos, const Mxm::Vec2i& size,
-	const std::string& text,const Mxm::Vec2i& textOffset, float textScale, Color textColor,
+	const std::string& text, const Mxm::Vec2i& textOffset, float textScale, Color textColor,
 	Color baseColor, Color hoverColor, Color downedColor)
 	: UIElement(pos, size), _textOffset(textOffset),
 	_baseColor(baseColor), _hoverColor(hoverColor), _downedColor(downedColor)
 {
 	_background = std::make_unique<UIRect>(pos, size, baseColor);
-	_text =       std::make_unique<UIText>(pos + _textOffset, text, textScale, textColor);
+	_text = std::make_unique<UIText>(pos + _textOffset, text, textScale, textColor);
 }
 
 void UIButton::setPosition(const Mxm::Vec2i& pos) noexcept {
@@ -30,9 +30,9 @@ void UIButton::render(UIRenderer* renderer) const noexcept {
 void UIButton::update() noexcept {
 	Mxm::Vec2 mousePos = Input::getMousePosition();
 
-	bool hovered =           !Input::getMouseLockState() && isInside(Mxm::Vec2i(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y)));
+	bool hovered = !Input::getMouseLockState() && isInside(Mxm::Vec2i(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y)));
 	bool pressed = hovered && Input::isMouseButtonPressed(MouseButton::MOUSE0);
-	bool downed =  hovered && Input::isMouseButtonDown(MouseButton::MOUSE0);
+	bool downed = hovered && Input::isMouseButtonDown(MouseButton::MOUSE0);
 
 	if (downed)       _background->setColor(_downedColor);
 	else if (hovered) _background->setColor(_hoverColor);

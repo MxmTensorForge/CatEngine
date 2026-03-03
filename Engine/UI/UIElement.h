@@ -34,7 +34,7 @@ public:
 	bool getVisible() const noexcept { return _visible; }
 	bool isInside(const Mxm::Vec2i& point) const noexcept {
 		return point.x >= _pos.x && point.x <= _pos.x + _size.x &&
-			   point.y >= _pos.y && point.y <= _pos.y + _size.y;
+			point.y >= _pos.y && point.y <= _pos.y + _size.y;
 	}
 };
 
