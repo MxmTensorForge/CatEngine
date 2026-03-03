@@ -44,10 +44,6 @@ Setup Instructions:
 3. Build the solution (F7)
 4. Run the executable (F5)
 
-Dependencies:
-- SDL3 (for window creation, input handling, and basic system integration)
-- Visual Studio 2019 or newer recommended
-
 Disclaimer:
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. The author
 is not responsible for any bugs, crashes, or unexpected behavior that may
