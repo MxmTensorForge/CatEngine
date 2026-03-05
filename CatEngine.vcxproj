@@ -91,6 +91,7 @@
       <AdditionalIncludeDirectories>E:\projects\CatEngine\libs\miniaudio;E:\projects\CatEngine\libs\stb_image;E:\projects\CatEngine\libs\glad\include;E:\projects\CatEngine\libs\SDL3-3.2.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -110,6 +111,7 @@
       <AdditionalIncludeDirectories>E:\projects\CatEngine\libs\miniaudio;E:\projects\CatEngine\libs\stb_image;E:\projects\CatEngine\libs\glad\include;E:\projects\CatEngine\libs\SDL3-3.2.20\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

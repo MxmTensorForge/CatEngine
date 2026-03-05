@@ -128,23 +128,17 @@ namespace Mxm
 
     inline Mat3 Mat3::inversed() const noexcept {
         float determinant = det();
-        if (fabsf(determinant) < Consts::EPS) return Mat3();
+        if (fabsf(determinant) < Consts::EPS) return Mat3::identity();
 
         float invDeterminant = 1.0f / determinant;
 
-        return Mat3(
-            (_m[1][1] * _m[2][2] - _m[1][2] * _m[2][1]) * invDeterminant,
-            (_m[1][2] * _m[2][0] - _m[1][0] * _m[2][2]) * invDeterminant,
-            (_m[1][0] * _m[2][1] - _m[1][1] * _m[2][0]) * invDeterminant,
-
-            (_m[0][2] * _m[2][1] - _m[0][1] * _m[2][2]) * invDeterminant,
-            (_m[0][0] * _m[2][2] - _m[0][2] * _m[2][0]) * invDeterminant,
-            (_m[0][1] * _m[2][0] - _m[0][0] * _m[2][1]) * invDeterminant,
-
-            (_m[0][1] * _m[1][2] - _m[0][2] * _m[1][1]) * invDeterminant,
-            (_m[0][2] * _m[1][0] - _m[0][0] * _m[1][2]) * invDeterminant,
-            (_m[0][0] * _m[1][1] - _m[0][1] * _m[1][0]) * invDeterminant
+        Mat3 c = Mat3(
+            (_m[1][1] * _m[2][2] - _m[1][2] * _m[2][1]) * invDeterminant, -(_m[1][0] * _m[2][2] - _m[1][2] * _m[2][0]) * invDeterminant, (_m[1][0] * _m[2][1] - _m[1][1] * _m[2][0]) * invDeterminant,
+            -(_m[0][1] * _m[2][2] - _m[0][2] * _m[2][1]) * invDeterminant, (_m[0][0] * _m[2][2] - _m[0][2] * _m[2][0]) * invDeterminant, -(_m[0][0] * _m[2][1] - _m[0][1] * _m[2][0]) * invDeterminant,
+            (_m[0][1] * _m[1][2] - _m[0][2] * _m[1][1]) * invDeterminant, -(_m[0][0] * _m[1][2] - _m[0][2] * _m[1][0]) * invDeterminant, (_m[0][0] * _m[1][1] - _m[0][1] * _m[1][0]) * invDeterminant
         );
+
+        return c.transposed();
     }
     inline Mat3 Mat3::abs() const noexcept {
         Mat3 result;

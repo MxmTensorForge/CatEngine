@@ -1,5 +1,7 @@
 #include "Triangle.h"
 
+#include "../Mxm/Mat3.h"
+
 Triangle::Triangle(const Mxm::Vec4& vert0, const Mxm::Vec4& vert1, const Mxm::Vec4& vert2) : _vertices{ vert0, vert1, vert2 } {
 	calcNormal();
 }
@@ -34,23 +36,21 @@ const Mxm::Vec3& Triangle::normal() const noexcept {
 bool Triangle::intersection(const Mxm::Vec3& origin, const Mxm::Vec3& dir, Mxm::Vec3& outPoint, float& d) const noexcept {
 	Mxm::Vec3 edge1 = (_vertices[1] - _vertices[0]).toVec3();
 	Mxm::Vec3 edge2 = (_vertices[2] - _vertices[0]).toVec3();
-	Mxm::Vec3 normal = edge1.cross(edge2);
 
 	Mxm::Vec3 to = origin - (_vertices[0]).toVec3();
 
-	float determinant = -dir.dot(normal);
-	if (fabsf(determinant) <= Mxm::Consts::EPS) return false;
+	Mxm::Mat3 mat = Mxm::Mat3(
+		edge1.x, edge2.x, -dir.x,
+		edge1.y, edge2.y, -dir.y,
+		edge1.z, edge2.z, -dir.z
+	);
+	Mxm::Vec3 result = mat.inversed() * to;
 
-	float beta = -dir.dot(to.cross(edge2)) / determinant;
-	float gamma = -dir.dot(edge1.cross(to)) / determinant;
-	float alpha = 1.0f - beta - gamma;
+	if (result.x >= -Mxm::Consts::EPS && result.y >= -Mxm::Consts::EPS && 1.0f - result.x - result.y >= -Mxm::Consts::EPS) {
+		if (result.z < 0.0f) return false;
 
-	if (alpha >= -Mxm::Consts::EPS && beta >= -Mxm::Consts::EPS && gamma >= -Mxm::Consts::EPS) {
-		float t = to.dot(normal) / determinant;
-		if (t < 0.0f) return false;
-
-		outPoint = origin + dir * t;
-		d = t;
+		outPoint = origin + dir * result.z;
+		d = result.z;
 		return true;
 	}
 	return false;
