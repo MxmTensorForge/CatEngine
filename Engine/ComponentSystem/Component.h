@@ -14,6 +14,7 @@ public:
 
 	virtual void start() {}
 	virtual void update() {}
+	virtual void fixedUpdate() {}
 
 	void setObject(GameObject* object) noexcept { _object = object; }
 	GameObject* getObject() const noexcept {

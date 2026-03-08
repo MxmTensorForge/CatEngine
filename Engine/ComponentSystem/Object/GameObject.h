@@ -115,6 +115,11 @@ public:
             c->update();
         }
     }
+    inline void fixedUpdateComponents() const {
+        for (auto& c : _components) {
+            c->fixedUpdate();
+        }
+    }
 
     inline void setActive(bool active) noexcept {
         _isActive = active;

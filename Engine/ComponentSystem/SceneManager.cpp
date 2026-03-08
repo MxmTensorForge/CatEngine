@@ -1,18 +1,33 @@
 #include "SceneManager.h"
 #include "../Core/Logger.h"
 
-Scene* SceneManager::createScene() {
-	_scenes.push_back(std::make_unique<Scene>());
-	return _scenes.back().get();
+Scene* SceneManager::createScene(const std::string& name) {
+	auto scene = std::make_unique<Scene>();
+
+	Scene* rawPtr = scene.get();
+
+	_scenes[name] = std::move(scene);
+
+	return rawPtr;
 }
 
 void SceneManager::setActiveScene(Scene* scene) {
 	if (scene) _pendingActiveScene = scene;
 }
+void SceneManager::setActiveScene(const std::string& name) {
+	auto scene = _scenes.find(name);
+	if (scene != _scenes.end()) {
+		setActiveScene(scene->second.get());
+	}
+}
 
 Scene* SceneManager::getActiveScene() const {
-	if (_indexActiveScene < _scenes.size()) {
-		return _scenes[_indexActiveScene].get();
+	return getScene(_activeSceneName);
+}
+Scene* SceneManager::getScene(const std::string& name) const {
+	auto scene = _scenes.find(name);
+	if (scene != _scenes.end()) {
+		return scene->second.get();
 	}
 	Logger::getInstance().log(LogType::Fatal, "getActiveScene error GameManager");
 	return nullptr;
@@ -21,12 +36,12 @@ Scene* SceneManager::getActiveScene() const {
 void SceneManager::processPendingScene() {
 	if (!_pendingActiveScene) return;
 
-	for (size_t i = 0; i < _scenes.size(); i++) {
-		Scene* scene = _scenes[i].get();
-		if (scene == _pendingActiveScene) {
-			scene->start();
-			_indexActiveScene = i;
-			Logger::getInstance().log(LogType::Message, "Scene index activated: " + std::to_string(i));
+	for (const auto& s : _scenes) {
+		Scene* scenePtr = s.second.get();
+		if (scenePtr == _pendingActiveScene) {
+			scenePtr->start();
+			_activeSceneName = s.first;
+			Logger::getInstance().log(LogType::Message, "Scene index activated: " + _activeSceneName);
 			break;
 		}
 	}
@@ -38,12 +53,25 @@ bool SceneManager::hasPendingScene() {
 }
 
 void SceneManager::removeScene(Scene* scene) {
-	auto it = std::find_if(_scenes.begin(), _scenes.end(), [scene](const std::unique_ptr<Scene>& uniq) { return uniq.get() == scene; });
-	if (it != _scenes.end()) {
-		if (_scenes[_indexActiveScene].get() == scene) {
-			_indexActiveScene = 0;
-			_pendingActiveScene = nullptr;
+	for (auto it = _scenes.begin(); it != _scenes.end(); ++it) {
+		if (it->second.get() == scene) {
+
+			if (it->first == _activeSceneName) {
+				_activeSceneName = "";
+			}
+
+			_scenes.erase(it);
+			break;
 		}
-		_scenes.erase(it);
+	}
+}
+void SceneManager::removeScene(const std::string& name) {
+	auto scene = _scenes.find(name);
+	if (scene != _scenes.end()) {
+		if (name == _activeSceneName) {
+			_activeSceneName = "";
+		}
+
+		_scenes.erase(name);
 	}
 }

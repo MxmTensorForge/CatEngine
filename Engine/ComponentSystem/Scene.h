@@ -38,6 +38,7 @@ private:
 	Color _ambientColor = Color();
 
 	void updateRecursive(Transform* transform);
+	void updateCollisions();
 public:
 	Scene() = default;
 	~Scene() = default;
@@ -63,9 +64,8 @@ public:
 
 	void start();
 	void update();
+	void fixedUpdate();
 	void updateAnimator();
-	void updatePhysics();
-	void updateCollisions();
 
 	inline Animator& getAnimator() noexcept { return _animator; }
 

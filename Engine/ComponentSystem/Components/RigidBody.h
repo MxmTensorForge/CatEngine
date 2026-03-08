@@ -58,7 +58,7 @@ public:
 	bool isCollision() const noexcept { return _isCollision; }
 	void setIsCollision(bool state) noexcept { _isCollision = state; }
 
-	void updatePhysics();
+	void fixedUpdate() override;
 
 	RigidBody() = default;
 };

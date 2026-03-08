@@ -3,8 +3,8 @@
 
 namespace EngineConsts
 {
-	constexpr int STANDART_WIDTH = 800;
-	constexpr int STANDART_HEIGHT = 600;
+	constexpr int STANDART_WIDTH = 1920;
+	constexpr int STANDART_HEIGHT = 1080;
 }
 
 #endif // !ENGINECONSTS_H

@@ -202,17 +202,16 @@ void Scene::update() {
 	}
     if (EventSystem::getInstance().poll("light_update")) updateLightCache();
 }
+void Scene::fixedUpdate() {
+    for (auto& obj : _gameObjects) {
+        if (!obj->getActive()) continue;
+        obj->fixedUpdateComponents();
+    }
+    updateCollisions();
+}
+
 void Scene::updateAnimator() {
     _animator.update();
-}
-void Scene::updatePhysics() {
-    for (auto& obj : _gameObjects) {
-        if (obj->getActive()) {
-            if (auto comp = obj->getComponent<RigidBody>()) {
-                comp->updatePhysics();
-            }
-        }
-    }
 }
 
 std::vector<GameObject*> Scene::getGameObjects() const noexcept {

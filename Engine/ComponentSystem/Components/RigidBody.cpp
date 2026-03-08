@@ -11,7 +11,7 @@
 #include <vector>
 #include <array>
 
-void RigidBody::updatePhysics() {
+void RigidBody::fixedUpdate() {
 	float damping = _isCollision ? _linearDamping : _airDamping;
 
 	Mxm::Vec3 acceleration = _gravity;

@@ -3,14 +3,16 @@
 
 #include "Scene.h"
 
+#include <unordered_map>
 #include <memory>
+#include <string>
 
 class SceneManager final
 {
 private:
-	std::vector<std::unique_ptr<Scene>> _scenes;
+	std::unordered_map<std::string, std::unique_ptr<Scene>> _scenes;
 	Scene* _pendingActiveScene = nullptr;
-	size_t _indexActiveScene = 0;
+	std::string _activeSceneName;
 
 	SceneManager() = default;
 	~SceneManager() = default;
@@ -29,11 +31,14 @@ public:
 		return manager;
 	}
 
-	Scene* createScene();
+	Scene* createScene(const std::string& name);
 	Scene* getActiveScene() const;
+	Scene* getScene(const std::string& name) const;
 
 	void setActiveScene(Scene* scene);
+	void setActiveScene(const std::string& name);
 	void removeScene(Scene* scene);
+	void removeScene(const std::string& name);
 };
 
 #endif // !SCENEMANAGER_H

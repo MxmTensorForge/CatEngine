@@ -42,8 +42,7 @@ void Application::updatePhysics() {
 
 	_physAccumulator += Time::deltaTime();
 	while (_physAccumulator >= Time::fixedDeltaTime()) {
-		activeScene->updatePhysics();
-		activeScene->updateCollisions();
+		activeScene->fixedUpdate();
 		fixedUpdate();
 
 		_physAccumulator -= Time::fixedDeltaTime();
