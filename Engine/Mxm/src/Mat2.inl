@@ -135,8 +135,10 @@ namespace Mxm
 		);
 	}
 	inline Mat2 Mat2::rotation(float angle) noexcept {
-		float cs = cosf(angle);
-		float sn = sinf(angle);
+		float deg = Mxm::Consts::DEG2RAD * angle;
+
+		float cs = cosf(deg);
+		float sn = sinf(deg);
 
 		return Mat2(
 			cs, -sn,

@@ -5,6 +5,9 @@
 
 #include <vector>
 
+#define GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
+#define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
+
 Texture::Texture() : _id(0), _width(0), _height(0), _channels(0) {}
 
 Texture::Texture(const std::string& path, bool isText) : Texture() {
@@ -37,6 +40,12 @@ void Texture::load(const std::string& path, bool isText) noexcept {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, isText ? GL_NEAREST : GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	if (!isText) {
+		float maxAniso{};
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAniso);
+	}
 
 	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 	if (!isText) glGenerateMipmap(GL_TEXTURE_2D);;

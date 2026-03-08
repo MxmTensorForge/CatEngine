@@ -184,8 +184,10 @@ namespace Mxm
     }
 
     inline Mat4 Mat4::rotationX(float angle) noexcept {
-        float cs = cosf(angle);
-        float sn = sinf(angle);
+        float deg = Mxm::Consts::DEG2RAD * angle;
+
+        float cs = cosf(deg);
+        float sn = sinf(deg);
 
         return Mat4(
             1.0f, 0.0f, 0.0f, 0.0f,
@@ -196,8 +198,10 @@ namespace Mxm
     }
 
     inline Mat4 Mat4::rotationY(float angle) noexcept {
-        float cs = cosf(angle);
-        float sn = sinf(angle);
+        float deg = Mxm::Consts::DEG2RAD * angle;
+
+        float cs = cosf(deg);
+        float sn = sinf(deg);
 
         return Mat4(
             cs, 0.0f, sn, 0.0f,
@@ -208,8 +212,10 @@ namespace Mxm
     }
 
     inline Mat4 Mat4::rotationZ(float angle) noexcept {
-        float cs = cosf(angle);
-        float sn = sinf(angle);
+        float deg = Mxm::Consts::DEG2RAD * angle;
+
+        float cs = cosf(deg);
+        float sn = sinf(deg);
 
         return Mat4(
             cs, -sn, 0.0f, 0.0f,
@@ -236,7 +242,7 @@ namespace Mxm
         );
     }
     inline Mat4 Mat4::perspective(float fov, float aspect, float near, float far) noexcept {
-        float h = 1.0f / tanf(fov / 2.0f);
+        float h = 1.0f / tanf(fov * Mxm::Consts::DEG2RAD / 2.0f);
         float zDist = far - near;
         return Mat4(
             h / aspect, 0, 0, 0,

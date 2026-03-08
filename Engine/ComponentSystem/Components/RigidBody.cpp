@@ -29,6 +29,10 @@ void RigidBody::updatePhysics() {
 
 void RigidBody::addImpulse(const Mxm::Vec3& vec) noexcept { _velocity += vec / _mass; }
 void RigidBody::addAngularImpulse(const Mxm::Vec3& vec) noexcept { _angularVelocity += vec / _momentOfInertia; }
+void RigidBody::addImpulseInPoint(const Mxm::Vec3& point, Mxm::Vec3& vec) noexcept {
+	addImpulse(vec);
+	addAngularImpulse((point - getObject()->transform().getPosition()).cross(vec));
+}
 
 void RigidBody::setGravity(const Mxm::Vec3& vec) noexcept { _gravity = vec; }
 const Mxm::Vec3& RigidBody::getGravity() const noexcept { return _gravity; }

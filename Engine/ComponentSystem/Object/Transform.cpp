@@ -32,7 +32,7 @@ void Transform::setLookRotation(const Mxm::Vec3& direction) noexcept {
 	float yaw = atan2f(targetForward.x, targetForward.z);
 	float pitch = -asinf(targetForward.y);
 
-	_rotation = Mxm::Vec3(pitch, yaw, 0);
+	_rotation = Mxm::Vec3(pitch * Mxm::Consts::RAD2DEG, yaw * Mxm::Consts::RAD2DEG, 0);
 	markDirty();
 }
 void Transform::setLookAt(const Mxm::Vec3& target) noexcept {

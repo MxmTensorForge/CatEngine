@@ -29,6 +29,7 @@ private:
 public:
 	void addImpulse(const Mxm::Vec3& vec) noexcept;
 	void addAngularImpulse(const Mxm::Vec3& vec) noexcept;
+	void addImpulseInPoint(const Mxm::Vec3& point, Mxm::Vec3& vec) noexcept;
 
 	void setGravity(const Mxm::Vec3& vec) noexcept;
 	const Mxm::Vec3& getGravity() const noexcept;
