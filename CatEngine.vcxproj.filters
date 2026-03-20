@@ -356,6 +356,9 @@
     <ClInclude Include="Engine\Geometry\IntersectionInfo.h">
       <Filter>Engine\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Mxm\Quat.h">
+      <Filter>Engine\Mxm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Mxm\src\Easing.inl">
@@ -380,6 +383,9 @@
       <Filter>Engine\Mxm\src</Filter>
     </None>
     <None Include="Engine\Mxm\src\Vec2i.inl">
+      <Filter>Engine\Mxm\src</Filter>
+    </None>
+    <None Include="Engine\Mxm\src\Quat.inl">
       <Filter>Engine\Mxm\src</Filter>
     </None>
   </ItemGroup>

@@ -24,7 +24,7 @@ public:
 	}
 
 	void update() noexcept {
-		for (auto& e : _elements) e->update();
+		for (auto& e : _elements) if (e) e->update();
 	}
 	void render(UIRenderer* renderer) noexcept {
 		for (const auto& e : _elements) e->render(renderer);

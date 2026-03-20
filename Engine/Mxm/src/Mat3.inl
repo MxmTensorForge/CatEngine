@@ -173,10 +173,10 @@ namespace Mxm
     }
 
     inline Mat3 Mat3::rotationX(float angle) noexcept {
-        float deg = Mxm::Consts::DEG2RAD * angle;
+        float rad = Mxm::Consts::DEG2RAD * angle;
 
-        float cs = cosf(deg);
-        float sn = sinf(deg);
+        float cs = cosf(rad);
+        float sn = sinf(rad);
 
         return Mat3(
             1.0f, 0.0f, 0.0f,
@@ -186,10 +186,10 @@ namespace Mxm
     }
 
     inline Mat3 Mat3::rotationY(float angle) noexcept {
-        float deg = Mxm::Consts::DEG2RAD * angle;
+        float rad = Mxm::Consts::DEG2RAD * angle;
 
-        float cs = cosf(deg);
-        float sn = sinf(deg);
+        float cs = cosf(rad);
+        float sn = sinf(rad);
 
         return Mat3(
             cs, 0.0f, sn,
@@ -199,10 +199,10 @@ namespace Mxm
     }
 
     inline Mat3 Mat3::rotationZ(float angle) noexcept {
-        float deg = Mxm::Consts::DEG2RAD * angle;
+        float rad = Mxm::Consts::DEG2RAD * angle;
 
-        float cs = cosf(deg);
-        float sn = sinf(deg);
+        float cs = cosf(rad);
+        float sn = sinf(rad);
 
         return Mat3(
             cs, -sn, 0.0f,

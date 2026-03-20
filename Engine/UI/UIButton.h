@@ -17,6 +17,7 @@ private:
 	std::function<void()> _onPress = nullptr;
 	std::function<void()> _onHover = nullptr;
 	std::function<void()> _onDown = nullptr;
+	std::function<void()> _onUpdate = nullptr;
 	bool _isHover = false;
 
 	Color _baseColor;
@@ -39,6 +40,7 @@ public:
 	void setOnPress(const std::function<void()>& func) noexcept { _onPress = func; }
 	void setOnHover(const std::function<void()>& func) noexcept { _onHover = func; }
 	void setOnDown(const std::function<void()>& func) noexcept { _onDown = func; }
+	void setOnUpdate(const std::function<void()>& func) noexcept { _onUpdate = func; }
 
 	void setBaseColor(Color color) { _baseColor = color; }
 	Color getBaseColor() { return _baseColor; }

@@ -48,4 +48,6 @@ void UIButton::update() noexcept {
 	if (_isHover && !hovered) {
 		_isHover = false;
 	}
+
+	if (_onUpdate) _onUpdate();
 }

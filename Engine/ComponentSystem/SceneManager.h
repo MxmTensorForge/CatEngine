@@ -39,6 +39,8 @@ public:
 	void setActiveScene(const std::string& name);
 	void removeScene(Scene* scene);
 	void removeScene(const std::string& name);
+
+	const std::string& getActiveSceneName() const noexcept { return _activeSceneName; }
 };
 
 #endif // !SCENEMANAGER_H

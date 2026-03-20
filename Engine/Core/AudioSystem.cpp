@@ -6,6 +6,8 @@ AudioSystem::AudioSystem() {
 	if (result != MA_SUCCESS) {
 		Logger::getInstance().log(LogType::Fatal, "Audio engine failed");
 	}
+
+	ma_engine_listener_set_world_up(&_engine, 0, 0, 1, 0);
 }
 AudioSystem::~AudioSystem() {
 	for (auto& [name, data] : _sounds)
@@ -38,6 +40,19 @@ void AudioSystem::playSound(const std::string& name) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_seek_to_pcm_frame(&it->second.sound, 0);
+
+		ma_sound_set_spatialization_enabled(&it->second.sound, MA_FALSE);
+		ma_sound_start(&it->second.sound);
+	}
+}
+void AudioSystem::playSound3D(const std::string& name, const Mxm::Vec3& position) {
+	auto it = _sounds.find(name);
+	if (it != _sounds.end()) {
+		ma_sound_seek_to_pcm_frame(&it->second.sound, 0);
+
+		ma_sound_set_spatialization_enabled(&it->second.sound, MA_TRUE);
+		ma_sound_set_position(&it->second.sound, position.x, position.y, position.z);
+
 		ma_sound_start(&it->second.sound);
 	}
 }
@@ -45,6 +60,32 @@ void AudioSystem::stopSound(const std::string& name) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_stop(&it->second.sound);
+	}
+}
+
+void AudioSystem::setMinMaxDist(const std::string& name, float min, float max) {
+	auto it = _sounds.find(name);
+	if (it != _sounds.end()) {
+		ma_sound_set_min_distance(&it->second.sound, min);
+		ma_sound_set_max_distance(&it->second.sound, max);
+	}
+}
+void AudioSystem::setSoundPosition(const std::string& name, const Mxm::Vec3& position) {
+	auto it = _sounds.find(name);
+	if (it != _sounds.end()) {
+		ma_sound_set_spatialization_enabled(&it->second.sound, MA_TRUE);
+		ma_sound_set_position(&it->second.sound, position.x, position.y, position.z);
+	}
+}
+void AudioSystem::setListener(const Mxm::Vec3& position, const Mxm::Vec3& forward) {
+	ma_engine_listener_set_position(&_engine, 0, position.x, position.y, position.z);
+	ma_engine_listener_set_direction(&_engine, 0, forward.x, forward.y, forward.z);
+}
+
+bool AudioSystem::isSoundPlaying(const std::string& name) const noexcept {
+	auto it = _sounds.find(name);
+	if (it != _sounds.end()) {
+		return ma_sound_is_playing(&it->second.sound);
 	}
 }
 

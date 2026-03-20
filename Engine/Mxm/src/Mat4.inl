@@ -184,10 +184,10 @@ namespace Mxm
     }
 
     inline Mat4 Mat4::rotationX(float angle) noexcept {
-        float deg = Mxm::Consts::DEG2RAD * angle;
+        float rad = Mxm::Consts::DEG2RAD * angle;
 
-        float cs = cosf(deg);
-        float sn = sinf(deg);
+        float cs = cosf(rad);
+        float sn = sinf(rad);
 
         return Mat4(
             1.0f, 0.0f, 0.0f, 0.0f,
@@ -198,10 +198,10 @@ namespace Mxm
     }
 
     inline Mat4 Mat4::rotationY(float angle) noexcept {
-        float deg = Mxm::Consts::DEG2RAD * angle;
+        float rad = Mxm::Consts::DEG2RAD * angle;
 
-        float cs = cosf(deg);
-        float sn = sinf(deg);
+        float cs = cosf(rad);
+        float sn = sinf(rad);
 
         return Mat4(
             cs, 0.0f, sn, 0.0f,
@@ -212,16 +212,36 @@ namespace Mxm
     }
 
     inline Mat4 Mat4::rotationZ(float angle) noexcept {
-        float deg = Mxm::Consts::DEG2RAD * angle;
+        float rad = Mxm::Consts::DEG2RAD * angle;
 
-        float cs = cosf(deg);
-        float sn = sinf(deg);
+        float cs = cosf(rad);
+        float sn = sinf(rad);
 
         return Mat4(
             cs, -sn, 0.0f, 0.0f,
             sn, cs, 0.0f, 0.0f,
             0.0f, 0.0f, 1.0f, 0.0f,
             0.0f, 0.0f, 0.0f, 1.0f
+        );
+    }
+
+    inline Mat4 Mat4::rotation(const Quat& quat) noexcept {
+        float w = quat.w(), x = quat.x(), y = quat.y(), z = quat.z();
+
+        float ww = w * w;
+        float xy = x * y;
+        float yz = y * z;
+        float xz = x * z;
+
+        float wx = w * x;
+        float wy = w * y;
+        float wz = w * z;
+
+        return Mat4(
+            2.0f * (ww + x*x) - 1, 2.0f * (xy - wz),      2.0f * (xz + wy),         0.0f,
+            2.0f * (xy + wz),      2.0f * (ww + y*y) - 1, 2.0f * (yz - wx),         0.0f,
+            2.0f * (xz - wy),      2.0f * (yz + wx),      2.0f * (ww + z*z) - 1.0f, 0.0f,
+            0.0f,                  0.0f,                  0.0f,                     1.0f
         );
     }
 

@@ -250,6 +250,7 @@
     <ClInclude Include="Engine\Mxm\Mat2.h" />
     <ClInclude Include="Engine\Mxm\Mat3.h" />
     <ClInclude Include="Engine\Mxm\Mat4.h" />
+    <ClInclude Include="Engine\Mxm\Quat.h" />
     <ClInclude Include="Engine\Mxm\Vec2.h" />
     <ClInclude Include="Engine\Mxm\Vec2i.h" />
     <ClInclude Include="Engine\Mxm\Vec3.h" />
@@ -272,6 +273,7 @@
     <None Include="Engine\Mxm\src\Mat2.inl" />
     <None Include="Engine\Mxm\src\Mat3.inl" />
     <None Include="Engine\Mxm\src\Mat4.inl" />
+    <None Include="Engine\Mxm\src\Quat.inl" />
     <None Include="Engine\Mxm\src\Vec2.inl" />
     <None Include="Engine\Mxm\src\Vec2i.inl" />
     <None Include="Engine\Mxm\src\Vec3.inl" />
