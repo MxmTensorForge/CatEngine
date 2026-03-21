@@ -33,13 +33,6 @@ namespace Mxm
 			return (1.0f - expf(-x * a)) / (1.0f - expf(-a));
 		}
 
-		inline float easeInCirc(float x) noexcept {
-			return 1.0f - sqrtf(1.0f - x * x);
-		}
-		inline float easeOutCirc(float x) noexcept {
-			return sqrtf(2.0f * x - x * x);
-		}
-
 		inline float cosBounceIn(float x, float bounces, float decay) noexcept {
 			float cos_val = cosf(x * Consts::PI * bounces);
 			return 1.0f - fabsf(cos_val) * powf(1.0f - x, decay);

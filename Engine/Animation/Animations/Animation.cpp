@@ -27,14 +27,23 @@ bool Animation::updateState() noexcept {
 	case InterpolationType::COS:
 		_progress = Mxm::Easing::easeInSine(t);
 		break;
+	case InterpolationType::EASY_IN_EXP:
+		_progress = Mxm::Easing::easeExp(t, -3.0f);
+		break;
+	case InterpolationType::EASY_OUT_EXP:
+		_progress = Mxm::Easing::easeExp(t, 3.0f);
+		break;
+	case InterpolationType::EASY_IN_SINE:
+		_progress = Mxm::Easing::easeInSine(t);
+		break;
+	case InterpolationType::EASY_OUT_SINE:
+		_progress = Mxm::Easing::easeOutSine(t);
+		break;
 	case InterpolationType::COS_BOUNCE:
 		_progress = Mxm::Easing::cosBounceIn(t, 3.0f, 1.0f);
 		break;
 	case InterpolationType::ELASTIC_COS_BOUNCE:
 		_progress = Mxm::Easing::elasticCosBounceIn(t, 3.0f, 1.0f);
-		break;
-	case InterpolationType::EASY_OUT:
-		_progress = Mxm::Easing::easeExp(t, 3.0f);
 		break;
 	case InterpolationType::BEZIER:
 		_progress = Mxm::Easing::bezier(t, _point0.x, _point0.y, _point1.x, _point1.y);
