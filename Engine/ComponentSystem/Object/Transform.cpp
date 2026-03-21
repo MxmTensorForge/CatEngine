@@ -4,8 +4,8 @@ void Transform::translate(const Mxm::Vec3& vec) noexcept {
 	_position += vec;
 	markDirty();
 }
-void Transform::rotate(const Mxm::Vec3& vec) noexcept {
-	_rotation += vec;
+void Transform::rotate(const Mxm::Quat& quat) noexcept {
+	_rotation = (quat * _rotation).normalized();
 	markDirty();
 }
 void Transform::scale(const Mxm::Vec3& vec) noexcept {
@@ -17,8 +17,8 @@ void Transform::setPosition(const Mxm::Vec3& vec) noexcept {
 	_position = vec;
 	markDirty();
 }
-void Transform::setRotation(const Mxm::Vec3& vec) noexcept {
-	_rotation = vec;
+void Transform::setRotation(const Mxm::Quat& quat) noexcept {
+	_rotation = quat;
 	markDirty();
 }
 void Transform::setScale(const Mxm::Vec3& vec) noexcept {
@@ -32,7 +32,7 @@ void Transform::setLookRotation(const Mxm::Vec3& direction) noexcept {
 	float yaw = atan2f(targetForward.x, targetForward.z);
 	float pitch = -asinf(targetForward.y);
 
-	_rotation = Mxm::Vec3(pitch * Mxm::Consts::RAD2DEG, yaw * Mxm::Consts::RAD2DEG, 0);
+	_rotation = Mxm::Quat::euler(pitch * Mxm::Consts::RAD2DEG, yaw * Mxm::Consts::RAD2DEG, 0);
 	markDirty();
 }
 void Transform::setLookAt(const Mxm::Vec3& target) noexcept {
@@ -57,14 +57,14 @@ Mxm::Vec3 Transform::getWorldPosition() const noexcept {
 	getWorldMatrix();
 	return _world.col(3).toVec3();
 }
-Mxm::Vec3 Transform::getWorldRotation() const noexcept {
-	const Mxm::Mat4& world = getWorldMatrix();
-
-	float pitch = -asinf(world.col(2).y);
-	float yaw = atan2f(world.col(2).x, world.col(2).z);
-	float roll = atan2f(world.col(1).x, world.col(0).x);
-
-	return Mxm::Vec3(pitch, yaw, roll);
+Mxm::Quat Transform::getWorldRotation() const noexcept {
+	if (_parent) {
+		_worldRotation = _parent->getWorldRotation() * _rotation;
+	}
+	else {
+		_worldRotation = _rotation;
+	}
+	return _worldRotation;
 }
 Mxm::Vec3 Transform::getWorldScale() const noexcept {
 	const Mxm::Mat4& world = getWorldMatrix();
@@ -118,8 +118,9 @@ void Transform::removeChild(Transform* child) noexcept {
 
 const Mxm::Mat4& Transform::getModelMatrix() const noexcept {
 	if (_isDirty) {
-		_model = Mxm::Mat4::translation(_position) * Mxm::Mat4::rotationY(_rotation.y) * Mxm::Mat4::rotationX(_rotation.x) * Mxm::Mat4::rotationZ(_rotation.z) * Mxm::Mat4::scaling(_scale);
+		_model = Mxm::Mat4::translation(_position) * Mxm::Mat4::rotation(_rotation) * Mxm::Mat4::scaling(_scale);
 	}
+
 	return _model;
 }
 const Mxm::Mat4& Transform::getWorldMatrix() const noexcept {
@@ -135,21 +136,12 @@ const Mxm::Mat4& Transform::getWorldMatrix() const noexcept {
 	}
 	return _world;
 }
-Mxm::Mat4 Transform::getWorldMatrixWithoutScale() const noexcept {
-	Mxm::Mat4 model = Mxm::Mat4::translation(_position) *
-		Mxm::Mat4::rotationY(_rotation.y) * Mxm::Mat4::rotationX(_rotation.x) * Mxm::Mat4::rotationZ(_rotation.z);
-
-	if (_parent) {
-		return _parent->getWorldMatrixWithoutScale() * model;
-	}
-	return model;
-}
 
 Mxm::Mat4 Transform::getInverseModelMatrix() const noexcept {
 	Mxm::Mat4 inverse;
 
 	Mxm::Vec3 invScale = Mxm::Vec3(1.0f / _scale.x, 1.0f / _scale.y, 1.0f / _scale.z);
-	inverse = Mxm::Mat4::scaling(invScale) * (Mxm::Mat4::rotationY(_rotation.y) * Mxm::Mat4::rotationX(_rotation.x) * Mxm::Mat4::rotationZ(_rotation.z)).transposed() * Mxm::Mat4::translation(-_position);
+	inverse = Mxm::Mat4::scaling(invScale) * Mxm::Mat4::rotation(_rotation).transposed() * Mxm::Mat4::translation(-_position);
 
 	return inverse;
 }
@@ -168,4 +160,14 @@ void Transform::markDirty() noexcept {
 			child->markDirty();
 		}
 	}
+}
+
+const Mxm::Vec3& Transform::getPosition() const noexcept {
+	return _position;
+}
+const Mxm::Quat& Transform::getRotation() const noexcept {
+	return _rotation;
+}
+const Mxm::Vec3& Transform::getScale() const noexcept {
+	return _scale;
 }

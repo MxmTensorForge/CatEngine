@@ -226,7 +226,9 @@ namespace Mxm
     }
 
     inline Mat4 Mat4::rotation(const Quat& quat) noexcept {
-        float w = quat.w(), x = quat.x(), y = quat.y(), z = quat.z();
+        assert(std::abs(quat.length2() - 1.0f) < 1e-5f);
+
+        float w = quat.w, x = quat.x, y = quat.y, z = quat.z;
 
         float ww = w * w;
         float xy = x * y;
@@ -238,10 +240,10 @@ namespace Mxm
         float wz = w * z;
 
         return Mat4(
-            2.0f * (ww + x*x) - 1, 2.0f * (xy - wz),      2.0f * (xz + wy),         0.0f,
-            2.0f * (xy + wz),      2.0f * (ww + y*y) - 1, 2.0f * (yz - wx),         0.0f,
-            2.0f * (xz - wy),      2.0f * (yz + wx),      2.0f * (ww + z*z) - 1.0f, 0.0f,
-            0.0f,                  0.0f,                  0.0f,                     1.0f
+            2.0f * (ww + x*x) - 1.0f, 2.0f * (xy - wz),         2.0f * (xz + wy),         0.0f,
+            2.0f * (xy + wz),         2.0f * (ww + y*y) - 1.0f, 2.0f * (yz - wx),         0.0f,
+            2.0f * (xz - wy),         2.0f * (yz + wx),         2.0f * (ww + z*z) - 1.0f, 0.0f,
+            0.0f,                     0.0f,                     0.0f,                     1.0f
         );
     }
 

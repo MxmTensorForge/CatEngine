@@ -211,6 +211,27 @@ namespace Mxm
         );
     }
 
+    inline Mat3 Mat3::rotation(const Quat& quat) noexcept {
+        assert(std::abs(quat.length2() - 1.0f) < 1e-5f);
+
+        float w = quat.w, x = quat.x, y = quat.y, z = quat.z;
+
+        float ww = w * w;
+        float xy = x * y;
+        float yz = y * z;
+        float xz = x * z;
+
+        float wx = w * x;
+        float wy = w * y;
+        float wz = w * z;
+
+        return Mat3(
+            2.0f * (ww + x * x) - 1.0f, 2.0f * (xy - wz), 2.0f * (xz + wy),
+            2.0f * (xy + wz), 2.0f * (ww + y * y) - 1.0f, 2.0f * (yz - wx),
+            2.0f * (xz - wy), 2.0f * (yz + wx), 2.0f * (ww + z * z) - 1.0f
+        );
+    }
+
     inline Mat3 Mat3::translation(float tx, float ty) noexcept {
         return Mat3(
             1.0f, 0.0f, tx,

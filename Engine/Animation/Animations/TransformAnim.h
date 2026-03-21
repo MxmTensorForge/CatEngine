@@ -51,21 +51,69 @@ namespace Animations
 		}
 	};
 
-	class RotateByAnim final : public Animation
-	{
+	class RotateByAnglesAnim final : public Animation {
 	private:
 		GameObject* _object;
-		Mxm::Vec3 _value;
+		Mxm::Vec3 _axis;
+		float _angle;
+
+		bool _isStart = true;
 
 		void update() override {
 			if (!_object) { stop(); return; }
 
-			_object->transform().rotate(_value * deltaProgress());
+			if (_isStart) {
+				_isStart = false;
+			}
+
+			Mxm::Quat rot = Mxm::Quat::aroundAxis(_axis, _angle * deltaProgress());
+			_object->transform().rotate(rot);
+		}
+
+	public:
+		template <typename... Args>
+		RotateByAnglesAnim(GameObject* object, const Mxm::Vec3& angles, Args&&... args)
+			: Animation(std::forward<Args>(args)...), _object(object) {
+			float ax = std::abs(angles.x);
+			float ay = std::abs(angles.y);
+			float az = std::abs(angles.z);
+
+			if (ax >= ay && ax >= az) {
+				_angle = angles.x;
+			}
+			else if (ay >= ax && ay >= az) {
+				_angle = angles.y;
+			}
+			else {
+				_angle = angles.z;
+			}
+			_axis = Mxm::Vec3(ax, ay, az).normalized();
+		}
+	};
+
+	class RotateByAxisAngleAnim final : public Animation
+	{
+	private:
+		GameObject* _object;
+		Mxm::Vec3 _axis;
+		float _angle;
+
+		bool _isStart = true;
+
+		void update() override {
+			if (!_object) { stop(); return; }
+
+			if (_isStart) {
+				_isStart = false;
+			}
+
+			Mxm::Quat rot = Mxm::Quat::aroundAxis(_axis, _angle * deltaProgress());
+			_object->transform().rotate(rot);
 		}
 	public:
 		template <typename... Args>
-		RotateByAnim(GameObject* object, const Mxm::Vec3& value, Args&&... args)
-			: Animation(std::forward<Args>(args)...), _object(object), _value(value) {
+		RotateByAxisAngleAnim(GameObject* object, const Mxm::Vec3& axis, float angle, Args&&... args)
+			: Animation(std::forward<Args>(args)...), _object(object), _axis(axis), _angle{ angle } {
 		}
 	};
 
@@ -75,8 +123,8 @@ namespace Animations
 		GameObject* _object;
 
 		bool _initialized = false;
-		Mxm::Vec3 _start;
-		Mxm::Vec3 _end;
+		Mxm::Quat _start;
+		Mxm::Quat _end;
 
 		void update() override {
 			if (!_object) { stop(); return; }
@@ -86,11 +134,11 @@ namespace Animations
 				_initialized = true;
 			}
 
-			_object->transform().setRotation(_start + (_end - _start) * progress());
+			_object->transform().setRotation(Mxm::Quat::slerp(_start, _end, progress()));
 		}
 	public:
 		template <typename... Args>
-		RotateToAnim(GameObject* object, const Mxm::Vec3& value, Args&&... args)
+		RotateToAnim(GameObject* object, const Mxm::Quat& value, Args&&... args)
 			: Animation(std::forward<Args>(args)...), _object(object), _end(value) {
 		}
 	};

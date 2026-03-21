@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "Vec3.h"
+#include "Quat.h"
 
 namespace Mxm
 {
@@ -52,6 +53,8 @@ namespace Mxm
         static Mat3 rotationX(float angle) noexcept;
         static Mat3 rotationY(float angle) noexcept;
         static Mat3 rotationZ(float angle) noexcept;
+
+        static Mat3 rotation(const Quat& quat) noexcept;
 
         static Mat3 translation(float tx, float ty) noexcept;
         static Mat3 translation(const Vec2& tv) noexcept;

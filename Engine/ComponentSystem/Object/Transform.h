@@ -13,8 +13,10 @@ class Transform final
 {
 private:
 	Mxm::Vec3 _position{};
-	Mxm::Vec3 _rotation{};
 	Mxm::Vec3 _scale = Mxm::Vec3(1.0f,1.0f,1.0f);
+
+	Mxm::Quat _rotation = Mxm::Quat::identity();
+	mutable Mxm::Quat _worldRotation = Mxm::Quat::identity();
 
 	mutable bool _isDirty = true;
 	mutable Mxm::Mat4 _model;
@@ -35,19 +37,19 @@ public:
 	GameObject* getOwner() const noexcept { return _owner; }
 
 	void translate(const Mxm::Vec3& vec) noexcept;
-	void rotate(const Mxm::Vec3& vec) noexcept;
+	void rotate(const Mxm::Quat& quat) noexcept;
 	void scale(const Mxm::Vec3& vec) noexcept;
 
 	void setPosition(const Mxm::Vec3& vec) noexcept;
-	void setRotation(const Mxm::Vec3& vec) noexcept;
+	void setRotation(const Mxm::Quat& quat) noexcept;
 	void setScale(const Mxm::Vec3& vec) noexcept;
 
-	const Mxm::Vec3& getPosition() const noexcept { return _position; }
-	const Mxm::Vec3& getRotation() const noexcept { return _rotation; }
-	const Mxm::Vec3& getScale() const noexcept { return _scale; }
+	const Mxm::Vec3& getPosition() const noexcept;
+	const Mxm::Quat& getRotation() const noexcept;
+	const Mxm::Vec3& getScale() const noexcept;
 
 	Mxm::Vec3 getWorldPosition() const noexcept;
-	Mxm::Vec3 getWorldRotation() const noexcept;
+	Mxm::Quat getWorldRotation() const noexcept;
 	Mxm::Vec3 getWorldScale() const noexcept;
 
 	Mxm::Vec3 inBasisRotate(const Mxm::Vec3& vec) const noexcept;
@@ -70,7 +72,6 @@ public:
 
 	const Mxm::Mat4& getModelMatrix() const noexcept;
 	const Mxm::Mat4& getWorldMatrix() const noexcept;
-	Mxm::Mat4 getWorldMatrixWithoutScale() const noexcept;
 
 	Mxm::Mat4 getInverseModelMatrix() const noexcept;
 	Mxm::Mat4 getInverseWorldMatrix() const noexcept;

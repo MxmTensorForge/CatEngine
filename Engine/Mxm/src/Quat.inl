@@ -1,30 +1,25 @@
-namespace Mxm
+﻿namespace Mxm
 {
-	inline Quat::Quat() noexcept : _w{}, _x{}, _y{}, _z{} {}
+	inline Quat::Quat() noexcept : w{}, x{}, y{}, z{} {}
 	inline Quat::Quat(float w, float x, float y, float z) noexcept 
-		: _w{w}, _x{x}, _y{y}, _z{z} {}
-
-	inline float Quat::w() const noexcept { return _w; }
-	inline float Quat::x() const noexcept { return _x; }
-	inline float Quat::y() const noexcept { return _y; }
-	inline float Quat::z() const noexcept { return _z; }
+		: w{w}, x{x}, y{y}, z{z} {}
 
 	inline Quat Quat::operator*(const Quat& other) const noexcept {
 		return Quat(
-			_w * other._w - _x * other._x - _y * other._y - _z * other._z,
-			_w * other._x + _x * other._w + _y * other._z - _z * other._y,
-			_w * other._y + _x * other._z + _y * other._w - _z * other._x,
-			_w * other._z + _x * other._y - _y * other._x + _z * other._w
+			w * other.w - x * other.x - y * other.y - z * other.z,
+			w * other.x + x * other.w + y * other.z - z * other.y,
+			w * other.y + x * other.z + y * other.w - z * other.x,
+			w * other.z + x * other.y - y * other.x + z * other.w
 		);
 	}
 	inline Quat Quat::operator+(const Quat& other) const noexcept {
 		return Quat(
-			_w + other._w, _x + other._x, _y + other._y, _z + other._z
+			w + other.w, x + other.x, y + other.y, z + other.z
 		);
 	}
 	inline Quat Quat::operator-(const Quat& other) const noexcept {
 		return Quat(
-			_w - other._w, _x - other._x, _y - other._y, _z - other._z
+			w - other.w, x - other.x, y - other.y, z - other.z
 		);
 	}
 
@@ -43,22 +38,12 @@ namespace Mxm
 
 	inline Quat Quat::operator*(float s) const noexcept {
 		return Quat(
-			_w * s, _x * s, _y * s, _z * s
+			w * s, x * s, y * s, z * s
 		);
 	}
 	inline Quat Quat::operator/(float s) const noexcept {
 		return Quat(
-			_w / s, _x / s, _y / s, _z / s
-		);
-	}
-	inline Quat Quat::operator+(float s) const noexcept {
-		return Quat(
-			_w + s, _x + s, _y + s, _z + s
-		);
-	}
-	inline Quat Quat::operator-(float s) const noexcept {
-		return Quat(
-			_w - s, _x - s, _y - s, _z - s
+			w / s, x / s, y / s, z / s
 		);
 	}
 
@@ -70,27 +55,53 @@ namespace Mxm
 		*this = *this / s;
 		return *this;
 	}
-	inline Quat& Quat::operator+=(float s) noexcept {
-		*this = *this + s;
-		return *this;
-	}
-	inline Quat& Quat::operator-=(float s) noexcept {
-		*this = *this - s;
-		return *this;
-	}
 
 	inline float Quat::length2() const noexcept {
-		return _w * _w + _x * _x + _y * _y + _z * _z;
+		return w * w + x * x + y * y + z * z;
 	}
 	inline float Quat::length() const noexcept {
 		return sqrtf(length2());
 	}
 
-	inline Quat Quat::conjucated() const noexcept {
-		return Quat(_w, -_x, -_y, -_z);
+	inline float Quat::dot(const Quat& other) const noexcept {
+		return w * other.w + x * other.x + y * other.y + z * other.z;
+	}
+
+	inline Quat Quat::normalized() const noexcept {
+		float len = length();
+		if (len < Mxm::Consts::EPS) return Quat::identity();
+
+		return *this / length();
+	}
+
+	inline Quat Quat::conjugated() const noexcept {
+		return Quat(w, -x, -y, -z);
 	}
 	inline Quat Quat::inversed() const noexcept {
-		return conjucated() / length2();
+		return conjugated() / length2();
+	}
+
+	inline Mxm::Vec3 Quat::eulerAngles() const noexcept {
+		float pitch = asinf(2.0f * (w * x - y * z)) * Mxm::Consts::RAD2DEG;
+
+		float yaw = atan2f(2.0f * (x * z + w * y), 2.0f * (w * w + z * z) - 1.0f) * Mxm::Consts::RAD2DEG;
+
+		float roll = atan2f(2.0f * (x * y + w * z), 2.0f * (w * w + y * y) - 1.0f) * Mxm::Consts::RAD2DEG;
+
+		return Mxm::Vec3(pitch, yaw, roll);
+	}
+	inline void Quat::toAxisAngle(Mxm::Vec3& axis, float& angle) const noexcept {
+		angle = Mxm::Consts::RAD2DEG * 2.0f * acosf(w);
+		
+		float s = sqrtf(1.0f - w*w);
+		if (s < Mxm::Consts::EPS) {
+			axis = Mxm::Vec3(1.0f, 0.0f, 0.0f);
+		}
+		else {
+			axis.x = x / s;
+			axis.y = y / s;
+			axis.z = z / s;
+		}
 	}
 
 	inline Quat Quat::euler(float pitch, float yaw, float roll) noexcept {
@@ -102,12 +113,30 @@ namespace Mxm
 		Quat qYaw = Quat(cosf(halfYawRad), 0.0f, sinf(halfYawRad), 0.0f);
 		Quat qRoll = Quat(cosf(halfRollRad), 0.0f, 0.0f, sinf(halfRollRad));
 
-		return qYaw * qPitch * qRoll;
+		return (qYaw * qPitch * qRoll).normalized();
 	}
+	inline Quat Quat::euler(const Mxm::Vec3& angles) noexcept {
+		return euler(angles.x, angles.y, angles.z);
+	}
+
 	inline Quat Quat::aroundAxis(const Mxm::Vec3& axis, float angle) noexcept {
 		float halfAngleRad = Mxm::Consts::DEG2RAD * angle * 0.5f;
 
 		float c = cosf(halfAngleRad), s = sinf(halfAngleRad);
 		return Quat(c, s * axis.x, s * axis.y, s * axis.z);
+	}
+
+	inline Quat Quat::slerp(const Quat& quat1, const Quat& quat2, float t) noexcept {
+		float angle = acosf(quat1.dot(quat2));
+		float invSAngle = sinf(angle);
+
+		return quat1 * sinf((1.0f - t) * angle) * invSAngle + quat2 * sinf(t * angle) * invSAngle;
+	}
+	inline Quat Quat::lerp(const Quat& quat1, const Quat& quat2, float t) noexcept {
+		return (quat1 * (1.0f - t) + quat2 * t);
+	}
+
+	inline Quat Quat::identity() noexcept {
+		return Quat(1.0f, 0.0f, 0.0f, 0.0f);
 	}
 }

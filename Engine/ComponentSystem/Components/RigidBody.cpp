@@ -21,7 +21,7 @@ void RigidBody::fixedUpdate() {
 	_angularVelocity *= 1.0f - _angularDamping * Time::fixedDeltaTime();
 
 	getObject()->transform().translate(_velocity * Time::fixedDeltaTime());
-	getObject()->transform().rotate(_angularVelocity * Time::fixedDeltaTime());
+	getObject()->transform().rotate(Mxm::Quat::euler(_angularVelocity * Time::fixedDeltaTime()));
 
 	_isCollision = false;
 }
