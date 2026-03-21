@@ -255,6 +255,11 @@
     <ClInclude Include="Engine\Mxm\Vec2i.h" />
     <ClInclude Include="Engine\Mxm\Vec3.h" />
     <ClInclude Include="Engine\Mxm\Vec4.h" />
+    <ClInclude Include="Engine\Physics\Colliders\BoxShape.h" />
+    <ClInclude Include="Engine\Physics\Colliders\CapsuleShape.h" />
+    <ClInclude Include="Engine\Physics\Colliders\ColliderShape.h" />
+    <ClInclude Include="Engine\Physics\Colliders\ConvexHullShape.h" />
+    <ClInclude Include="Engine\Physics\Colliders\SphereShape.h" />
     <ClInclude Include="Engine\Physics\CollisionResult.h" />
     <ClInclude Include="Engine\Physics\PhysicsSystem.h" />
     <ClInclude Include="Engine\UI\UIButton.h" />

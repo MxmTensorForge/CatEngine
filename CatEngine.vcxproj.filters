@@ -55,6 +55,9 @@
     <Filter Include="libs\stb_image">
       <UniqueIdentifier>{cfe1a266-9ec2-4f14-8420-422c9dd21c96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Physics\Colliders">
+      <UniqueIdentifier>{aad5eb4e-11de-4fa7-b5e3-3a1a242da502}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Application.cpp">
@@ -358,6 +361,21 @@
     </ClInclude>
     <ClInclude Include="Engine\Mxm\Quat.h">
       <Filter>Engine\Mxm</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Physics\Colliders\ColliderShape.h">
+      <Filter>Engine\Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Physics\Colliders\ConvexHullShape.h">
+      <Filter>Engine\Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Physics\Colliders\BoxShape.h">
+      <Filter>Engine\Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Physics\Colliders\SphereShape.h">
+      <Filter>Engine\Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Physics\Colliders\CapsuleShape.h">
+      <Filter>Engine\Physics\Colliders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -17,16 +17,8 @@ Mxm::Vec3 PhysicsSystem::furthestPoint(const Collider* collider, const Mxm::Vec3
 	const auto& worldMatrix = transform.getWorldMatrix();
 	Mxm::Vec3 localDir = (worldMatrix.transposed() * Mxm::Vec4(dir, 0.0f)).toVec3(); //UPD: We need to ignore the offset, keep the scale and invert the rotation
 
-	float greatestDot = -std::numeric_limits<float>::max();
-	Mxm::Vec3 furthestPoint{};
+	Mxm::Vec3 furthestPoint = collider->support(localDir);
 
-	for (const auto p : collider->getVertices()) {
-		float currDot = localDir.dot(p);
-		if (greatestDot < currDot) {
-			furthestPoint = p;
-			greatestDot = currDot;
-		}
-	}
 	return (transform.getWorldMatrix() * Mxm::Vec4(furthestPoint, 1.0f)).toVec3();
 }
 Mxm::Vec3 PhysicsSystem::minkowskiDifference(const Collider* collider1, const Collider* collider2, const Mxm::Vec3& dir) {

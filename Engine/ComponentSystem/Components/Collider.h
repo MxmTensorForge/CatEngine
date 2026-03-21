@@ -6,6 +6,12 @@
 #include "../../Geometry/AABB.h"
 #include "../../Geometry/MeshData.h"
 #include "../../Physics/CollisionResult.h"
+
+#include "../../Physics/Colliders/BoxShape.h"
+#include "../../Physics/Colliders/ConvexHullShape.h"
+#include "../../Physics/Colliders/SphereShape.h"
+#include "../../Physics/Colliders/CapsuleShape.h"
+
 #include <vector>
 #include <memory>
 #include <functional>
@@ -13,14 +19,12 @@
 class Collider final : public Component
 {
 private:
-	std::vector<Mxm::Vec3> _vertices{};
-	std::shared_ptr<MeshData> _meshData = nullptr;
-	bool _useSimple = false;
+	std::unique_ptr<ColliderShape> _shape;
 
 	AABB _localAABB{};
 	AABB _worldAABB{};
 
-	bool _needsRecalc = true;
+	bool _needsRecalcAABB = true;
 	bool _isTrigger = false;
 
 	using TriggerCallback = std::function<void(GameObject*)>;
@@ -40,10 +44,16 @@ public:
 	void generateLocalAABB() noexcept;
 	const AABB& getLocalAABB() const noexcept { return _localAABB; }
 
-	void generateFromMesh();
-	void generateSimpleFromMesh();
+	template <typename ShapeType, typename... Args>
+	void setColliderShape(Args&&... args) {
+		_shape = std::make_unique<ShapeType>(std::forward<Args>(args)...);
+		_needsRecalcAABB = true;
+	}
 
-	const std::vector<Mxm::Vec3>& getVertices() const noexcept;
+	void generateFromMesh();
+	void generateBoxFromMesh();
+
+	Mxm::Vec3 support(const Mxm::Vec3& direction) const noexcept;
 
 	void setTriggerOnCallback(const TriggerCallback& c) noexcept { _triggerOnCallback = c; }
 	void triggerOnCallback(GameObject* obj) noexcept { if (_triggerOnCallback && _isTrigger) _triggerOnCallback(obj); }
