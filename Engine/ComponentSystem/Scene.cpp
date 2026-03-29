@@ -7,7 +7,7 @@
 
 #include "../Physics/PhysicsSystem.h"
 #include "../Core/Logger.h"
-#include "../Core/EventSystem.h"
+#include "../Managers/EventManager.h"
 
 void Scene::processCollisionPair(const CachedObject& obj1, const CachedObject& obj2) {
     auto gameObject1 = obj1.gameObject;
@@ -194,13 +194,14 @@ void Scene::start() {
 		obj->startComponents();
 	}
     updateLightCache();
+    EventManager::getInstance().poll("light_update");
 }
 void Scene::update() {
 	for (auto& obj : _gameObjects) {
         if (!obj->getActive() || obj->transform().getParent()) continue;
         updateRecursive(&obj->transform());
 	}
-    if (EventSystem::getInstance().poll("light_update")) updateLightCache();
+    if (EventManager::getInstance().poll("light_update")) updateLightCache();
 }
 void Scene::fixedUpdate() {
     for (auto& obj : _gameObjects) {

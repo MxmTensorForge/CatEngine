@@ -39,6 +39,9 @@ bool Animation::updateState() noexcept {
 	case InterpolationType::EASY_OUT_SINE:
 		_progress = Mxm::Easing::easeOutSine(t);
 		break;
+	case InterpolationType::SMOOTHSTEP:
+		_progress = Mxm::Easing::smoothstep(t);
+		break;
 	case InterpolationType::COS_BOUNCE:
 		_progress = Mxm::Easing::cosBounceIn(t, 3.0f, 1.0f);
 		break;

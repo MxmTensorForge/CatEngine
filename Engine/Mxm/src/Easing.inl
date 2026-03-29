@@ -49,6 +49,10 @@ namespace Mxm
 			return elasticCosBounceIn(1.0f - x, bounces, decay);
 		}
 
+		inline float smoothstep(float x) noexcept { 
+			return x * x * (3.0f - 2.0f * x);
+		}
+
 		inline float bezier(float t, float x1, float y1, float x2, float y2) noexcept {
 			// ћы ищем все Bx(t_progress) такие, которые равны t, затем просто берем y компоненту этой точки и получаем наше нелинейное врем€
 			// ¬ поиске t_progress помогает численный метод Ќьютона (Xn+1 = Xn - f(x) / f'(x)), т.е. Bx(t_progress) = t, приводим к стандартному виду: Bx(t_progress) - t = 0

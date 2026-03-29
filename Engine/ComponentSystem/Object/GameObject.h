@@ -9,7 +9,7 @@
 #include "../Component.h"
 #include "Transform.h"
 
-#include "../../Core/EventSystem.h"
+#include "../../Managers/EventManager.h"
 
 class Scene;
 class DirectionLight;
@@ -82,7 +82,7 @@ public:
         raw->setObject(this);
 
         if (typeid(T) == typeid(PointLight) || typeid(T) == typeid(DirectionLight)) {
-            EventSystem::getInstance().broadcast("light_update");
+            EventManager::getInstance().broadcast("light_update");
         }
 
         return raw;
@@ -101,7 +101,7 @@ public:
         );
 
         if (typeid(T) == typeid(PointLight) || typeid(T) == typeid(DirectionLight)) {
-            EventSystem::getInstance().broadcast("light_update");
+            EventManager::getInstance().broadcast("light_update");
         }
     }
 

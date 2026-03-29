@@ -2,7 +2,7 @@
 #include "../../Geometry/Triangle.h"
 
 #include "../../Core/Logger.h"
-#include "../../Core/MeshManager.h"
+#include "../../Managers/MeshManager.h"
 
 #include "../../ComponentSystem/Object/GameObject.h"
 

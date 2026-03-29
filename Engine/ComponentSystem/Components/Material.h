@@ -12,6 +12,9 @@ private:
 	std::string _textureName;
 	Color _color;
 
+	float _shininess = 64.0f;
+	float _specular = 0.5f;
+
 	bool _isShaded;
 public:
 	Material(Color color);
@@ -25,6 +28,12 @@ public:
 
 	inline void setShaded(bool state) noexcept { _isShaded = state; }
 	inline bool isShaded() const noexcept { return _isShaded; }
+
+	inline void setShininess(float value) noexcept { _shininess = value; }
+	inline void setSpecular(float value) noexcept { _specular = value; }
+
+	inline float getShininess() const noexcept { return _shininess; }
+	inline float getSpecular() const noexcept { return _specular; }
 };
 
 #endif

@@ -21,14 +21,13 @@ namespace Mxm
 
 		float easeExp(float x, float a) noexcept;
 
-		float easeInCirc(float x) noexcept;
-		float easeOutCirc(float x) noexcept;
-
 		float cosBounceIn(float x, float bounces, float decay) noexcept;
 		float cosBounceOut(float x, float bounces, float decay) noexcept;
 
 		float elasticCosBounceIn(float x, float bounces, float decay) noexcept;
 		float elasticCosBounceIn(float x, float bounces, float decay) noexcept;
+
+		float smoothstep(float x) noexcept;
 
 		float bezier(float t, float x1, float y1, float x2, float y2) noexcept;
 	}

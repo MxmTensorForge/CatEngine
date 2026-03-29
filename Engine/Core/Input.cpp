@@ -11,7 +11,9 @@ std::bitset<MOUSE_COUNT> Input::_mouse_down;
 std::bitset<MOUSE_COUNT> Input::_mouse_pressed;
 std::bitset<MOUSE_COUNT> Input::_mouse_released;
 
-bool Input::_is_mouse_locked = false;;
+bool Input::_is_mouse_locked = false;
+bool Input::_is_mouse_locked_user = false;
+bool Input::_is_window_focus = false;
 
 Mxm::Vec2 Input::_mouse_position{};
 Mxm::Vec2 Input::_mouse_wheel{};
@@ -55,16 +57,16 @@ Key Input::scancodeToKey(SDL_Scancode scancode) noexcept
 	case SDL_SCANCODE_RSHIFT: key = Key::Right_Shift; break;
 	case SDL_SCANCODE_TAB: key = Key::TAB; break;
 
-	case SDL_SCANCODE_0: key = Key::NUM_0; break;
-	case SDL_SCANCODE_1: key = Key::NUM_1; break;
-	case SDL_SCANCODE_2: key = Key::NUM_2; break;
-	case SDL_SCANCODE_3: key = Key::NUM_3; break;
-	case SDL_SCANCODE_4: key = Key::NUM_4; break;
-	case SDL_SCANCODE_5: key = Key::NUM_5; break;
-	case SDL_SCANCODE_6: key = Key::NUM_6; break;
-	case SDL_SCANCODE_7: key = Key::NUM_7; break;
-	case SDL_SCANCODE_8: key = Key::NUM_8; break;
-	case SDL_SCANCODE_9: key = Key::NUM_9; break;
+	case SDL_SCANCODE_0: key = Key::Num_0; break;
+	case SDL_SCANCODE_1: key = Key::Num_1; break;
+	case SDL_SCANCODE_2: key = Key::Num_2; break;
+	case SDL_SCANCODE_3: key = Key::Num_3; break;
+	case SDL_SCANCODE_4: key = Key::Num_4; break;
+	case SDL_SCANCODE_5: key = Key::Num_5; break;
+	case SDL_SCANCODE_6: key = Key::Num_6; break;
+	case SDL_SCANCODE_7: key = Key::Num_7; break;
+	case SDL_SCANCODE_8: key = Key::Num_8; break;
+	case SDL_SCANCODE_9: key = Key::Num_9; break;
 
 	case SDL_SCANCODE_UP: key = Key::Up; break;
 	case SDL_SCANCODE_DOWN: key = Key::Down; break;
@@ -84,6 +86,9 @@ Key Input::scancodeToKey(SDL_Scancode scancode) noexcept
 	case SDL_SCANCODE_F10: key = Key::F10; break;
 	case SDL_SCANCODE_F11: key = Key::F11; break;
 	case SDL_SCANCODE_F12: key = Key::F12; break;
+
+	case SDL_SCANCODE_BACKSLASH: key = Key::Backslash; break;
+	case SDL_SCANCODE_BACKSPACE: key = Key::Backspace; break;
 
 	default: return Key::None;
 	}
@@ -109,6 +114,9 @@ void Input::update()
 	_mouse_wheel = Mxm::Vec2();
 
 	if (_is_mouse_locked) SDL_WarpMouseInWindow(nullptr, EngineConsts::STANDART_WIDTH * 0.5f, EngineConsts::STANDART_HEIGHT * 0.5f);
+
+	if (_is_mouse_locked_user && _is_window_focus) _is_mouse_locked = true;
+	else _is_mouse_locked = false;
 }
 void Input::handleEvent(const SDL_Event& event)
 {
@@ -147,6 +155,15 @@ void Input::handleEvent(const SDL_Event& event)
 	else if (event.type == SDL_EVENT_MOUSE_WHEEL) {
 		_mouse_wheel = Mxm::Vec2(event.wheel.x, event.wheel.y);
 	}
+	
+	if (event.type == SDL_EVENT_WINDOW_FOCUS_LOST)
+	{
+		_is_window_focus = false;
+	}
+	if (event.type == SDL_EVENT_WINDOW_FOCUS_GAINED)
+	{
+		_is_window_focus = true;
+	}
 }
 
 bool Input::isKeyDown(Key key) { return _keys_down[static_cast<size_t>(key)]; }
@@ -158,7 +175,7 @@ bool Input::isMouseButtonPressed(MouseButton button) { return _mouse_pressed[sta
 bool Input::isMouseButtonReleased(MouseButton button) { return _mouse_released[static_cast<size_t>(button)]; }
 
 void Input::setMouseLockState(bool state) {
-	_is_mouse_locked = state;
+	_is_mouse_locked_user = state;
 	SDL_SetWindowRelativeMouseMode(_window, state);
 }
 bool Input::getMouseLockState() {

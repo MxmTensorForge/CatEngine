@@ -23,6 +23,7 @@ public:
 		_animationList[tag].emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
 	}
 	void remove(AnimTag tag);
+	bool isPlaying(AnimTag tag) const;
 };
 
 #endif // !ANIMATOR_H

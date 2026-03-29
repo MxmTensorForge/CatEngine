@@ -5,7 +5,7 @@
 #include "../ComponentSystem/Components/Material.h"
 #include "../Animation/Animator.h"
 
-#include "../ComponentSystem/SceneManager.h"
+#include "../Managers/SceneManager.h"
 
 #include "../UI/UISystem.h"
 

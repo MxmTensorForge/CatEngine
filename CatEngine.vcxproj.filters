@@ -58,6 +58,9 @@
     <Filter Include="Engine\Physics\Colliders">
       <UniqueIdentifier>{aad5eb4e-11de-4fa7-b5e3-3a1a242da502}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Managers">
+      <UniqueIdentifier>{171a5079-5b30-46a2-b664-ed700a34fbe0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Core\Application.cpp">
@@ -96,14 +99,8 @@
     <ClCompile Include="Engine\Animation\Animations\Animation.cpp">
       <Filter>Engine\Animation\Animations</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\ComponentSystem\SceneManager.cpp">
-      <Filter>Engine\ComponentSystem</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ComponentSystem\Components\RigidBody.cpp">
       <Filter>Engine\ComponentSystem\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Core\MeshManager.cpp">
-      <Filter>Engine\Core</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ComponentSystem\Object\Transform.cpp">
       <Filter>Engine\ComponentSystem\Object</Filter>
@@ -113,9 +110,6 @@
     </ClCompile>
     <ClCompile Include="Engine\ComponentSystem\Components\Collider.cpp">
       <Filter>Engine\ComponentSystem\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Core\AudioSystem.cpp">
-      <Filter>Engine\Core</Filter>
     </ClCompile>
     <ClCompile Include="Engine\UI\UIButton.cpp">
       <Filter>Engine\UI</Filter>
@@ -147,9 +141,6 @@
     <ClCompile Include="Engine\Graphics\Texture.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\TextureManager.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Graphics\Renderer.cpp">
       <Filter>Engine\Graphics</Filter>
     </ClCompile>
@@ -171,11 +162,23 @@
     <ClCompile Include="libs\stb_image\stb_image.c">
       <Filter>libs\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\EventSystem.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ComponentSystem\Components\Material.cpp">
       <Filter>Engine\ComponentSystem\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Managers\AudioManager.cpp">
+      <Filter>Engine\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Managers\EventManager.cpp">
+      <Filter>Engine\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Managers\MeshManager.cpp">
+      <Filter>Engine\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Managers\TextureManager.cpp">
+      <Filter>Engine\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Managers\SceneManager.cpp">
+      <Filter>Engine\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,9 +230,6 @@
     <ClInclude Include="Engine\Animation\Animations\TransformAnim.h">
       <Filter>Engine\Animation\Animations</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ComponentSystem\SceneManager.h">
-      <Filter>Engine\ComponentSystem</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\ComponentSystem\Components\RigidBody.h">
       <Filter>Engine\ComponentSystem\Components</Filter>
     </ClInclude>
@@ -263,9 +263,6 @@
     <ClInclude Include="Engine\Mxm\Vec4.h">
       <Filter>Engine\Mxm</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\MeshManager.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Geometry\MeshData.h">
       <Filter>Engine\Geometry</Filter>
     </ClInclude>
@@ -286,9 +283,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Animation\Animations\WaitAnim.h">
       <Filter>Engine\Animation\Animations</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\AudioSystem.h">
-      <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine\UI\UIScreen.h">
       <Filter>Engine\UI</Filter>
@@ -326,9 +320,6 @@
     <ClInclude Include="Engine\Graphics\Texture.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\TextureManager.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Graphics\Renderer.h">
       <Filter>Engine\Graphics</Filter>
     </ClInclude>
@@ -349,9 +340,6 @@
     </ClInclude>
     <ClInclude Include="libs\stb_image\stb_image.h">
       <Filter>libs\stb_image</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\EventSystem.h">
-      <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ComponentSystem\Components\Material.h">
       <Filter>Engine\ComponentSystem\Components</Filter>
@@ -376,6 +364,24 @@
     </ClInclude>
     <ClInclude Include="Engine\Physics\Colliders\CapsuleShape.h">
       <Filter>Engine\Physics\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Managers\AudioManager.h">
+      <Filter>Engine\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Managers\EventManager.h">
+      <Filter>Engine\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Managers\MeshManager.h">
+      <Filter>Engine\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Managers\TextureManager.h">
+      <Filter>Engine\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Managers\SceneManager.h">
+      <Filter>Engine\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ComponentSystem\Components\DirectionLight.h">
+      <Filter>Engine\ComponentSystem\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

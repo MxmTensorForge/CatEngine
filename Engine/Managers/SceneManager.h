@@ -1,7 +1,7 @@
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
 
-#include "Scene.h"
+#include "../ComponentSystem/Scene.h"
 
 #include <unordered_map>
 #include <memory>

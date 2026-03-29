@@ -11,9 +11,10 @@ enum class Key
 	None,
 	Q, W, E, R, T, Y, U, I, O, P, A, S, D, F, G, H, J, K, L, Z, X, C, V, B, N, M,
 	Escape, Space, Left_Shift, Right_Shift, TAB,
-	NUM_0, NUM_1, NUM_2, NUM_3, NUM_4, NUM_5, NUM_6, NUM_7, NUM_8, NUM_9,
+	Num_0, Num_1, Num_2, Num_3, Num_4, Num_5, Num_6, Num_7, Num_8, Num_9,
 	Up, Down, Right, Left, Enter,
 	F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
+	Backspace, Backslash,
 	Max
 };
 constexpr size_t KEY_COUNT = static_cast<size_t>(Key::Max);
@@ -48,7 +49,10 @@ private:
 	static Mxm::Vec2 _mouse_position;
 	static Mxm::Vec2 _mouse_wheel;
 	static Mxm::Vec2 _mouse_delta;
+
 	static bool _is_mouse_locked;
+	static bool _is_mouse_locked_user;
+	static bool _is_window_focus;
 
 	static void update();
 	static void handleEvent(const SDL_Event& event);

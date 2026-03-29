@@ -1,7 +1,7 @@
-#include "AudioSystem.h"
-#include "Logger.h"
+#include "AudioManager.h"
+#include "../Core/Logger.h"
 
-AudioSystem::AudioSystem() {
+AudioManager::AudioManager() {
 	ma_result result = ma_engine_init(nullptr, &_engine);
 	if (result != MA_SUCCESS) {
 		Logger::getInstance().log(LogType::Fatal, "Audio engine failed");
@@ -9,13 +9,13 @@ AudioSystem::AudioSystem() {
 
 	ma_engine_listener_set_world_up(&_engine, 0, 0, 1, 0);
 }
-AudioSystem::~AudioSystem() {
+AudioManager::~AudioManager() {
 	for (auto& [name, data] : _sounds)
 		ma_sound_uninit(&data.sound);
 	ma_engine_uninit(&_engine);
 }
 
-bool AudioSystem::loadSoundFromFile(const std::string& name, const std::string& path, bool repeat) {
+bool AudioManager::loadSoundFromFile(const std::string& name, const std::string& path, bool repeat) {
 	auto [it, inserted] = _sounds.try_emplace(name);
 	if (!inserted) {
 		return false;
@@ -36,7 +36,7 @@ bool AudioSystem::loadSoundFromFile(const std::string& name, const std::string& 
 	Logger::getInstance().log(LogType::Message, "Sound loaded successfully: " + name);
 	return true;
 }
-void AudioSystem::playSound(const std::string& name) {
+void AudioManager::playSound(const std::string& name) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_seek_to_pcm_frame(&it->second.sound, 0);
@@ -45,7 +45,7 @@ void AudioSystem::playSound(const std::string& name) {
 		ma_sound_start(&it->second.sound);
 	}
 }
-void AudioSystem::playSound3D(const std::string& name, const Mxm::Vec3& position) {
+void AudioManager::playSound3D(const std::string& name, const Mxm::Vec3& position) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_seek_to_pcm_frame(&it->second.sound, 0);
@@ -56,46 +56,46 @@ void AudioSystem::playSound3D(const std::string& name, const Mxm::Vec3& position
 		ma_sound_start(&it->second.sound);
 	}
 }
-void AudioSystem::stopSound(const std::string& name) {
+void AudioManager::stopSound(const std::string& name) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_stop(&it->second.sound);
 	}
 }
 
-void AudioSystem::setMinMaxDist(const std::string& name, float min, float max) {
+void AudioManager::setMinMaxDist(const std::string& name, float min, float max) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_set_min_distance(&it->second.sound, min);
 		ma_sound_set_max_distance(&it->second.sound, max);
 	}
 }
-void AudioSystem::setSoundPosition(const std::string& name, const Mxm::Vec3& position) {
+void AudioManager::setSoundPosition(const std::string& name, const Mxm::Vec3& position) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_set_spatialization_enabled(&it->second.sound, MA_TRUE);
 		ma_sound_set_position(&it->second.sound, position.x, position.y, position.z);
 	}
 }
-void AudioSystem::setListener(const Mxm::Vec3& position, const Mxm::Vec3& forward) {
+void AudioManager::setListener(const Mxm::Vec3& position, const Mxm::Vec3& forward) {
 	ma_engine_listener_set_position(&_engine, 0, position.x, position.y, position.z);
 	ma_engine_listener_set_direction(&_engine, 0, forward.x, forward.y, forward.z);
 }
 
-bool AudioSystem::isSoundPlaying(const std::string& name) const noexcept {
+bool AudioManager::isSoundPlaying(const std::string& name) const noexcept {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		return ma_sound_is_playing(&it->second.sound);
 	}
 }
 
-void AudioSystem::setVolume(const std::string& name, float volume) {
+void AudioManager::setVolume(const std::string& name, float volume) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_set_volume(&it->second.sound, volume);
 	}
 }
-void AudioSystem::setRepeat(const std::string& name, bool repeat) {
+void AudioManager::setRepeat(const std::string& name, bool repeat) {
 	auto it = _sounds.find(name);
 	if (it != _sounds.end()) {
 		ma_sound_set_looping(&it->second.sound, repeat);

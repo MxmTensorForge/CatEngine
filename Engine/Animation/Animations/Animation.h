@@ -10,7 +10,7 @@ public:
 	enum class InterpolationType
 	{
 		LINEAR,
-		COS, EASY_IN_EXP, EASY_OUT_EXP, EASY_IN_SINE, EASY_OUT_SINE,
+		COS, EASY_IN_EXP, EASY_OUT_EXP, EASY_IN_SINE, EASY_OUT_SINE, SMOOTHSTEP,
 		COS_BOUNCE, ELASTIC_COS_BOUNCE,
 		BEZIER
 	};
@@ -46,6 +46,7 @@ public:
 		const Mxm::Vec2& point0 = Mxm::Vec2{}, const Mxm::Vec2& point1 = Mxm::Vec2{});
 
 	bool updateState() noexcept;
+	bool isPlaying() const noexcept { return _elapsed > 0.0f; }
 };
 
 #endif // ANIMATION_H

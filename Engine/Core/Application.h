@@ -19,13 +19,6 @@ private:
 	float _stateAccumulator = 0.0f;
 
 	std::vector<Material*> _transparentMaterials;
-protected:
-	virtual void start() {}
-	virtual void update() {}
-	virtual void fixedUpdate() {}
-	virtual void shutdown() {}
-
-	void setDrawFrame(bool state) noexcept;
 
 	void initialize();
 	void updatePhysics();
@@ -41,6 +34,13 @@ protected:
 
 	bool processFrame();
 	void swapBuffers();
+protected:
+	virtual void start() {}
+	virtual void update() {}
+	virtual void fixedUpdate() {}
+	virtual void shutdown() {}
+
+	void setDrawFrame(bool state) noexcept;
 public:
 	Application();
 	virtual ~Application() = default;

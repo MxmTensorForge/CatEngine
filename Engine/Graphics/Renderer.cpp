@@ -9,7 +9,7 @@
 
 #include "../ComponentSystem/Object/GameObject.h"
 
-#include "../Core/TextureManager.h"
+#include "../Managers/TextureManager.h"
 #include "../Core/Logger.h"
 
 #include "../Graphics/Texture.h"
@@ -99,6 +99,9 @@ void Renderer::drawMesh(const Mxm::Mat4& model, const Material* material) {
 
 	Color color = material->getColor();
 	_shader->setUniform("uColor", color.rf(), color.gf(), color.bf(), color.af());
+	_shader->setUniform("uShininess", material->getShininess());
+	_shader->setUniform("uSpecular", material->getSpecular());
+
 	glDepthMask(GL_TRUE);
 	glEnable(GL_DEPTH_TEST);
 	if (color.a() < 240) {

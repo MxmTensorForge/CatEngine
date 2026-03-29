@@ -1,16 +1,16 @@
-#include "EventSystem.h"
+#include "EventManager.h"
 
-EventSystem& EventSystem::getInstance() noexcept {
-	static EventSystem es;
+EventManager& EventManager::getInstance() noexcept {
+	static EventManager es;
 	return es;
 }
 
-void EventSystem::broadcast(const std::string& event) {
+void EventManager::broadcast(const std::string& event) {
 	if (std::find(_events.begin(), _events.end(), event) == _events.end()) {
 		_events.push_back(event);
 	}
 }
-bool EventSystem::poll(const std::string& event) {
+bool EventManager::poll(const std::string& event) {
 	auto e = std::find(_events.begin(), _events.end(), event);
 	if (e == _events.end()) return false;
 

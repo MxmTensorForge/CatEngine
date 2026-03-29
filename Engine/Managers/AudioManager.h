@@ -1,5 +1,5 @@
-#ifndef AUDIOSYSTEM_H
-#define AUDIOSYSTEM_H
+#ifndef AUDIOMANAGER_H
+#define AUDIOMANAGER_H
 
 #include <miniaudio.h>
 #include <unordered_map>
@@ -7,7 +7,7 @@
 
 #include "../Mxm/Vec3.h"
 
-class AudioSystem final
+class AudioManager final
 {
 private:
 	struct AudioData
@@ -19,16 +19,16 @@ private:
 	ma_engine _engine;
 	std::unordered_map<std::string, AudioData> _sounds;
 
-	AudioSystem();
-	~AudioSystem();
+	AudioManager();
+	~AudioManager();
 public:
-	AudioSystem(const AudioSystem&) = delete;
-	AudioSystem& operator=(const AudioSystem&) = delete;
-	AudioSystem(AudioSystem&&) = delete;
-	AudioSystem& operator=(AudioSystem&&) = delete;
+	AudioManager(const AudioManager&) = delete;
+	AudioManager& operator=(const AudioManager&) = delete;
+	AudioManager(AudioManager&&) = delete;
+	AudioManager& operator=(AudioManager&&) = delete;
 
-	static AudioSystem& getInstance() noexcept {
-		static AudioSystem manager;
+	static AudioManager& getInstance() noexcept {
+		static AudioManager manager;
 		return manager;
 	}
 

@@ -28,3 +28,12 @@ void Animator::remove(AnimTag tag) {
         _animationList.erase(it);
     }
 }
+
+bool Animator::isPlaying(AnimTag tag) const {
+    auto it = _animationList.find(tag);
+
+    if (it != _animationList.end()) {
+        return it->second.front()->isPlaying();
+    }
+    return false;
+}
