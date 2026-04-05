@@ -1,7 +1,7 @@
 #include "MeshManager.h"
 #include "../Geometry/MeshData.h"
 
-#include "Logger.h"
+#include "../Core/Logger.h"
 
 #include <fstream>
 #include <sstream>
@@ -87,17 +87,17 @@ void MeshManager::loadModelFromFile(const std::string& name, const std::string& 
 	result.calculateNormals();
 	result.data.loadData(result.vertices, result.indices, result.normals, result.textureCoords, result.textureIndices);
 
-	_meshes[name] = std::make_shared<MeshData>(std::move(result));
+	_meshes[name] = std::make_unique<MeshData>(std::move(result));
 	Logger::getInstance().log(LogType::Message, "Model " + name + " (" + path + ") has been loaded successfully");
 }
-const std::shared_ptr<MeshData>& MeshManager::getModel(const std::string& name) const {
+MeshData* MeshManager::getModel(const std::string& name) const {
 	auto it = _meshes.find(name);
 	if (it == _meshes.end()) {
 		Logger::getInstance().log(LogType::Fatal, "Model not found (" + name + ")");
 		return nullptr;
 	}
 
-	return it->second;
+	return it->second.get();
 }
 
 void MeshManager::removeModel(const std::string& name) {

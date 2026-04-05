@@ -10,7 +10,7 @@ struct MeshData;
 class MeshManager final
 {
 private:
-	std::unordered_map<std::string, std::shared_ptr<MeshData>> _meshes;
+	std::unordered_map<std::string, std::unique_ptr<MeshData>> _meshes;
 
 	MeshManager() = default;
 	~MeshManager() = default;
@@ -23,7 +23,7 @@ public:
 	static MeshManager& getInstance();
 
 	void loadModelFromFile(const std::string& name, const std::string& path);
-	const std::shared_ptr<MeshData>& getModel(const std::string& name) const;
+	MeshData* getModel(const std::string& name) const;
 
 	void removeModel(const std::string& name);
 	void clearModels(const std::string& name);

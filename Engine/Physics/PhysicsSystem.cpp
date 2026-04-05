@@ -10,12 +10,13 @@
 #include "../Core/EngineConsts.h"
 
 #include <array>
+#include <iostream>
 
 Mxm::Vec3 PhysicsSystem::furthestPoint(const Collider* collider, const Mxm::Vec3& dir) {
 	auto& transform = collider->getObject()->transform();
 
 	const auto& worldMatrix = transform.getWorldMatrix();
-	Mxm::Vec3 localDir = (worldMatrix.transposed() * Mxm::Vec4(dir, 0.0f)).toVec3(); //UPD: We need to ignore the offset, keep the scale and invert the rotation
+	Mxm::Vec3 localDir = (worldMatrix.transposed() * Mxm::Vec4(dir, 0.0f)).toVec3();
 
 	Mxm::Vec3 furthestPoint = collider->support(localDir);
 
@@ -147,7 +148,7 @@ void PhysicsSystem::expandPolytope(std::vector<Triangle>& polytope, const Mxm::V
 	}
 
 	for (const auto& e : _uniqueEdges) {
-		_polytope.emplace_back(e.a, e.b, newPoint);
+		polytope.emplace_back(e.a, e.b, newPoint);
 	}
 }
 std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const Collider* collider1, const Collider* collider2) {
@@ -175,7 +176,7 @@ std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const Collide
 
 		iters++;
 
-		if (iters > 1000) {
+		if (iters > 100) {
 			Logger::getInstance().log(LogType::Error, "Direction: X: " + std::to_string(direction.x) + " Y : " + std::to_string(direction.y) + " Z : " + std::to_string(direction.z));
 			for (int i = 0; i < _simplex.size(); i++) {
 				Logger::getInstance().log(LogType::Error, "Simplex[" + std::to_string(i) + "] " + "X: " + std::to_string(direction.x) + " Y : " + std::to_string(direction.y) + " Z : " + std::to_string(direction.z));
@@ -203,7 +204,7 @@ CollisionResult PhysicsSystem::epaAlgorithm(const Collider* collider1, const Col
 
 		//If we have reached the boundaries of the Minkowski set, then there is no point in continuing the algorithm.
 		float newDist = closestFace.normal().dot(newPoint);
-		if (newDist - closestDist < 0.1f) {
+		if (newDist - closestDist < 0.02f) {
 			return CollisionResult{ closestFace.normal(), closestDist };
 		}
 

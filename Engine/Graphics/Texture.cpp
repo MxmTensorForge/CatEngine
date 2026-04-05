@@ -21,16 +21,16 @@ Texture::~Texture() {
 void Texture::load(const std::string& path, bool isText) noexcept {
 	stbi_set_flip_vertically_on_load(!isText);
 	int width, height, channels;
-	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+	unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 4);
 
 	if (!data) {
 		Logger::getInstance().log(LogType::Fatal, "Image load failed");
 	}
 
-	GLenum format = GL_RGB;
-	if (channels == 4) format = GL_RGBA;
+	GLenum format = GL_RGBA;
+	/*if (channels == 4) format = GL_RGBA;
 	else if (channels == 3) format = GL_RGB;
-	else if (channels == 1) format = GL_RED;
+	else if (channels == 1) format = GL_RED;*/
 
 	GLuint texture;
 	glGenTextures(1, &texture);

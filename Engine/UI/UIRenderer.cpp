@@ -1,5 +1,6 @@
 #include "UIRenderer.h"
 #include "../Core/Logger.h"
+#include "../Core/EngineConsts.h"
 
 #include <iostream>
 #include <fstream>
@@ -16,7 +17,7 @@ UIRenderer::~UIRenderer() {
 void UIRenderer::init(int width, int height) {
 	_rectVAO = std::make_unique<VertexArray>();
 	_rectVBO = std::make_unique<Buffer>(GL_ARRAY_BUFFER);
-	_rectShader = std::make_unique<Shader>("shaders/shaderUI.vert", "shaders/shaderUI.frag");
+	_rectShader = std::make_unique<Shader>(EngineConsts::VERTEX_RECT_SHADER_PATH, EngineConsts::FRAGMENT_RECT_SHADER_PATH);
 
 	_rectVAO->bind();
 	_rectVBO->bind();
@@ -30,7 +31,7 @@ void UIRenderer::init(int width, int height) {
 
 	_textVAO = std::make_unique<VertexArray>();
 	_textVBO = std::make_unique<Buffer>(GL_ARRAY_BUFFER);
-	_textShader = std::make_unique<Shader>("shaders/shaderTextUI.vert", "shaders/shaderTextUI.frag");
+	_textShader = std::make_unique<Shader>(EngineConsts::VERTEX_TEXT_SHADER_PATH, EngineConsts::FRAGMENT_TEXT_SHADER_PATH);
 
 	_textVAO->bind();
 	_textVBO->bind();
@@ -45,7 +46,7 @@ void UIRenderer::init(int width, int height) {
 
 	_ortho = Mxm::Mat4::ortho((float)width, 0.0f, 0.0f, (float)height, -1.0f, 1.0f);
 
-	loadFont("font/myfont.fnt", "font/myfont_0.png");
+	loadFont(EngineConsts::FONT_FNT_FILE_PATH, EngineConsts::FONT_IMAGE_FILE_PATH);
 
 	Logger::getInstance().log(LogType::Message, "UIRenderer has been successfully initialized");
 }

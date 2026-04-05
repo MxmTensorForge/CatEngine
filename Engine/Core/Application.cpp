@@ -136,9 +136,11 @@ bool Application::processFrame() {
 
 	Time::update();
 
-	applySceneChanges();
 	updatePhysics();
+
+	applySceneChanges();
 	updateGame();
+	applySceneChanges();
 
 	renderFrame();
 	renderUI();

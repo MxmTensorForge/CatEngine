@@ -11,17 +11,17 @@ GPUData::~GPUData() {
 
 }
 
-void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector<unsigned int>& indices, const std::vector<Mxm::Vec3>& normals, 
+void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector<unsigned int>& indices, const std::vector<Mxm::Vec3>& normals,
 	const std::vector<Mxm::Vec2>& texCoords, const std::vector<unsigned int>& textureIndices) {
-    std::vector<float> vertexData;
-    vertexData.reserve(indices.size());
+	std::vector<float> vertexData;
+	vertexData.reserve(indices.size());
 
 	_verticesCount = indices.size();
 
-    for (size_t i = 0; i < indices.size(); i++) {
-        vertexData.push_back(vertices[indices[i]].x);
-        vertexData.push_back(vertices[indices[i]].y);
-        vertexData.push_back(vertices[indices[i]].z);
+	for (size_t i = 0; i < indices.size(); i++) {
+		vertexData.push_back(vertices[indices[i]].x);
+		vertexData.push_back(vertices[indices[i]].y);
+		vertexData.push_back(vertices[indices[i]].z);
 
 		vertexData.push_back(normals[i / 3].x);
 		vertexData.push_back(normals[i / 3].y);
@@ -36,7 +36,7 @@ void GPUData::loadData(const std::vector<Mxm::Vec3>& vertices, const std::vector
 			vertexData.push_back(0.0f);
 			vertexData.push_back(0.0f);
 		}
-    }
+	}
 
 	_vao->bind();
 	_vbo->bind();

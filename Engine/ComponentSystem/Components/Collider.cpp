@@ -83,7 +83,7 @@ void Collider::generateFromMesh() {
 	auto mesh = getObject()->getComponent<MeshComponent>();
 	if (!mesh) return;
 
-	setColliderShape<ConvexHullShape>(mesh->getData().get());
+	setColliderShape<ConvexHullShape>(mesh->getData());
 }
 void Collider::generateBoxFromMesh() {
 	auto mesh = getObject()->getComponent<MeshComponent>();

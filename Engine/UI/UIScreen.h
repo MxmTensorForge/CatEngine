@@ -27,7 +27,10 @@ public:
 		for (auto& e : _elements) if (e) e->update();
 	}
 	void render(UIRenderer* renderer) noexcept {
-		for (const auto& e : _elements) e->render(renderer);
+		for (const auto& e : _elements) {
+			if (!e->getVisible()) continue;
+			e->render(renderer);
+		}
 	}
 	void clear() noexcept {
 		_elements.clear();

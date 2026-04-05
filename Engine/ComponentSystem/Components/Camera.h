@@ -14,7 +14,7 @@ class Camera final : public Component
 {
 private:
 	float _aspect{};
-	float _zNear{}, _zFar{};
+	float _zNear = 0.01f, _zFar = 1000.0f;
 	float _fov{};
 	float _scale{};
 

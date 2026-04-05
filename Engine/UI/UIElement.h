@@ -10,7 +10,7 @@ class UIElement
 protected:
 	Mxm::Vec2i _pos;
 	Mxm::Vec2i _size;
-	bool _visible = false;
+	bool _visible = true;
 public:
 	virtual ~UIElement() = default;
 	virtual void render(UIRenderer* renderer) const noexcept = 0;

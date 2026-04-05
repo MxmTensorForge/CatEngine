@@ -10,7 +10,9 @@
 #include "../ComponentSystem/Object/GameObject.h"
 
 #include "../Managers/TextureManager.h"
+
 #include "../Core/Logger.h"
+#include "../Core/EngineConsts.h"
 
 #include "../Graphics/Texture.h"
 
@@ -30,7 +32,7 @@ void Renderer::init() {
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	_shader = std::make_unique<Shader>("shaders/shader.vert", "shaders/shader.frag");
+	_shader = std::make_unique<Shader>(EngineConsts::VERTEX_SHADER_PATH, EngineConsts::FRAGMENT_SHADER_PATH);
 	_shader->use();
 
 	Logger::getInstance().log(LogType::Message, "Renderer has been successfully initialized");
