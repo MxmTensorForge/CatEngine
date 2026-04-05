@@ -103,25 +103,35 @@ bool PhysicsSystem::handleSimplex(std::deque<Mxm::Vec3>& simplex, Mxm::Vec3& dir
 }
 
 std::pair<Triangle, float> PhysicsSystem::findClosestFace(const std::vector<Triangle>& polytope) {
-	Triangle closestFace = polytope[0];
 	float minDist = std::numeric_limits<float>::max();
+	Triangle closestFace = polytope[0];
 
-	for (const auto& c : polytope) {
-		float dist = c.normal().dot(c[0].toVec3());
+	for (const auto& face : polytope) {
+		Mxm::Vec3 n = face.normal();
+		float dist = n.dot(face[0].toVec3());
+
+		// гарантируем положительную дистанцию
+		if (dist < 0.0f) {
+			dist = -dist;
+		}
 
 		if (dist < minDist) {
 			minDist = dist;
-			closestFace = c;
+			closestFace = face;
 		}
 	}
+
 	return { closestFace, minDist };
 }
+
 void PhysicsSystem::expandPolytope(std::vector<Triangle>& polytope, const Mxm::Vec3& newPoint) {
 	_uniqueEdges.clear();
 
 	auto it = polytope.begin();
 	while (it != polytope.end()) {
-		if (it->normal().dot(newPoint) > 0.0f) {
+		Mxm::Vec3 v0 = (*it)[0].toVec3();
+
+		if (it->normal().dot(newPoint - v0) > 0.0f) {
 			std::array<Edge, 3> edges = {
 				Edge{(*it)[0].toVec3(), (*it)[1].toVec3()},
 				Edge{(*it)[1].toVec3(), (*it)[2].toVec3()},
@@ -175,13 +185,6 @@ std::pair<bool, std::deque<Mxm::Vec3>> PhysicsSystem::gjkCollision(const Collide
 		}
 
 		iters++;
-
-		if (iters > 100) {
-			Logger::getInstance().log(LogType::Error, "Direction: X: " + std::to_string(direction.x) + " Y : " + std::to_string(direction.y) + " Z : " + std::to_string(direction.z));
-			for (int i = 0; i < _simplex.size(); i++) {
-				Logger::getInstance().log(LogType::Error, "Simplex[" + std::to_string(i) + "] " + "X: " + std::to_string(direction.x) + " Y : " + std::to_string(direction.y) + " Z : " + std::to_string(direction.z));
-			}
-		}
 	}
 	return { false, _simplex };
 }
@@ -204,13 +207,13 @@ CollisionResult PhysicsSystem::epaAlgorithm(const Collider* collider1, const Col
 
 		//If we have reached the boundaries of the Minkowski set, then there is no point in continuing the algorithm.
 		float newDist = closestFace.normal().dot(newPoint);
-		if (newDist - closestDist < 0.02f) {
+		if (newDist - closestDist < 0.01f) {
 			return CollisionResult{ closestFace.normal(), closestDist };
 		}
 
 		expandPolytope(_polytope, newPoint);
 	}
-	return CollisionResult{ Mxm::Vec3(1.0f, 0.0f, 0.0f), 0.1f };
+	return CollisionResult{ Mxm::Vec3(1.0f, 0.0f, 0.0f), 1110.1f };
 }
 
 void PhysicsSystem::resolveCollisionStatic(RigidBody* rb, const CollisionResult& result) {
